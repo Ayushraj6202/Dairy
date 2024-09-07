@@ -1,34 +1,34 @@
-import jwt from 'jsonwebtoken';
-
+import jwt, { decode } from 'jsonwebtoken';
+import { tokenObj } from '../routes/auth.js';
+import User from '../models/user.models.js';
 // Middleware to verify seller
 export const verifySeller = (req, res, next) => {
+  const token = req.headers['authorization'];
+  console.log(token,tokenObj);
   
-  const token = req.header('x-auth-token');
-  console.log('Verifying seller token is ',token);
-  if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
-
-  try {
-    const decoded = jwt.verify(token, 'secret');
-    if (decoded.role !== 'seller') {
+    if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
+    if (tokenObj['role'] !== 'seller') {
       return res.status(403).json({ msg: 'Access denied, not authorized as seller' });
     }
     next();
-  } catch (err) {
-    res.status(401).json({ msg: 'Token is not valid' });
-  }
 };
 // Middleware to verify user
-export const verifyUser = (req, res, next) => {
+export const verifyUser = async (req, res, next) => {
   const token = req.header('x-auth-token');
-  console.log('Verifying user token is ',token);
   if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
-
+  console.log(token);
+  
   try {
     const decoded = jwt.verify(token, 'secret');
-    if (decoded.role !== 'user' && decoded.role !== 'seller') {
-      return res.status(403).json({ msg: 'Access denied' });
+    console.log("decoded ", decoded);
+    
+    // Retrieve user from database
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user) {
+      return res.status(401).json({ msg: "Invalid AccessToken" });
     }
-    req.userId = decoded.userId; // Attach user ID to request
+    
+    req.user = user; // Attach user to request
     next();
   } catch (err) {
     res.status(401).json({ msg: 'Token is not valid' });

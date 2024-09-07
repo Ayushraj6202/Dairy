@@ -4,15 +4,19 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.models.js';
 
 const router = express.Router();
+let tokenObj = {
+  token: "1234",
+  role: "dhg x"
+};
 
 // Predefined seller credentials (only one seller)
 const sellerEmail = process.env.SELLER_EMAIL;
-const sellerPassword = process.env.SELLER_PASSWORD; // You should hash this in practice
+const sellerPassword = process.env.SELLER_PASSWORD;
+
 // Register user (Users only, no sellers)
 router.post('/signup', async (req, res) => {
-  console.log("signup ")
+  console.log("signup");
   const { name, email, password } = req.body;
-  // console.log(name,email,password);
   
   try {
     let user = await User.findOne({ email });
@@ -20,36 +24,22 @@ router.post('/signup', async (req, res) => {
     if (user) return res.status(400).json({ msg: 'User already exists' });
     
     user = new User({ name, email, password, role: 'user' }); // Ensure role is 'user'
-    // user = await User.create(
-    //   {
-    //     name:name,
-    //     email:email,
-    //     password:password,
-    //     role:"user",
-    //   }
-    // )
-    console.log("user created ",user);
     await user.save();
-    const createdUser =  User.findById(user._id).select(
-      "-password"
-    );
-    // console.log(createdUser);
-    if(!createdUser){
-      return res.status(400).json({msg:"User not created"})
+
+    const createdUser = await User.findById(user._id).select("-password");
+    if (!createdUser) {
+      return res.status(400).json({ msg: 'User not created' });
     }
+
     return res.status(201).json({ msg: 'User registered' });
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(500).send("Error from signup backend " + err.message);
   }
 });
 
 // Login user or seller
 router.post('/login', async (req, res) => {
-  // console.log("login",req.body);
-  //console.log(sellerEmail,sellerPassword);
-  
   const { email, password } = req.body;
-  console.log("login ",email,password);
   
   try {
     // Check if it's the seller
@@ -58,7 +48,13 @@ router.post('/login', async (req, res) => {
       if (!isMatch) return res.status(400).json({ msg: 'Invalid seller credentials' });
 
       const token = jwt.sign({ role: 'seller' }, 'secret', { expiresIn: '100h' });
-      return res.json({ token, role: 'seller' });
+      
+      // Set the token in the response header
+      // console.log(token);
+      
+      tokenObj['token'] = token;
+      tokenObj['role'] = 'seller';
+      return res.header('x-auth-token', token).json({ token, role: 'seller' });
     }
 
     // Check if it's a regular user
@@ -68,13 +64,29 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
-    const payload = { userId: user.id, role: 'user' };
-    const token = jwt.sign(payload, 'secret', { expiresIn: '100h' });
-
-    res.json({ token, role: 'user' });
+    const payload = { userId: user.id, role: 'user' }; // Create the payload
+    const token = jwt.sign(payload, 'secret', { expiresIn: '100h' }); // Generate the token
+    user.accessToken = token;
+    user.role = 'user';
+    user.save({validateBeforeSave:false});
+    // console.log((token===user.accessToken));
+    
+    console.log("user after loging",user);
+    res.header('x-auth-token', token).json({ token, role: 'user' });
   } catch (err) {
     res.status(500).send('Server error');
   }
 });
+// Logout route
+router.post('/auth/logout', (req, res) => {
+  const token = req.headers['authorization'];
+  console.log("logging out user");
+  
+  if (!token) {
+      return res.status(403).send({ message: 'No token provided!' });
+  }
 
+  res.status(200).send({ message: 'Logged out successfully' });
+});
 export default router;
+export { tokenObj };

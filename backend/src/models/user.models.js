@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ['user', 'seller'], default: 'user' }, // Either user or seller
   accessToken:String,
-  refreshToken:String,
+  // refreshToken:String,
 });
 UserSchema.pre("save", async function(next){
   if(this.isModified("password")){

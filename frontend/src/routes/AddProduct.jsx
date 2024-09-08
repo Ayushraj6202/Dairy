@@ -37,8 +37,8 @@ export default function AddProduct() {
 
     return (
         <>
-            {error && <p className="text-red-600 text-center mb-4">{error}</p>}
-            {success && <p className="text-green-600 text-center mb-4">{success}</p>}
+            {error && <p className="text-red-600 text-center mt-2 mb-4">{error}</p>}
+            {success && <p className="text-green-600 text-center mt-2 mb-4">{success}</p>}
 
             <form onSubmit={handleSubmit(addProduct)} className="space-y-5">
                 <div>

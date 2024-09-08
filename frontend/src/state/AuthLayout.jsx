@@ -4,11 +4,11 @@ import sellerEmail from '../../inf.js';
 export default function AuthLayout({ children, userRole = false, sellerRole = false }) {
     const user = useSelector(state => state.auth.user) || {}; // Access user from auth slice
 
-    console.log("user ", user);
+    // console.log("user ", user);
    useEffect(()=>{
 
    },[user])
-    console.log(sellerEmail);
+    // console.log(sellerEmail);
     
     const isLoggedIn = Object.keys(user).length>0;
     let role = 'user';
@@ -20,21 +20,27 @@ export default function AuthLayout({ children, userRole = false, sellerRole = fa
     if(isLoggedIn===true&&userRole===true&&sellerRole===true){
         return (<>{children}</>)
     }
-    if(isLoggedIn===true&&userRole===true){
-        if(role=='user'){
-            return (<>{children}</>)
-        }
-        return 'Access Denied';
-    }
-
-    if (isLoggedIn===true && sellerRole===true) {
+    if(isLoggedIn===true&&sellerRole===true){
         if(role=='seller'){
             return (<>{children}</>)
         }
         return 'Access Denied';
     }
-    if(isLoggedIn==false&&sellerRole&&userRole){
-        return (<>{children}</>)
+
+    if (isLoggedIn===true && userRole===true) {
+        if(role=='seller'){
+            return (<>{children}</>)
+        }
+        return 'Access Denied';
+    }
+    if(isLoggedIn==false){
+        if(sellerRole===false)
+        {
+            return (<>{children}</>)
+        }
+        else{
+            return 'Access Denied';
+        }
     }
 
     // If none of the conditions are met, render children

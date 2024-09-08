@@ -78,15 +78,16 @@ router.post('/login', async (req, res) => {
   }
 });
 // Logout route
-router.post('/auth/logout', (req, res) => {
+router.post('/logout', (req, res) => {
   const token = req.headers['authorization'];
   console.log("logging out user");
   
   if (!token) {
       return res.status(403).send({ message: 'No token provided!' });
   }
-
-  res.status(200).send({ message: 'Logged out successfully' });
+  console.log('logged out',token);
+  
+  return res.status(200).send({ message: 'Logged out successfully' });
 });
 export default router;
 export { tokenObj };

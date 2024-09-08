@@ -48,25 +48,15 @@ router.put('/edit/:id', async (req, res) => {
 
 // Delete a product (seller only)
 router.delete('/delete/:id', verifySeller, async (req, res) => {
+  console.log("here to delete products ");
+  
   try {
     await Product.findByIdAndDelete(req.params.id);
-    res.json({ msg: 'Product deleted' });
+    return res.json({ msg: 'Product deleted' });
   } catch (err) {
-    res.status(500).send('Server error');
+    return res.status(500).send('Server error');
   }
 });
 
-// Delete a product by ID
-router.delete('/delete/:id', async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ msg: 'Product not found' });
-
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ msg: 'Product deleted successfully' });
-  } catch (err) {
-    res.status(500).send('Server error');
-  }
-});
 
 export default router;

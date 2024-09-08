@@ -11,7 +11,6 @@ import SignUp from './routes/SignUp.jsx'
 import Orders from './routes/Orders.jsx'
 import Products from './routes/Products.jsx'
 import AddProduct from './routes/AddProduct.jsx'
-import EditProduct from './routes/EditProducts.jsx'
 import AuthLayout from './state/AuthLayout.jsx'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
@@ -33,7 +32,7 @@ const router = createBrowserRouter(
 
           element:
             (
-              <AuthLayout userRole={true} sellerRole={true} >
+              <AuthLayout  >
                 <Login />
               </AuthLayout>
             )
@@ -41,7 +40,7 @@ const router = createBrowserRouter(
         {
           path: 'signup',
           element: (
-            <AuthLayout userRole={true} sellerRole={true}>
+            <AuthLayout >
               <SignUp />
             </AuthLayout>)
         },
@@ -70,14 +69,7 @@ const router = createBrowserRouter(
               </AuthLayout>
             )
         },
-        {
-          path: 'delete/:id',
-          element: (
-            <AuthLayout sellerRole={true}>
-              <EditProduct />
-            </AuthLayout>
-          )
-        },
+        
       ]
     }
   ]

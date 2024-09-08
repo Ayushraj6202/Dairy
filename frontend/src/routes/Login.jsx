@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { Link ,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
 import { storelogin } from "../store/authslice";
+
 export default function Login() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const { register, handleSubmit, reset } = useForm();
     const url = 'http://localhost:5000/api/auth/login';
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const login = async (data) => {
         setError('');
         try {
@@ -23,14 +24,13 @@ export default function Login() {
             });
             
             const result = await response.json();
-            // console.log("result after login ",result);
-            const token = result.token; // Assuming token is in `res.data.token`
-            localStorage.setItem('x-auth-token', token); // Store the token
+            const token = result.token;
+            localStorage.setItem('x-auth-token', token);
+
             if (response.ok) {
-                dispatch(storelogin({data}))
+                dispatch(storelogin({ data }));
                 setSuccess("User Logged In");
                 navigate('/');
-                // reset();
             } else {
                 setError(result.msg || 'An error occurred while logging you in');
             }
@@ -40,13 +40,19 @@ export default function Login() {
     };
 
     return (
-        <div className=" my-10 flex items-center justify-center w-full bg-gray-50">
+        <div className="my-10 flex items-center justify-center w-full bg-gray-50">
             <div className="mx-auto w-full max-w-md bg-white rounded-lg shadow-lg p-8 border border-gray-200">
-                <div className="mb-4 flex justify-center">
-                    <span className="inline-block w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-600">
-                        LOGO
-                    </span>
+                {/* Logo Section */}
+                <div className="mb-6 flex justify-center">
+                    <Link to="/" className="block">
+                        <img
+                            src="https://trademaklogos.s3.ap-south-1.amazonaws.com/6095525.jpeg"
+                            alt="logo"
+                            className="w-24 h-24 object-contain rounded-full"
+                        />
+                    </Link>
                 </div>
+
                 <h2 className="text-center text-3xl font-bold leading-tight text-gray-800 mb-2">Sign in to your account</h2>
                 <p className="text-center text-base text-gray-600 mb-6">
                     Don&apos;t have an account?&nbsp;

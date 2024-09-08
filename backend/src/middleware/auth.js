@@ -4,7 +4,7 @@ import User from '../models/user.models.js';
 // Middleware to verify seller
 export const verifySeller = (req, res, next) => {
   const token = req.headers['authorization'];
-  console.log(token,tokenObj);
+  // console.log("verify seller ", token,tokenObj);
   
     if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
     if (tokenObj['role'] !== 'seller') {
@@ -16,11 +16,11 @@ export const verifySeller = (req, res, next) => {
 export const verifyUser = async (req, res, next) => {
   const token = req.header('x-auth-token');
   if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
-  console.log(token);
+  // console.log(token);
   
   try {
     const decoded = jwt.verify(token, 'secret');
-    console.log("decoded ", decoded);
+    // console.log("decoded ", decoded);
     
     // Retrieve user from database
     const user = await User.findById(decoded.userId).select("-password");

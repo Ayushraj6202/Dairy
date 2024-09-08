@@ -44,10 +44,14 @@ export default function SignUp() {
     return (
         <div className="my-10 flex items-center justify-center w-full bg-gray-50">
             <div className="mx-auto w-full max-w-md bg-white rounded-lg shadow-lg p-8 border border-gray-200">
-                <div className="mb-4 flex justify-center">
-                    <span className="inline-block w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-2xl font-bold text-gray-600">
-                        LOGO
-                    </span>
+            <div className="mb-6 flex justify-center">
+                    <Link to="/" className="block">
+                        <img
+                            src="https://trademaklogos.s3.ap-south-1.amazonaws.com/6095525.jpeg"
+                            alt="logo"
+                            className="w-24 h-24 object-contain rounded-full"
+                        />
+                    </Link>
                 </div>
                 <h2 className="text-center text-3xl font-bold leading-tight text-gray-800 mb-2">Sign up for an account</h2>
                 <p className="text-center text-base text-gray-600 mb-6">

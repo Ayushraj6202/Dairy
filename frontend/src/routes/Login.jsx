@@ -28,7 +28,7 @@ export default function Login() {
             localStorage.setItem('x-auth-token', token);
 
             if (response.ok) {
-                dispatch(storelogin({ data }));
+                dispatch(storelogin( data ));
                 setSuccess("User Logged In");
                 navigate('/');
             } else {

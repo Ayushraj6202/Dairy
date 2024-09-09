@@ -13,12 +13,12 @@ export const authSlice = createSlice({
     reducers: {
         storelogin: (state,action) => {
             // console.log("data de diya userdata me ",action.payload);
-            if(action.payload.data.email===selleremail){
+            if(action.payload.email===selleremail){
                 state.role='seller';
             }
-            // console.log("store ",action.payload.data);
+            // console.log("store ",action.payload);
             state.status = true;
-            state.user = action.payload.data;
+            state.user = action.payload;
         },
         storelogout: (state) => {
             state.status = false;

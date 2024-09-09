@@ -37,7 +37,7 @@ export default function SignUp() {
                 setError(result.msg || 'An error occurred');
             }
         } catch (error) {
-            setError('Failed to sign up. Please try again later.');
+            console.log('Failed to sign up. Please try again later.');
         }
     };
 

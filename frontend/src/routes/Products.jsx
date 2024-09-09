@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import { useSelector } from "react-redux";
+import Input from "./Input";
 
 export default function Products() {
   const url = 'http://localhost:5000/api/products';
@@ -9,7 +10,14 @@ export default function Products() {
   const user = useSelector((state) => state.auth.user);
   const role = useSelector((state) => state.auth.role);
 
-  // console.log(user);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  const [phone, setPhone] = useState("");
+  const [done, setdone] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+  const formRef = useRef(null); // Create a ref for the form
+
   useEffect(() => {
     // Fetch products from the API
     axios.get(url)
@@ -22,10 +30,9 @@ export default function Products() {
         setLoading(false);
       });
   }, [url]);
-  useEffect(()=>{
 
-  },[products,setProducts])
   const token = localStorage.getItem('x-auth-token');
+
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:5000/api/products/delete/${id}`, {
@@ -37,7 +44,6 @@ export default function Products() {
       });
       if (response.ok) {
         const result = await response.json();
-        // console.log("delete result:", result);
         setProducts(products.filter((product) => product._id !== id));
       } else {
         console.error('Failed to delete product', response.status);
@@ -46,10 +52,95 @@ export default function Products() {
       console.error('Error deleting product:', error);
     }
   };
+
+  const handleBuyNow = (productId) => {
+    setSelectedProductId(productId); // Set selected product ID
+    setShowForm(true); // Show the form to input quantity and phone
+    setTimeout(() => {
+      formRef.current.scrollIntoView({ behavior: 'smooth' }); // Scroll to the form
+    }, 100); // Add a slight delay to ensure the form is visible before scrolling
+  };
+
+  const handleSubmitOrder = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/orders/place`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          productId: selectedProductId,
+          quantity,
+          phone
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Order placed successfully', result);
+        setdone(true);
+        setShowForm(false); // Hide form after successful submission
+      } else {
+        console.error('Failed to order product', response.status);
+      }
+    } catch (error) {
+      console.error('Error placing order', error);
+    }
+  };
+
+  if (done) {
+    setTimeout(() => {
+      setdone(false);
+    }, 2000);
+    return (
+      <>
+        <div className="text-green-700 mx-auto mt-10 bg-gray-200">Order placed successfully</div>
+      </>
+    );
+  }
+
   return (
     <div className="p-4">
+      {showForm && (
+        <div ref={formRef} className="mt-4 p-4 bg-gray-100 rounded shadow-lg">
+          <h3 className="text-lg font-bold mb-4">Place Your Order</h3>
+          <label className="block mb-2">
+            Quantity:
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              className="block w-full border p-2 rounded"
+              min="1"
+              required
+            />
+          </label>
+          <label className="block mb-2">
+            Phone Number:
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="block w-full border p-2 rounded"
+              required
+            />
+          </label>
+          <button
+            className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+            onClick={handleSubmitOrder}
+          >
+            Submit Order
+          </button>
+          <button
+            className="mt-4 ml-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+            onClick={() => setShowForm(false)} // Cancel order form
+          >
+            Cancel
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
         {products.map((product) => (
           <div key={product._id} className="bg-white rounded-lg shadow-lg p-4">
             <img
@@ -60,7 +151,10 @@ export default function Products() {
             <div className="p-2">
               <h2 className="text-xl font-bold">{product.name}</h2>
               <p className="text-gray-600">Price: {product.price}</p>
-              <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+              <button
+                className="mt-4 bg-blue-500 text-white px-4 py-2 gap-1 rounded hover:bg-blue-600 transition"
+                onClick={() => handleBuyNow(product._id)}
+              >
                 Buy Now
               </button>
               {role === 'seller' && (

@@ -12,9 +12,12 @@ dist
 dist-ssr
 *.local
 
-
+#imp
 .env
 inf.js
+
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

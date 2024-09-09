@@ -29,9 +29,9 @@ export default function SignUp() {
             const result = await response.json();
 
             if (response.ok) {
-                dispatch(storelogin(data));
+                // dispatch(storelogin(data));
                 setSuccess("User registered successfully!");
-                navigate('/');
+                navigate('/login');
                 // reset(); // Clear the form after successful registration
             } else {
                 setError(result.msg || 'An error occurred');

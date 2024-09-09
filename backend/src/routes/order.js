@@ -11,17 +11,20 @@ router.post('/place', verifyUser, async (req, res) => {
 
   try {
     const product = await Product.findById(productId);
-    if (!product) return res.status(404).json({ msg: 'Product not found' });
+    if (!product) return res.status(405).json({ msg: 'Product not found' });
 
     const total = product.price * quantity;
 
     const order = new Order({
-      user: req.userId, // Use userId from the verified token
-      products: [{ product: productId, quantity }],
-      total,
+      price:product.price,
+      name:product.name,
+      user: req.user._id, // Use userId from the verified token
+      productId,
+      quantity,
       phone, // Save user's phone number with the order
     });
-
+    // console.log('user id in order ',req.user);
+    
     await order.save();
     res.status(201).json({ msg: 'Order placed', order });
   } catch (err) {
@@ -31,10 +34,13 @@ router.post('/place', verifyUser, async (req, res) => {
 
 // Get user orders (user only)
 router.get('/user', verifyUser, async (req, res) => {
+  // console.log("user order");
+  
   try {
-    const orders = await Order.find({ user: req.userId }).populate('products.product');
+    const orders = await Order.find({ user: req.user._id }).populate('productId.product user');
     if (orders.length === 0) return res.status(404).json({ msg: 'No orders found' });
-
+    // console.log("at get ",orders);
+    
     res.json(orders);
   } catch (err) {
     res.status(500).send('Server error');
@@ -43,8 +49,12 @@ router.get('/user', verifyUser, async (req, res) => {
 
 // Get all orders (seller only)
 router.get('/all', verifySeller, async (req, res) => {
+  // console.log("seller all order");
+  
   try {
-    const orders = await Order.find().populate('products.product user');
+    const orders = await Order.find().populate('productId.product user');
+    // console.log('all orders ',orders);
+    
     if (orders.length === 0) return res.status(404).json({ msg: 'No orders found' });
 
     res.json(orders);
@@ -52,6 +62,19 @@ router.get('/all', verifySeller, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+//Delete order (user only)
+router.delete('/delete/:id',verifyUser,async(req,res)=>{
+  // console.log('order is deleted here',req.params.id);
+  try {
+    // console.log('check');
+    const p =  await Order.findByIdAndDelete(req.params.id);
+    // console.log(p);
+    return res.json({ msg: 'Order Cancled' });
+  } catch (err) {
+    return res.status(500).send('Server error');
+  }
+})
 
 // Update order status (seller only)
 router.put('/complete/:id', verifySeller, async (req, res) => {

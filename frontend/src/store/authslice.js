@@ -1,7 +1,6 @@
 import { createReducer,createSlice } from "@reduxjs/toolkit";
 import React, { act } from 'react'
 import selleremail from "../../inf";
-
 const initialState = {
     role:'user',
     status:false,
@@ -12,7 +11,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         storelogin: (state,action) => {
-            // console.log("data de diya userdata me ",action.payload);
+            // console.log("data de diya userdata me ",action.payload,selleremail);
             if(action.payload.email===selleremail){
                 state.role='seller';
             }

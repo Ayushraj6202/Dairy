@@ -1,44 +1,41 @@
 import React, { useEffect } from "react";
 import { useSelector } from 'react-redux';
-import sellerEmail from '../../inf.js';
+import selleremail from "../../inf";
+
+
 export default function AuthLayout({ children, userRole = false, sellerRole = false }) {
     const user = useSelector(state => state.auth.user) || {}; // Access user from auth slice
+    useEffect(() => {
 
-    // console.log("user ", user);
-   useEffect(()=>{
-
-   },[user])
+    }, [user])
     // console.log(sellerEmail);
-    
-    const isLoggedIn = Object.keys(user).length>0;
-    let role = 'user';
-    if(user.email===sellerEmail){
-        role='seller';
-    }
 
-    // Conditional rendering based on user role and props
-    if(isLoggedIn===true&&userRole===true&&sellerRole===true){
+    const isLoggedIn = Object.keys(user).length > 0;
+    let role = 'user';
+    if (user.email === selleremail) {
+        role = 'seller';
+    }
+    if (isLoggedIn === true && userRole === true && sellerRole === true) {
         return (<>{children}</>)
     }
-    if(isLoggedIn===true&&sellerRole===true){
-        if(role=='seller'){
+    if (isLoggedIn === true && sellerRole === true) {
+        if (role === 'seller') {
             return (<>{children}</>)
         }
         return 'Access Denied';
     }
 
-    if (isLoggedIn===true && userRole===true) {
-        if(role=='seller'){
+    if (isLoggedIn === true && userRole === true) {
+        if (role == 'seller') {
             return (<>{children}</>)
         }
         return 'Access Denied';
     }
-    if(isLoggedIn==false){
-        if(sellerRole===false)
-        {
+    if (isLoggedIn == false) {
+        if (sellerRole === false) {
             return (<>{children}</>)
         }
-        else{
+        else {
             return 'Access Denied';
         }
     }

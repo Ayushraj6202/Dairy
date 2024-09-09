@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
       const token = jwt.sign({ role: 'seller' }, 'secret', { expiresIn: '100h' });
       
       // Set the token in the response header
-      // console.log(token);
+      // console.log("seeting tokenn ",token);
       
       tokenObj['token'] = token;
       tokenObj['role'] = 'seller';
@@ -69,9 +69,10 @@ router.post('/login', async (req, res) => {
     user.accessToken = token;
     user.role = 'user';
     user.save({validateBeforeSave:false});
-    // console.log((token===user.accessToken));
+    // const decoded = jwt.verify(token, 'secret');
+    // console.log("decoded ", decoded);
     
-    console.log("user after loging",user);
+    // console.log("user after loging",user);
     res.header('x-auth-token', token).json({ token, role: 'user' });
   } catch (err) {
     res.status(500).send('Server error');

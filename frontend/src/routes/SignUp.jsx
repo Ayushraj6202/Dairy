@@ -9,13 +9,15 @@ export default function SignUp() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const { register, handleSubmit, reset } = useForm();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const URL_BASIC = import.meta.env.VITE_URL_BASIC;
     const url = `${URL_BASIC}/auth/signup`; 
-    // const url = 'http://localhost:5000/api/auth/signup'; // Ensure this matches your backend URL
 
     const signup = async (data) => {
+        if(data["password"]!==data["conf-password"]){
+            setError('Both Password is different')
+            return;
+        }
         setError('');
         setSuccess('');
         try {
@@ -30,10 +32,8 @@ export default function SignUp() {
             const result = await response.json();
 
             if (response.ok) {
-                // dispatch(storelogin(data));
                 setSuccess("User registered successfully!");
                 navigate('/login');
-                // reset(); // Clear the form after successful registration
             } else {
                 setError(result.msg || 'An error occurred');
             }
@@ -100,9 +100,25 @@ export default function SignUp() {
                         <label className="block text-gray-700 font-medium mb-1" htmlFor="password">Password</label>
                         <input
                             id="password"
-                            placeholder="Enter your password"
+                            placeholder="Create your password"
                             type="password"
                             {...register("password", {
+                                required: 'Password is required',
+                                minLength: {
+                                    value: 6,
+                                    message: 'Password must be at least 6 characters',
+                                },
+                            })}
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-700 font-medium mb-1" htmlFor="Con-password">Confirm Password</label>
+                        <input
+                            id="conf-password"
+                            placeholder="Confirm your password"
+                            type="password"
+                            {...register("conf-password", {
                                 required: 'Password is required',
                                 minLength: {
                                     value: 6,

@@ -1,50 +1,40 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-
+import { useSelector } from "react-redux";
 
 export default function SellerOrders() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
   const url = `${URL_BASIC}/orders/all`;
-  // const url = 'http://localhost:5000/api/orders/all';
-  const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const token = localStorage.getItem('x-auth-token');
   const role = useSelector((state) => state.auth.role);
-  // console.log("token in order ",token);
+
   useEffect(() => {
-    const AllOrders = async () => {
+    const fetchOrders = async () => {
       try {
         const response = await fetch(url, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Include token in the Authorization header
+            'Authorization': `Bearer ${token}`
           },
         });
-        // console.log("result ",response);
-
         const result = await response.json();
-        // console.log("result ",result,response);
         if (response.ok) {
-
           setSuccess(result.msg);
           setOrders(result);
-          // Optionally reset form fields after successful product addition
         } else {
-          setError(result.msg || 'Failed to add product');
+          setError(result.msg || 'Failed to fetch orders');
         }
       } catch (error) {
-        // console.error("Error adding product:", error);
-        setError('An error occurred while adding the product');
+        setError('An error occurred while fetching orders');
       }
     };
-    AllOrders();
-  }, [orders])
-  const handleUpdate = async (id) => {
+    fetchOrders();
+  }, [url,orders]);
 
+  const handleUpdate = async (id) => {
     try {
       const url_update = `${URL_BASIC}/orders/complete/${id}`;
       const response = await fetch(url_update, {
@@ -54,97 +44,77 @@ export default function SellerOrders() {
           'Authorization': `Bearer ${token}`
         },
       });
-      console.log('response ', response);
       if (response.ok) {
-        const result = await response.json();
-        setOrders(orders)
+        setOrders(orders.map(order => order._id === id ? { ...order, status: 'completed' } : order));
       }
     } catch (error) {
-      console.error('status not updated')
+      console.error('Error updating status');
     }
+  };
 
-  }
   const handleSubmitCancel = async (id) => {
-    const url_del = `${URL_BASIC}/orders/deleteSeller/${id}`;
     try {
+      const url_del = `${URL_BASIC}/orders/deleteSeller/${id}`;
       const response = await fetch(url_del, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
-      })
-      // console.log(token);
-      
+      });
       if (response.ok) {
-        const result = await response.json();
-        setOrders(orders.filter((product) => product._id !== id));
-      } else {
-        console.error('Failed to delete product', response.status);
+        setOrders(orders.filter(order => order._id !== id));
       }
     } catch (error) {
-      console.error('Error deleting product:', error);
+      console.error('Error deleting order');
     }
-  }
+  };
+
   if (orders.length === 0) {
-    return (
-      <div>
-        No Customer has ordered
-      </div>
-    )
+    return <div className="text-center text-gray-600 mt-10">No Customer has ordered yet.</div>;
   }
+
   return (
     <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4 bg-green-400">Customer Orders</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        {orders.map((product) => (
-
-          <div key={product._id} className="bg-white rounded-lg shadow-lg p-4">
+        {orders.map((order) => (
+          <div key={order._id} className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
             <img
-              src={product.image || 'default-image.jpg'}
-              alt={product.name}
-              className="w-full h-40 object-cover rounded-t-lg"
+              src={order.image || 'default-image.jpg'}
+              alt={order.name}
+              className="w-full h-40 object-cover rounded-lg mb-4"
             />
-            <div className="p-2">
-              <p className="text-gray-600">Quantity: {product.quantity}</p>
-              <h2 className="text-xl font-bold">Phone: {product.phone}</h2>
-              <div className="text-gray-600">
-                Ordered at {new Date(product.createdAt).toISOString().split('T')[0]} {new Date(product.createdAt).toTimeString().slice(0, 5)}
+            <div className="flex-grow">
+              <h2 className="text-xl font-semibold mb-2">{order.name}</h2>
+              <p className="text-gray-700">Quantity: {order.quantity}</p>
+              <p className="text-gray-700 font-semibold">Order Value: ₹{order.quantity * order.price}</p>
+              <p className="text-gray-700 font-semibold">Phone: {order.phone}</p>
+              <div className="text-sm text-gray-500">
+                Ordered on {new Date(order.createdAt).toISOString().split('T')[0]} at {new Date(order.createdAt).toTimeString().slice(0, 5)}
               </div>
-              {
-                (product.status === 'pending') ? (
-                  <div className="text-gray-600 bg-red-300">
-                    {product.status}
-                  </div>
-                ) : (
-                  <div className="text-gray-600 bg-green-300">
-                    {product.status}
-                  </div>
-                )
-              }
-              {role === 'seller' && (
-
-                <button
-                  onClick={() => handleUpdate(product._id)}
-                  className="bg-green-400 px-1 mt-1 py-1"
-                >
-                  update
-                </button>
-              )}
-              {
-                // Calculate the difference in days
-                (new Date() - new Date(product.createdAt)) / (1000 * 60 * 60 * 24) > 14
-                  ? (
-                    <button 
-                    className="bg-red-400 px-1 mt-1 py-1 mx-1"
-                    onClick={()=>handleSubmitCancel(product._id)}
-                    >
-                      Delete
-                    </button>
-                  ):('')
-              }
-
+              <div className={`text-sm font-semibold mt-2 px-2 py-1 rounded ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-300'}`}>
+                {order.status}
+              </div>
             </div>
+            {role === 'seller' && (
+              <div className="mt-4 flex justify-between">
+                <button
+                  onClick={() => handleUpdate(order._id)}
+                  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                >
+                  Mark as Complete
+                </button>
+                {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24) > 14 && (
+                  <button
+                    onClick={() => handleSubmitCancel(order._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

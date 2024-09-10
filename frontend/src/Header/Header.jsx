@@ -8,7 +8,8 @@ export default function Header() {
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false); // For mobile menu toggle
   const navigate = useNavigate();
-
+  const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+  const url = `${URL_BASIC}/auth/login`; 
   useEffect(() => {}, [authStatus]);
 
   const NavItems = [
@@ -22,7 +23,7 @@ export default function Header() {
 
   const HandleLogout = async () => {
     try {
-      await fetch("http://localhost:5000/api/auth/logout", {
+      await fetch(`${URL_BASIC}/auth/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

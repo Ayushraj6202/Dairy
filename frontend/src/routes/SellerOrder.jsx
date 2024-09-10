@@ -92,6 +92,7 @@ export default function SellerOrders() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((order) => (
           <div key={order._id} className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
+            {/* {console.log(order)} */}
             <img
               src={order.image || 'default-image.jpg'}
               alt={order.name}
@@ -110,21 +111,25 @@ export default function SellerOrders() {
               </div>
             </div>
             {role === 'seller' && (
-              <div className="mt-4 flex justify-between">
-                <button
-                  onClick={() => handleUpdate(order._id)}
-                  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
-                >
-                  Mark as Complete
-                </button>
-                {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24) > 2 && (
+              <div className="mt-4 flex mx-auto justify-between">
+
+                
+
+                {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24) > 12 ? (
                   <button
                     onClick={() => handleSubmitCancel(order._id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                   >
-                    Cancel
+                    Delete
                   </button>
-                )}
+                ):
+                (<button
+                  onClick={() => handleUpdate(order._id)}
+                  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                >
+                  Mark as Complete
+                </button>)
+                }
               </div>
             )}
           </div>

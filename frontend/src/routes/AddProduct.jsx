@@ -1,28 +1,45 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import LoadingComp from '../images/Loading.jsx'
 
 export default function AddProduct() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
-  const url = `${URL_BASIC}/products/add`; 
-  
+  const url = `${URL_BASIC}/product/add`;
+
   const [error, setError] = useState('');
+  const [loading, setloading] = useState(false);
   const [success, setSuccess] = useState('');
   const { register, handleSubmit, reset } = useForm();
   const token = localStorage.getItem('x-auth-token');
 
   const addProduct = async (data) => {
+    setloading(true);
+    const formData = new FormData();
+
+    // Append all form fields to FormData, including file
+    for (const key in data) {
+      if (key === 'image') {
+        // If the key is the image file field, append the file
+        if (data[key][0]) {
+          formData.append(key, data[key][0]); // Append file
+        }
+      } else {
+        // Append other fields as text data
+        formData.append(key, data[key]);
+      }
+    }
     try {
       const response = await fetch(url, {
-        method: 'POST',
+        method: 'POST', 
         headers: {
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       const result = await response.json();
-
+      setloading(false);
       if (response.ok) {
         setSuccess(result.msg);
         reset();
@@ -35,9 +52,12 @@ export default function AddProduct() {
     }
   };
 
+  if(loading){
+    return <LoadingComp/>
+  }
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-        <h1 className="text-3xl bg-blue-400 py-1 my-2 px-1">Add a New Product</h1>
+      <h1 className="text-3xl bg-blue-400 py-1 my-2 px-1">Add a New Product</h1>
       {error && <p className="text-red-600 text-center mb-4">{error}</p>}
       {success && <p className="text-green-600 text-center mb-4">{success}</p>}
 
@@ -67,7 +87,7 @@ export default function AddProduct() {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
           />
         </div>
-        
+
         <div>
           <label htmlFor="price" className="block text-gray-700 font-semibold mb-1">
             Price

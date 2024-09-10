@@ -96,7 +96,7 @@ export default function Products() {
   }
 
   if (loading) {
-    return <LoadingComp/>
+    return <LoadingComp />
   }
 
   return (
@@ -154,13 +154,13 @@ export default function Products() {
               <p className="text-gray-600">Price: ₹{product.price}</p>
               <p className="text-gray-600">{product.description}</p>
             </div>
-            <div className="mt-4 flex justify-between items-center">
-              <button
+            <div className="mt-4 flex justify-between mx-auto items-center">
+              {role === 'user' && (<button
                 className="bg-blue-500 text-white px-4 py-2 mx-auto rounded hover:bg-blue-600 transition"
                 onClick={() => handleBuyNow(product._id, product.name)}
               >
                 Buy Now
-              </button>
+              </button>)}
               {role === 'seller' && (
                 <button
                   onClick={() => handleDelete(product._id)}

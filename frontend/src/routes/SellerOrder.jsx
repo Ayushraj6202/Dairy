@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import LoadingComp from "../images/Loading";
 
 export default function SellerOrders() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
@@ -7,13 +8,16 @@ export default function SellerOrders() {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(true); // Added loading state
   const token = localStorage.getItem('x-auth-token');
   const role = useSelector((state) => state.auth.role);
-
+  // console.log(loading);
+  
   useEffect(() => {
     const fetchOrders = async () => {
+      setLoading(true); // Set loading to true before fetching data
       try {
-        const response = await fetch(url, {
+        const response = await fetch(`${URL_BASIC}/orders/all`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -22,17 +26,21 @@ export default function SellerOrders() {
         });
         const result = await response.json();
         if (response.ok) {
+          setLoading(false);
           setSuccess(result.msg);
           setOrders(result);
         } else {
+          setLoading(false);
           setError(result.msg || 'Failed to fetch orders');
         }
       } catch (error) {
         setError('An error occurred while fetching orders');
+      } finally {
+        setLoading(false); // Set loading to false after fetching data
       }
     };
     fetchOrders();
-  }, [url,orders]);
+  }, []);
 
   const handleUpdate = async (id) => {
     try {
@@ -70,6 +78,10 @@ export default function SellerOrders() {
     }
   };
 
+  if (loading) {
+    return <LoadingComp/>
+  }
+
   if (orders.length === 0) {
     return <div className="text-center text-gray-600 mt-10">No Customer has ordered yet.</div>;
   }
@@ -90,8 +102,8 @@ export default function SellerOrders() {
               <p className="text-gray-700">Quantity: {order.quantity}</p>
               <p className="text-gray-700 font-semibold">Order Value: ₹{order.quantity * order.price}</p>
               <p className="text-gray-700 font-semibold">Phone: {order.phone}</p>
-              <div className="text-sm text-gray-500">
-                Ordered on {new Date(order.createdAt).toISOString().split('T')[0]} at {new Date(order.createdAt).toTimeString().slice(0, 5)}
+              <div className="text-gray-600">
+                Ordered on {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
               <div className={`text-sm font-semibold mt-2 px-2 py-1 rounded ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-300'}`}>
                 {order.status}
@@ -105,7 +117,7 @@ export default function SellerOrders() {
                 >
                   Mark as Complete
                 </button>
-                {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24) > 14 && (
+                {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24) > 2 && (
                   <button
                     onClick={() => handleSubmitCancel(order._id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"

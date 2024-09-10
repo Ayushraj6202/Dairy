@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import LoadingComp from "../images/Loading";
 
 export default function UserOrders() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
@@ -11,8 +12,9 @@ export default function UserOrders() {
   
   useEffect(() => {
     const fetchUserOrders = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(url, {
+        const response = await fetch(`${URL_BASIC}/orders/user`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -21,18 +23,19 @@ export default function UserOrders() {
         });
 
         const result = await response.json();
-
+        setLoading(false)
         if (response.ok) {
           setOrders(result);
         } else {
           setError(result.msg || 'Failed to fetch orders');
         }
       } catch (error) {
+        setLoading(false);
         setError('An error occurred while fetching orders');
       }
     };
     fetchUserOrders();
-  }, [orders]);
+  }, []);
 
   const handleCancelOrder = async (id) => {
     const urlDelete = `${URL_BASIC}/orders/delete/${id}`;
@@ -55,6 +58,9 @@ export default function UserOrders() {
     }
   };
 
+  if(loading){
+    return <LoadingComp/>
+  }
   if (orders.length === 0) {
     return <div>You have not ordered anything yet.</div>;
   }

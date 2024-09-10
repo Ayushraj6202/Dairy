@@ -8,8 +8,8 @@ const OrderSchema = new mongoose.Schema({
   productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }, // Reference to Product model
   quantity: { type: Number, required: true },
   phone: { type: String, required: true, match: [/^\d{10}$/, 'Phone number must be exactly 10 digits'], },
-  status: { type: String, enum: ['pending', 'completed'], default: 'pending' }
-
+  status: { type: String, enum: ['pending', 'completed'], default: 'pending' },
+  image:{type:String,required:true}
 },{timestamps:true});
 
 const Order = mongoose.model('Order', OrderSchema);

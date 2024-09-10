@@ -6,6 +6,7 @@ import multer from 'multer';
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/product.js';
 import orderRoutes from './routes/order.js';
+import routeradd from './routes/Product.add.js';
 
 import cors from 'cors'
 import dotenv from 'dotenv';
@@ -21,15 +22,15 @@ app.use(cors({
     credentials:true,
 }))
 app.use(cookieParser())
+app.use(express.json({limit:"16kb"}));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-const upload = multer();
-app.use(upload.none());
+app.use(express.static("public"));
 
 // Define routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
+app.use('/api/product',routeradd)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

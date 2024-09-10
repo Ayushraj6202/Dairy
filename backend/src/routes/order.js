@@ -17,6 +17,7 @@ router.post('/place', verifyUser, async (req, res) => {
 
     const order = new Order({
       price:product.price,
+      image:product.image,
       name:product.name,
       user: req.user._id, // Use userId from the verified token
       productId,

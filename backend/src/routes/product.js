@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/add',verifySeller, async (req, res) => {
-  // console.log('add prooducts');
+  console.log('add prooducts');
   
   const { name, description, price, quantity } = req.body;
   try {

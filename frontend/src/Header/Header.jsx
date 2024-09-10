@@ -2,14 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { storelogout } from "../store/authslice";
+import LoadingComp from "../images/Loading";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false); // For mobile menu toggle
+  const [loading, setLoading] = useState(false); // Loading state for logout
   const navigate = useNavigate();
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
-  const url = `${URL_BASIC}/auth/login`; 
+
   useEffect(() => {}, [authStatus]);
 
   const NavItems = [
@@ -22,6 +24,7 @@ export default function Header() {
   ];
 
   const HandleLogout = async () => {
+    setLoading(true);
     try {
       await fetch(`${URL_BASIC}/auth/logout`, {
         method: "POST",
@@ -35,9 +38,13 @@ export default function Header() {
       navigate("/");
     } catch (error) {
       console.error("Logout failed: ", error);
+    } finally {
+      setLoading(false); // Reset loading state after logout process
     }
   };
-
+  if(loading){
+    return <LoadingComp/>
+  }
   return (
     <>
       <header className="shadow py-4 bg-gray-500">
@@ -99,8 +106,9 @@ export default function Header() {
               <button
                 className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                 onClick={HandleLogout}
+                disabled={loading} // Disable button when loading
               >
-                Logout
+                {loading ? "Logging out..." : "Logout"}
               </button>
             )}
           </ul>
@@ -134,8 +142,9 @@ export default function Header() {
                   HandleLogout();
                   setMenuOpen(false);
                 }}
+                disabled={loading} // Disable button when loading
               >
-                Logout
+                {loading ? "Logging out..." : "Logout"}
               </button>
             )}
           </ul>

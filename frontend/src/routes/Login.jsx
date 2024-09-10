@@ -3,20 +3,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
 import { storelogin } from "../store/authslice";
+import LoadingComp from "../images/Loading";
 
 export default function Login() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [loading, setloading] = useState(false);
     const { register, handleSubmit, reset } = useForm();
     const URL_BASIC = import.meta.env.VITE_URL_BASIC;
     const url = `${URL_BASIC}/auth/login`; 
     // console.log(url);
 
-    
+ 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const login = async (data) => {
+        setloading(true);
         setError('');
         try {
             const response = await fetch(url, {
@@ -32,6 +35,7 @@ export default function Login() {
             localStorage.setItem('x-auth-token', token);
 
             if (response.ok) {
+                setloading(false)
                 dispatch(storelogin( data ));
                 setSuccess("User Logged In");
                 navigate('/');
@@ -42,7 +46,11 @@ export default function Login() {
             setError(error.message);
         }
     };
-
+    if(loading){
+        return (
+            <><LoadingComp/></>
+        )
+    }
     return (
         <div className="my-10 flex items-center justify-center w-full bg-gray-50">
             <div className="mx-auto w-full max-w-md bg-white rounded-lg shadow-lg p-8 border border-gray-200">

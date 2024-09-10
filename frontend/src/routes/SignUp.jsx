@@ -3,11 +3,13 @@ import { Link ,useNavigate} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSelector,useDispatch } from "react-redux";
 import {storelogin} from '../store/authslice.js';
+import LoadingComp from "../images/Loading.jsx";
 
 
 export default function SignUp() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [loading, setloading] = useState(false);
     const { register, handleSubmit, reset } = useForm();
     const navigate = useNavigate();
     const URL_BASIC = import.meta.env.VITE_URL_BASIC;
@@ -18,6 +20,7 @@ export default function SignUp() {
             setError('Both Password is different')
             return;
         }
+        setloading(true);
         setError('');
         setSuccess('');
         try {
@@ -32,8 +35,9 @@ export default function SignUp() {
             const result = await response.json();
 
             if (response.ok) {
+                setloading(false);
                 setSuccess("User registered successfully!");
-                navigate('/login');
+                // navigate('/login');
             } else {
                 setError(result.msg || 'An error occurred');
             }
@@ -41,7 +45,11 @@ export default function SignUp() {
             console.log('Failed to sign up. Please try again later.');
         }
     };
-
+    if(loading){
+        return (
+            <> <LoadingComp/> </>
+        )
+    }
     return (
         <div className="my-10 flex items-center justify-center w-full bg-gray-50">
             <div className="mx-auto w-full max-w-md bg-white rounded-lg shadow-lg p-8 border border-gray-200">

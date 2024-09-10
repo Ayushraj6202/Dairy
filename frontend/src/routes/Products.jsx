@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import { useSelector } from "react-redux";
+import LoadingComp from "../images/Loading";
+
 export default function Products() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
   const url = `${URL_BASIC}/products`;
-  // const url = 'http://localhost:5000/api/products';
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.auth.user);
@@ -20,11 +21,8 @@ export default function Products() {
   const formRef = useRef(null);
 
   useEffect(() => {
-    // Fetch products from the API
     axios.get(url)
       .then((res) => {
-        // console.log(res.data);
-
         setProducts(res.data);
         setLoading(false);
       })
@@ -32,12 +30,11 @@ export default function Products() {
         console.error("Product fetch error", err);
         setLoading(false);
       });
-  }, [url, products]);
+  }, [url]);
 
   const token = localStorage.getItem('x-auth-token');
 
   const handleDelete = async (id) => {
-
     try {
       const response = await fetch(`${URL_BASIC}/products/delete/${id}`, {
         method: 'DELETE',
@@ -47,7 +44,6 @@ export default function Products() {
         },
       });
       if (response.ok) {
-        const result = await response.json();
         setProducts(products.filter((product) => product._id !== id));
       } else {
         console.error('Failed to delete product', response.status);
@@ -57,13 +53,13 @@ export default function Products() {
     }
   };
 
-  const handleBuyNow = (productId,name) => {
-    setnamee(name)
-    setSelectedProductId(productId); // Set selected product ID
-    setShowForm(true); // Show the form to input quantity and phone
+  const handleBuyNow = (productId, name) => {
+    setnamee(name);
+    setSelectedProductId(productId);
+    setShowForm(true);
     setTimeout(() => {
-      formRef.current.scrollIntoView({ behavior: 'smooth' }); // Scroll to the form
-    }, 100); // Add a slight delay to ensure the form is visible before scrolling
+      formRef.current.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const handleSubmitOrder = async () => {
@@ -82,10 +78,8 @@ export default function Products() {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log('Order placed successfully', result);
         setdone(true);
-        setShowForm(false); // Hide form after successful submission
+        setShowForm(false);
       } else {
         console.error('Failed to order product', response.status);
       }
@@ -98,15 +92,14 @@ export default function Products() {
     setTimeout(() => {
       setdone(false);
     }, 2000);
-    return (
-      <>
-        <div className="text-green-700 mx-auto mt-10 bg-gray-200 mb-20">Order placed successfully</div>
-      </>
-    );
+    return <div className="text-green-700 mx-auto mt-10 bg-gray-200 mb-20">Order placed successfully</div>;
+  }
+
+  if (loading) {
+    return <LoadingComp/>
   }
 
   return (
-    
     <div className="p-4">
       <h1 className="text-3xl font-bold text-center mb-8 bg-blue-400">All Products</h1>
       {showForm && (
@@ -141,12 +134,13 @@ export default function Products() {
           </button>
           <button
             className="mt-4 ml-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-            onClick={() => setShowForm(false)} // Cancel order form
+            onClick={() => setShowForm(false)}
           >
             Cancel
           </button>
         </div>
       )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div key={product._id} className="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between h-full">
@@ -163,7 +157,7 @@ export default function Products() {
             <div className="mt-4 flex justify-between items-center">
               <button
                 className="bg-blue-500 text-white px-4 py-2 mx-auto rounded hover:bg-blue-600 transition"
-                onClick={() => handleBuyNow(product._id,product.name)}
+                onClick={() => handleBuyNow(product._id, product.name)}
               >
                 Buy Now
               </button>

@@ -16,7 +16,7 @@ export default function SlideShow() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-      setLoading(true); // Set loading state on slide change
+      // setLoading(true); // Set loading state on slide change
     }, 2000);
 
     return () => clearInterval(intervalId);

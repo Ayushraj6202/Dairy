@@ -8,7 +8,7 @@ routeradd.route("/add").post(
     upload.fields([
         {
             name: "image",
-            maxCount: 10
+            maxCount: 1
         },
     ]),
     verifySeller,

@@ -42,6 +42,7 @@ export default function AddProduct() {
       setloading(false);
       if (response.ok) {
         setSuccess(result.msg);
+        setError('');
         reset();
       } else {
         setError(result.msg || 'Failed to add product');
@@ -72,7 +73,7 @@ export default function AddProduct() {
             type="text"
             placeholder="Enter product name"
             {...register("name", { required: 'Product name is required' })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />
         </div>
 
@@ -85,7 +86,7 @@ export default function AddProduct() {
             type="text"
             placeholder="Enter description of the product"
             {...register("description", { required: 'Description is required' })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />
         </div>
 
@@ -98,7 +99,7 @@ export default function AddProduct() {
             type="number"
             placeholder="Enter price of the product"
             {...register("price", { required: 'Price is required' })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />
         </div>
 
@@ -111,7 +112,7 @@ export default function AddProduct() {
             type="number"
             placeholder="Enter quantity of the product"
             {...register("quantity", { required: 'Quantity is required' })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />
         </div>
 
@@ -124,7 +125,7 @@ export default function AddProduct() {
             type="file"
             accept="image/png, image/jpg, image/jpeg, image/gif"
             {...register("image", { required: 'Image is required' })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />
         </div>
 

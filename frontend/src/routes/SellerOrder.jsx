@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 
 
 export default function SellerOrders() {
-
-  const url = 'http://localhost:5000/api/orders/all';
+  const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+  const url = `${URL_BASIC}/orders/all`;
+  // const url = 'http://localhost:5000/api/orders/all';
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
@@ -41,7 +42,50 @@ export default function SellerOrders() {
       }
     };
     AllOrders();
-  }, [])
+  }, [orders])
+  const handleUpdate = async (id) => {
+
+    try {
+      const url_update = `${URL_BASIC}/orders/complete/${id}`;
+      const response = await fetch(url_update, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      });
+      console.log('response ', response);
+      if (response.ok) {
+        const result = await response.json();
+        setOrders(orders)
+      }
+    } catch (error) {
+      console.error('status not updated')
+    }
+
+  }
+  const handleSubmitCancel = async (id) => {
+    const url_del = `${URL_BASIC}/orders/deleteSeller/${id}`;
+    try {
+      const response = await fetch(url_del, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      // console.log(token);
+      
+      if (response.ok) {
+        const result = await response.json();
+        setOrders(orders.filter((product) => product._id !== id));
+      } else {
+        console.error('Failed to delete product', response.status);
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  }
   if (orders.length === 0) {
     return (
       <div>
@@ -56,7 +100,6 @@ export default function SellerOrders() {
         {orders.map((product) => (
 
           <div key={product._id} className="bg-white rounded-lg shadow-lg p-4">
-            {/* {console.log(product)} */}
             <img
               src={product.image || 'default-image.jpg'}
               alt={product.name}
@@ -68,9 +111,39 @@ export default function SellerOrders() {
               <div className="text-gray-600">
                 Ordered at {new Date(product.createdAt).toISOString().split('T')[0]} {new Date(product.createdAt).toTimeString().slice(0, 5)}
               </div>
+              {
+                (product.status === 'pending') ? (
+                  <div className="text-gray-600 bg-red-300">
+                    {product.status}
+                  </div>
+                ) : (
+                  <div className="text-gray-600 bg-green-300">
+                    {product.status}
+                  </div>
+                )
+              }
               {role === 'seller' && (
-                <div className="bg-slate-300">In Progress</div>
+
+                <button
+                  onClick={() => handleUpdate(product._id)}
+                  className="bg-green-400 px-1 mt-1 py-1"
+                >
+                  update
+                </button>
               )}
+              {
+                // Calculate the difference in days
+                (new Date() - new Date(product.createdAt)) / (1000 * 60 * 60 * 24) > 14
+                  ? (
+                    <button 
+                    className="bg-red-400 px-1 mt-1 py-1 mx-1"
+                    onClick={()=>handleSubmitCancel(product._id)}
+                    >
+                      Delete
+                    </button>
+                  ):('')
+              }
+
             </div>
           </div>
         ))}

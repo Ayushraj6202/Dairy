@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import { useSelector } from "react-redux";
-import Input from "./Input";
-
 export default function Products() {
-  const url = 'http://localhost:5000/api/products';
+  const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+  const url = `${URL_BASIC}/products`; 
+  // const url = 'http://localhost:5000/api/products';
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.auth.user);
@@ -16,7 +16,7 @@ export default function Products() {
   const [done, setdone] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const formRef = useRef(null); // Create a ref for the form
+  const formRef = useRef(null);
 
   useEffect(() => {
     // Fetch products from the API
@@ -29,13 +29,14 @@ export default function Products() {
         console.error("Product fetch error", err);
         setLoading(false);
       });
-  }, [url]);
+  }, [url,products]);
 
   const token = localStorage.getItem('x-auth-token');
 
   const handleDelete = async (id) => {
+
     try {
-      const response = await fetch(`http://localhost:5000/api/products/delete/${id}`, {
+      const response = await fetch(`${URL_BASIC}/products/delete/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ export default function Products() {
 
   const handleSubmitOrder = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/place`, {
+      const response = await fetch(`${URL_BASIC}/orders/place`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ const sellerPassword = process.env.SELLER_PASSWORD;
 
 // Register user (Users only, no sellers)
 router.post('/signup', async (req, res) => {
-  console.log("signup");
+  // console.log("signup");
   const { name, email, password } = req.body;
   
   try {
@@ -81,12 +81,12 @@ router.post('/login', async (req, res) => {
 // Logout route
 router.post('/logout', (req, res) => {
   const token = req.headers['authorization'];
-  console.log("logging out user");
+  // console.log("logging out user");
   
   if (!token) {
       return res.status(403).send({ message: 'No token provided!' });
   }
-  console.log('logged out',token);
+  // console.log('logged out',token);
   
   return res.status(200).send({ message: 'Logged out successfully' });
 });

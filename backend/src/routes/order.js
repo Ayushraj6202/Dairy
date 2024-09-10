@@ -76,14 +76,27 @@ router.delete('/delete/:id',verifyUser,async(req,res)=>{
   }
 })
 
+router.delete('/deleteSeller/:id',verifySeller,async(req,res)=>{
+  // console.log('order is deleted here',req.params.id);
+  try {
+    // console.log('check');
+    const p =  await Order.findByIdAndDelete(req.params.id);
+    // console.log(p);
+    return res.json({ msg: 'Order Deleted BY sellers' });
+  } catch (err) {
+    return res.status(500).send('Server error');
+  }
+})
+
 // Update order status (seller only)
 router.put('/complete/:id', verifySeller, async (req, res) => {
+  // console.log("update staus");
   try {
     let order = await Order.findById(req.params.id);
     if (!order) return res.status(404).json({ msg: 'Order not found' });
 
     order.status = 'completed';
-    await order.save();
+    await order.save({validateBeforeSave:false});
 
     res.json({ msg: 'Order marked as completed' });
   } catch (err) {

@@ -3,8 +3,9 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 export default function UserOrders() {
 
-  const url_basic = "import.meta.env.VITE_URL_BASIC";
-  const url = `http://localhost:5000/api/orders/user`;
+  const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+  const url = `${URL_BASIC}/orders/user`; 
+  // const url = `http://localhost:5000/api/orders/user`;
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState('');
   const [orders, setOrders] = useState([]);
@@ -41,10 +42,10 @@ export default function UserOrders() {
       }
     };
     AllOrders();
-  }, [])
+  }, [orders])
 
   const handleSubmitCancel = async (id) => {
-    const url_del = `http://localhost:5000/api/orders/delete/${id}`;
+    const url_del = `${URL_BASIC}/orders/delete/${id}`;
     try {
       const response = await fetch(url_del, {
         method: 'DELETE',
@@ -76,8 +77,8 @@ export default function UserOrders() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((product) => (
           <div key={product._id} className="bg-white rounded-lg shadow-lg p-4">
-            {/* {console.log(product) */}
-            {/* } */}
+            {/* {console.log(product)} */}
+
             <img
               src={product.image || 'default-image.jpg'}
               alt={product.name}
@@ -90,13 +91,26 @@ export default function UserOrders() {
               <div className="text-gray-600">
                 Ordered at {new Date(product.createdAt).toISOString().split('T')[0]} {new Date(product.createdAt).toTimeString().slice(0, 5)}
               </div>
-
-              <button
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+              {
+                (product.status === 'pending') ? (
+                  <div className="text-gray-600 bg-red-300">
+                    {product.status}
+                  </div>
+                ) : (
+                  <div className="text-gray-600 bg-green-300">
+                    {product.status}
+                  </div>
+                )
+              }
+            {
+              product.status=='pending' &&
+              (<button
+                className="mt-4 bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
                 onClick={() => handleSubmitCancel(product._id)}
               >
                 Cancel Order
-              </button>
+              </button>)
+            }
             </div>
           </div>
         ))}

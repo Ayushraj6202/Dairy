@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function AddProduct() {
-    const url = 'http://localhost:5000/api/products/add';
+    const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+    const url = `${URL_BASIC}/products/add`; 
+    // const url = 'http://localhost:5000/api/products/add';
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const { register, handleSubmit, reset } = useForm();
@@ -11,6 +13,8 @@ export default function AddProduct() {
     const token = localStorage.getItem('x-auth-token');
 
     const addProduct = async (data) => {
+        // console.log('add pr');
+        
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -19,9 +23,12 @@ export default function AddProduct() {
                     'Authorization': `Bearer ${token}` // Include token in the Authorization header
                 },
                 body: JSON.stringify(data),
+                
             });
 
             const result = await response.json();
+            // console.log(response);
+            
             if (response.ok) {
                 setSuccess(result.msg);
                 // Optionally reset form fields after successful product addition
@@ -50,7 +57,7 @@ export default function AddProduct() {
                         {...register("name", {
                             required: 'Product name is required',
                         })}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
                     />
                 </div>
 
@@ -63,7 +70,7 @@ export default function AddProduct() {
                         {...register("description", {
                             required: 'Description is required',
                         })}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
                     />
                 </div>
                 
@@ -71,12 +78,12 @@ export default function AddProduct() {
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="price">Price</label>
                     <input
                         id="price"
-                        type="text"
+                        type="Number"
                         placeholder="Enter Price of product"
                         {...register("price", {
                             required: 'Price is required',
                         })}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
                     />
                 </div>
 
@@ -84,12 +91,25 @@ export default function AddProduct() {
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="quantity">Quantity</label>
                     <input
                         id="quantity"
-                        type="text"
+                        type="Number"
                         placeholder="Enter quantity of product"
                         {...register("quantity", {
                             required: 'Quantity is required',
                         })}
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 font-medium mb-1" htmlFor="image">Image</label>
+                    <input
+                        id="image"
+                        type="file"
+                        placeholder="Choose Image"
+                        {...register("Image", {
+                            required: 'Image is required',
+                        })}
+                        accept="image/png, image/jpg, image/jpeg, image/gif"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
                     />
                 </div>
 

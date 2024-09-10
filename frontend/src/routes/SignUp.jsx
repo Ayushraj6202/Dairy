@@ -11,8 +11,9 @@ export default function SignUp() {
     const { register, handleSubmit, reset } = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const url = 'http://localhost:5000/api/auth/signup'; // Ensure this matches your backend URL
+    const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+    const url = `${URL_BASIC}/auth/signup`; 
+    // const url = 'http://localhost:5000/api/auth/signup'; // Ensure this matches your backend URL
 
     const signup = async (data) => {
         setError('');

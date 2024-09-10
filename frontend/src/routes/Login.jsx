@@ -8,7 +8,11 @@ export default function Login() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const { register, handleSubmit, reset } = useForm();
-    const url = 'http://localhost:5000/api/auth/login';
+    const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+    const url = `${URL_BASIC}/auth/login`; 
+    // console.log(url);
+
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
 

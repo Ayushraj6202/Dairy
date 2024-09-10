@@ -4,7 +4,7 @@ import User from '../models/user.models.js';
 // Middleware to verify seller
 export const verifySeller = (req, res, next) => {
   const token = req.headers['authorization'];
-  console.log("verify seller ", token,tokenObj);
+  // console.log("verify seller ", token,tokenObj);
   
     if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
     if (tokenObj['role'] !== 'seller') {

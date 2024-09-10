@@ -11,7 +11,7 @@ export default function SlideShow() {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-        }, 2000);
+        }, 1500);
         return () => clearInterval(intervalId);
     }, [images.length]);
 

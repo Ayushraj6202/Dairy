@@ -71,6 +71,7 @@ export default function UserOrders() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((order) => (
           <div key={order._id} className="bg-white rounded-lg shadow-lg p-4">
+            {/* {console.log(order) } */}
             <img
               src={order.image || 'default-image.jpg'}
               alt={order.name}

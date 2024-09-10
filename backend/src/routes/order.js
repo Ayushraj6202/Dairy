@@ -26,7 +26,7 @@ router.post('/place', verifyUser, async (req, res) => {
     });
     // console.log('user id in order ',req.user);
     
-    await order.save();
+    await order.save({validateBeforeSave:false});
     res.status(201).json({ msg: 'Order placed', order });
   } catch (err) {
     res.status(500).send('Server error');

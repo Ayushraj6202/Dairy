@@ -120,6 +120,7 @@ export default function Products() {
             Phone Number:
             <input
               type="tel"
+              placeholder="Enter 10-digit Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="block w-full border p-2 rounded"

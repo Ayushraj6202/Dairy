@@ -47,6 +47,7 @@ export default function AddProduct() {
         setError(result.msg || 'Failed to add product');
       }
     } catch (error) {
+      setloading(false);
       console.error("Error adding product:", error);
       setError('An error occurred while adding the product');
     }

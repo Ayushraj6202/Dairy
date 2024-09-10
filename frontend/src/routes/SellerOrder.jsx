@@ -76,7 +76,7 @@ export default function SellerOrders() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4 bg-green-400">Customer Orders</h1>
+      <h1 className="text-2xl font-bold mb-4 bg-blue-400">Customer Orders</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((order) => (
           <div key={order._id} className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">

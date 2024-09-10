@@ -61,7 +61,7 @@ export default function UserOrders() {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl bg-green-300 my-1">Your Orders</h1>
+      <h1 className="text-3xl bg-blue-300 my-1">Your Orders</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((order) => (
           <div key={order._id} className="bg-white rounded-lg shadow-lg p-4">

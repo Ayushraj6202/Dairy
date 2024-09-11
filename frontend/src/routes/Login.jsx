@@ -34,8 +34,8 @@ export default function Login() {
             const token = result.token;
             localStorage.setItem('x-auth-token', token);
 
+            setloading(false)
             if (response.ok) {
-                setloading(false)
                 dispatch(storelogin( data ));
                 setSuccess("User Logged In");
                 navigate('/');

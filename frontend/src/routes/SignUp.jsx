@@ -34,8 +34,8 @@ export default function SignUp() {
 
             const result = await response.json();
 
+            setloading(false);
             if (response.ok) {
-                setloading(false);
                 setSuccess("User registered successfully!");
                 // navigate('/login');
             } else {

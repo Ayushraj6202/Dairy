@@ -8,12 +8,12 @@ export default function AuthLayout({ children, userRole = false, sellerRole = fa
 
     }, [user])
     const selleremail = import.meta.env.VITE_SELLER_EMAIL;
-    console.log(selleremail,children);
     const isLoggedIn = Object.keys(user).length > 0;
     let role = 'user';
     if (user.email === selleremail) {
         role = 'seller';
     }
+    console.log(selleremail,children,role);
     if (isLoggedIn === true && userRole === true && sellerRole === true) {
         return (<>{children}</>)
     }

@@ -1,6 +1,8 @@
 import { createReducer,createSlice } from "@reduxjs/toolkit";
 import React, { act } from 'react'
-import selleremail from "../../inf";
+
+
+const selleremail = import.meta.env.VITE_SELLER_EMAIL;
 const initialState = {
     role:'user',
     status:false,

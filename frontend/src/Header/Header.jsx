@@ -48,7 +48,7 @@ export default function Header() {
   return (
     <>
       <header className="shadow py-4 bg-gray-500">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
+        <div className=" mx-auto px-4 flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center space-x-2">
             <Link to="/">

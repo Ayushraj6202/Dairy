@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import './App.css'
 import axios from 'axios'
 import { Outlet } from 'react-router-dom'
 import Header from './Header/Header.jsx'

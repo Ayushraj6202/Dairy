@@ -55,7 +55,14 @@ export default function AddProduct() {
   };
 
   if(loading){
-    return <LoadingComp/>
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid border-gray-300"></div>
+        <h2 className="text-center text-lg font-semibold text-gray-700 mt-4">
+          Wait, your product is being added...
+        </h2>
+      </div>
+    );
   }
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">

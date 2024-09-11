@@ -12,7 +12,7 @@ export const authSlice = createSlice({
     reducers: {
         storelogin: (state,action) => {
             console.log("data de diya userdata me ",action.payload,import.meta.env.VITE_SELLER_EMAIL);
-            if(action.payload.email===import.meta.env.VITE_SELLER_EMAIL){
+            if(action.payload.email==="ammanrajkumar96082@gmail.com"){
                 state.role='seller';
             }
             console.log("store ",action.payload,state.role);

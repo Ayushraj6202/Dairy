@@ -40,10 +40,13 @@ router.post('/signup', async (req, res) => {
 // Login user or seller
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  // console.log('loign user',sellerEmail,sellerPassword,email,password);
   
   try {
     // Check if it's the seller
     if (email === sellerEmail) {
+      // console.log('seller loging ');
+      
       const isMatch = password === sellerPassword; // In practice, hash and compare
       if (!isMatch) return res.status(400).json({ msg: 'Invalid seller credentials' });
 
@@ -59,6 +62,8 @@ router.post('/login', async (req, res) => {
 
     // Check if it's a regular user
     const user = await User.findOne({ email });
+    // console.log("user ",user);
+    
     if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);

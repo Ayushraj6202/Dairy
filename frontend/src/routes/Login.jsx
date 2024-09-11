@@ -12,14 +12,16 @@ export default function Login() {
     const { register, handleSubmit, reset } = useForm();
     const URL_BASIC = import.meta.env.VITE_URL_BASIC;
     const url = `${URL_BASIC}/auth/login`; 
-    // console.log(url);
+    console.log(url);
 
  
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const login = async (data) => {
-        setloading(true);
+        // setloading(true);
+        console.log("data ",data);
+        
         setError('');
         try {
             const response = await fetch(url, {
@@ -33,8 +35,8 @@ export default function Login() {
             const result = await response.json();
             const token = result.token;
             localStorage.setItem('x-auth-token', token);
-
-            setloading(false)
+            console.log(response,result,token);
+            
             if (response.ok) {
                 dispatch(storelogin( data ));
                 setSuccess("User Logged In");
@@ -42,6 +44,7 @@ export default function Login() {
             } else {
                 setError(result.msg || 'An error occurred while logging you in');
             }
+            setloading(false)
         } catch (error) {
             setError(error.message);
         }

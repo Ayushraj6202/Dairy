@@ -15,7 +15,7 @@ export const authSlice = createSlice({
             if(action.payload.email===import.meta.env.VITE_SELLER_EMAIL){
                 state.role='seller';
             }
-            // console.log("store ",action.payload);
+            console.log("store ",action.payload,state.role);
             state.status = true;
             state.user = action.payload;
         },

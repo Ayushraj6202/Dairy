@@ -11,7 +11,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         storelogin: (state,action) => {
-            // console.log("data de diya userdata me ",action.payload,selleremail);
+            console.log("data de diya userdata me ",action.payload,import.meta.env.VITE_SELLER_EMAIL);
             if(action.payload.email===import.meta.env.VITE_SELLER_EMAIL){
                 state.role='seller';
             }

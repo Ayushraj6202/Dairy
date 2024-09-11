@@ -91,8 +91,16 @@ export default function Products() {
   if (done) {
     setTimeout(() => {
       setdone(false);
-    }, 2000);
-    return <div className="text-green-700 mx-auto mt-10 bg-gray-200 mb-20">Order placed successfully</div>;
+    }, 4000);
+
+    return (
+      <div className="flex justify-center mt-10 mb-20">
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative shadow-lg w-3/4 sm:w-1/2 lg:w-1/3">
+          <strong className="font-bold">Success!</strong>
+          <span className="block sm:inline"> Your order has been placed successfully.</span>
+        </div>
+      </div>
+    );
   }
 
   if (loading) {

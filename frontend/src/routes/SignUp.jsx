@@ -6,6 +6,7 @@ import {storelogin} from '../store/authslice.js';
 import LoadingComp from "../images/Loading.jsx";
 
 
+
 export default function SignUp() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -14,6 +15,39 @@ export default function SignUp() {
     const navigate = useNavigate();
     const URL_BASIC = import.meta.env.VITE_URL_BASIC;
     const url = `${URL_BASIC}/auth/signup`; 
+    const urllogin = `${URL_BASIC}/auth/login`; 
+    const dispatch = useDispatch();
+
+
+    const login = async (data) => {        
+        
+        setError('');
+        try {
+            const response = await fetch(urllogin, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            
+            const result = await response.json();
+            const token = result.token;
+            localStorage.setItem('x-auth-token', token);
+            // console.log(response,result,token);
+            setloading(false)
+            if (response.ok) {
+                dispatch(storelogin( data ));
+                setSuccess("User Logged In");
+                navigate('/products');
+            } else {
+                setError(result.msg || 'An error occurred while logging you in');
+            }
+        } catch (error) {
+            setError(error.message);
+            setloading(false)
+        }
+    };
 
     const signup = async (data) => {
         if(data["password"]!==data["conf-password"]){
@@ -37,6 +71,7 @@ export default function SignUp() {
             setloading(false);
             if (response.ok) {
                 setSuccess("User registered successfully!");
+                await login ( data  )
                 // navigate('/login');
             } else {
                 setError(result.msg || 'An error occurred');

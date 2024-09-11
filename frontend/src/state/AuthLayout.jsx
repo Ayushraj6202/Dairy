@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 
 export default function AuthLayout({ children, userRole = false, sellerRole = false }) {
-    const user = useSelector(state => state.auth.user) || {}; // Access user from auth slice
+    const user = useSelector(state => state.auth.user); // Access user from auth slice
     useEffect(() => {
 
     }, [user])

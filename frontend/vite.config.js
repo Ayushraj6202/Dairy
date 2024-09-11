@@ -5,8 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server:{
     proxy:{
-      '/api':'http://localhost:8000',
-    }
+      // '/api':'http://localhost:8000',
+    },
+    historyApiFallback: true
+  },
+  build: {
+    outDir: 'build',  // Ensure this matches the directory name used in Render
   },
   plugins: [react()],
 })

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: KhetalPuraDairy
+    env: static
+    staticPublishPath: ./build  # Adjust if your build directory is named differently
+    routes:
+      - type: rewrite
+        source: /<*>   # Matches all routes
+        destination: /index.html

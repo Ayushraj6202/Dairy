@@ -1,9 +1,4 @@
-services:
-  - type: web
-    name: KhetalPuraDairy
-    env: static
-    staticPublishPath: ./dist
-    routes:
-      - type: rewrite
-        source: /<*>   # Matches all routes
-        destination: /index.html
+redirects:
+  - source: '/*'
+    destination: '/index.html'
+    status: 200

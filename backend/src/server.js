@@ -10,6 +10,7 @@ import routeradd from './routes/Product.add.js';
 
 import cors from 'cors'
 import dotenv from 'dotenv';
+
 import cookieParser from 'cookie-parser';
 dotenv.config();
 
@@ -22,7 +23,7 @@ app.use(cors({
     credentials:true,
 }))
 app.use(cookieParser())
-app.use(express.json({limit:"16kb"}));
+// app.use(express.json({limit:"16kb"}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 

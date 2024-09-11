@@ -6,10 +6,10 @@ const addProduct = async (req, res) => {
 
     const { name, description, price, quantity } = await req.body;
     const img = await req.files;
-    // console.log(img);
+    console.log(img);
     
     const localPath = img.image[0].path;
-    // console.log(localPath);
+    console.log(localPath);
     const url_image = await uploadOnCloudinary(localPath);
     
     try {

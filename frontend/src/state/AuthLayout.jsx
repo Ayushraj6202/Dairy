@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from 'react-redux';
-import selleremail from "../../inf";
+import selleremail from "../../inf.js";
 
 
 export default function AuthLayout({ children, userRole = false, sellerRole = false }) {

@@ -18,10 +18,19 @@ const app = express();
 // Connect to database
 connectDB();
 
+const allowedOrigins = process.env.CORS_ORIGINS.split(',');
+
 app.use(cors({
-    origin:process.env.CORS_ORIGIN,
-    credentials:true,
-}))
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+}));
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,6 +41,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
-app.use('/api/product',routeradd)
+app.use('/api/product', routeradd)
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

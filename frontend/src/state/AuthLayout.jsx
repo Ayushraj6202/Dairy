@@ -11,9 +11,11 @@ export default function AuthLayout({ children, userRole = false, sellerRole = fa
     const isLoggedIn = Object.keys(user).length > 0;
     let role = 'user';
     if (user.email === selleremail) {
+        console.log('make seller');
+        
         role = 'seller';
     }
-    console.log(selleremail,children,role);
+    console.log(user,selleremail,children,role);
     if(role==='seller'){
         return (<>{children}</>)
     }

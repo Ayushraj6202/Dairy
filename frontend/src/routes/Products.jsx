@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import { useSelector } from "react-redux";
-import LoadingComp from "../images/Loading";
+import LoadingComp from "../images/Loading.jsx";
 
 export default function Products() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;

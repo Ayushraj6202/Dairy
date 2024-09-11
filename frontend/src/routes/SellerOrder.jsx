@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import LoadingComp from "../images/Loading";
+import LoadingComp from "../images/Loading.jsx";
 
 export default function SellerOrders() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;

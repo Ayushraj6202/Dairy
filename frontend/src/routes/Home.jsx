@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SlideShow from "../images/SlideShow";
+import SlideShow from "../images/SlideShow.jsx";
 
 export default function Home() {
     return (

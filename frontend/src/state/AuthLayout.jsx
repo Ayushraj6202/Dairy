@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector } from 'react-redux';
-import selleremail from "../../inf.js";
 
 
 export default function AuthLayout({ children, userRole = false, sellerRole = false }) {
@@ -8,8 +7,8 @@ export default function AuthLayout({ children, userRole = false, sellerRole = fa
     useEffect(() => {
 
     }, [user])
+    const selleremail = import.meta.env.VITE_SELLER_EMAIL;
     // console.log(sellerEmail);
-
     const isLoggedIn = Object.keys(user).length > 0;
     let role = 'user';
     if (user.email === selleremail) {

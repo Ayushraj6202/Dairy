@@ -1,7 +1,7 @@
 import React from "react";
-import UserOrders from "./UserOrder";
+import UserOrders from "./UserOrder.jsx";
 import { useSelector } from "react-redux";
-import SellerOrders from "./SellerOrder";
+import SellerOrders from "./SellerOrder.jsx";
 
 
 export default function Orders(){

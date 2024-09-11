@@ -15,10 +15,10 @@ function Footer() {
                             </h3>
                             <ul>
                                 <li className="mb-2 text-gray-700 font-bold">
-                                    PHONE: 7004434221
+                                    PHONE: 9546641100
                                 </li>
                                 <li className="mb-2 text-gray-700 font-bold">
-                                    EMAIL: aman@gmail.com
+                                    EMAIL: ammanrajkumar96082@gmail.com
                                 </li>
                             </ul>
                         </div>

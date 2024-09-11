@@ -115,21 +115,21 @@ export default function SellerOrders() {
 
                 
 
-                {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24)  <100 ? (
+                {/* {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24)  <100 ? ( */}
                   <button
                     onClick={() => handleSubmitCancel(order._id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                   >
                     Delete
                   </button>
-                ):
+                {/* ): */}
                 (<button
                   onClick={() => handleUpdate(order._id)}
                   className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
                 >
                   Mark as Complete
                 </button>)
-                }
+                {/* } */}
               </div>
             )}
           </div>

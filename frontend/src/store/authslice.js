@@ -1,8 +1,6 @@
 import { createReducer,createSlice } from "@reduxjs/toolkit";
 import React, { act } from 'react'
 
-
-const selleremail = import.meta.env.VITE_SELLER_EMAIL;
 const initialState = {
     role:'user',
     status:false,
@@ -14,7 +12,7 @@ export const authSlice = createSlice({
     reducers: {
         storelogin: (state,action) => {
             // console.log("data de diya userdata me ",action.payload,selleremail);
-            if(action.payload.email===selleremail){
+            if(action.payload.email===import.meta.env.VITE_SELLER_EMAIL){
                 state.role='seller';
             }
             // console.log("store ",action.payload);

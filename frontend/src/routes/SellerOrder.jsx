@@ -111,7 +111,7 @@ export default function SellerOrders() {
               </div>
             </div>
             {role === 'seller' && (
-              <div className="mt-4 flex mx-auto justify-between">
+              <div className="mt-4 flex  justify-between">
 
                 
 
@@ -122,14 +122,12 @@ export default function SellerOrders() {
                   >
                     Delete
                   </button>
-                {/* ): */}
-                (<button
+                <button
                   onClick={() => handleUpdate(order._id)}
                   className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
                 >
                   Mark as Complete
-                </button>)
-                {/* } */}
+                </button>
               </div>
             )}
           </div>

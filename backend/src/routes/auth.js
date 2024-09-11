@@ -40,7 +40,7 @@ router.post('/signup', async (req, res) => {
 // Login user or seller
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  // console.log('loign user',sellerEmail,sellerPassword,email,password);
+  console.log('loign user',sellerEmail,sellerPassword,email,password);
   
   try {
     // Check if it's the seller

@@ -14,8 +14,10 @@ export const authSlice = createSlice({
             console.log("data de diya userdata me ",action.payload,import.meta.env.VITE_SELLER_EMAIL);
             if(action.payload.email==="ammanrajkumar96082@gmail.com"){
                 state.role='seller';
+                console.log("seller");
+                
             }
-            console.log("store ",action.payload,state.role);
+            // console.log("store ",action.payload,state.role);
             state.status = true;
             state.user = action.payload;
         },

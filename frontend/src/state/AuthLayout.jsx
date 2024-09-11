@@ -14,7 +14,7 @@ export default function AuthLayout({ children, userRole = false, sellerRole = fa
         role = 'seller';
     }
     console.log(selleremail,children,role);
-    if(role=='seller'){
+    if(role==='seller'){
         return (<>{children}</>)
     }
     if (isLoggedIn === true && userRole === true && sellerRole === true) {

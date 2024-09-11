@@ -10,7 +10,7 @@ export default defineConfig({
     historyApiFallback: true
   },
   build: {
-    outDir: 'build',  // Ensure this matches the directory name used in Render
+    outDir: 'dist',  // Ensure this matches the directory name used in Render
   },
   plugins: [react()],
 })

@@ -2,7 +2,7 @@ services:
   - type: web
     name: KhetalPuraDairy
     env: static
-    staticPublishPath: ./dist  # Adjust if your build directory is named differently
+    staticPublishPath: ./dist
     routes:
       - type: rewrite
         source: /<*>   # Matches all routes

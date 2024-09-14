@@ -5,7 +5,6 @@ import SlideShow from "../images/SlideShow.jsx";
 export default function Home() {
     return (
         <div className="container mx-auto px-4">
-            <meta name="google-site-verification" content="kUH9VIPvqsb79aLWZUNPd7FC8v0u9yYUuVPysacpQHg" />
             {/* Welcome Message */}
             <div className="text-center text-2xl md:text-3xl lg:text-4xl mt-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 rounded-lg shadow-md">
             शिव आज भी गुरु है

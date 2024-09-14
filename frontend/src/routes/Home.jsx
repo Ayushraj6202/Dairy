@@ -41,6 +41,21 @@ export default function Home() {
                 <SlideShow />
             </div>
 
+            {/* Vishwakarma Puja Wish */}
+            <div className="my-6 bg-yellow-400 text-black text-lg md:text-xl lg:text-2xl font-bold p-6 rounded-lg text-center shadow-lg border border-red-500">
+                <h2>विश्वकर्मा पूजा पर विशेष आमंत्रण!</h2>
+                <p>आप सभी सादर आमंत्रित हैं। कृपया हमारे यहां पधारें और प्रसाद ग्रहण करें।</p>
+
+                {/* Vishwakarma Puja Image */}
+                <div className="mt-4">
+                    <img
+                        src="https://i.ndtvimg.com/i/2017-09/vishwakarma-puja_650x400_41505554028.jpg"
+                        alt="Vishwakarma Puja"
+                        className="w-full md:w-2/3 lg:w-1/2 mx-auto rounded-lg shadow-lg"
+                    />
+                </div>
+            </div>
+
             {/* Special Offer Section */}
             <div className="my-6 bg-red-500 text-white text-lg md:text-xl lg:text-2xl font-bold p-6 rounded-lg text-center shadow-lg border border-yellow-300">
                 <h2>विशेष ऑफर!</h2>

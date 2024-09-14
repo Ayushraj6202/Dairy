@@ -67,6 +67,7 @@ export default function Products() {
   };
 
   const handleSubmitOrder = async () => {
+    if(phone.length!==10)return;
     try {
       const response = await fetch(`${URL_BASIC}/orders/place`, {
         method: 'POST',
@@ -147,9 +148,12 @@ export default function Products() {
               placeholder="Enter 10-digit Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="block w-full border p-2 rounded"
+              className={`block w-full border p-2 rounded ${phone.length !== 10 && phone.length > 0 ? 'border-red-500' : 'border-gray-300'}`}
               required
             />
+            {phone.length !== 10 && phone.length > 0 && (
+              <p className="text-red-500 text-sm mt-1">Phone number must be exactly 10 digits.</p>
+            )}
           </label>
           <button
             className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
@@ -165,39 +169,6 @@ export default function Products() {
           </button>
         </div>
       )}
-
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <div key={product._id} className="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between h-full">
-            <img
-              src={product.image || 'default-image.jpg'}
-              alt={product.name}
-              className="w-full h-40 object-cover rounded-t-lg"
-            />
-            <div className="p-2 flex-grow">
-              <h2 className="text-xl font-bold">{product.name}</h2>
-              <p className="text-gray-600">Price: ₹{product.price}</p>
-              <p className="text-gray-600">{product.description}</p>
-            </div>
-            <div className="mt-4 flex justify-between mx-auto items-center">
-              {role === 'user' && (<button
-                className="bg-blue-500 text-white px-4 py-2 mx-auto rounded hover:bg-blue-600 transition"
-                onClick={() => handleBuyNow(product._id, product.name)}
-              >
-                Buy Now
-              </button>)}
-              {role === 'seller' && (
-                <button
-                  onClick={() => handleDelete(product._id)}
-                  className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-500"
-                >
-                  Delete
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div> */}
       {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div
@@ -277,12 +248,27 @@ export default function Products() {
               <div className="flex flex-wrap justify-center gap-1">
                 <p
                   className={`text-lg font-semibold text-white mb-2 py-2 px-4 rounded-lg shadow ${product.stockStatus === "available"
+                    ? "bg-green-500"
+                    : "bg-red-500"
+                    }`}
+                >
+                  {product.stockStatus === "available" ? "Available   " : "Out of Stock"}
+                </p>
+
+                {/* Quantity */}
+                {/* <p className="text-lg font-semibold text-white mb-2 bg-yellow-500 rounded-lg py-2 px-4 shadow">
+                  Quantity: {product.quantity}
+                </p> */}
+              </div>
+              <div className="flex flex-wrap justify-center gap-1">
+                {/* <p
+                  className={`text-lg font-semibold text-white mb-2 py-2 px-4 rounded-lg shadow ${product.stockStatus === "available"
                       ? "bg-green-500"
                       : "bg-red-500"
                     }`}
                 >
                   {product.stockStatus === "available" ? "Available   " : "Out of Stock"}
-                </p>
+                </p> */}
 
                 {/* Quantity */}
                 <p className="text-lg font-semibold text-white mb-2 bg-yellow-500 rounded-lg py-2 px-4 shadow">

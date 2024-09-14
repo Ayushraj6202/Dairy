@@ -1,5 +1,4 @@
 [[redirects]]
-from = "/sitemap"
-to = "/sitemap.xml"
-status = 200
-force = true
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -4,7 +4,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const addProduct = async (req, res) => {
     // console.log('add products');
 
-    const { name, description, price, quantity } = await req.body;
+    const { name, description, price, quantity,stockStatus } = await req.body;
     const img = await req.files;
     console.log(img);
     
@@ -13,7 +13,7 @@ const addProduct = async (req, res) => {
     const url_image = await uploadOnCloudinary(localPath);
     
     try {
-        const product = new Product({ name, description, price, quantity, image: url_image.url });
+        const product = new Product({ name, description, price, quantity, image: url_image.url,stockStatus });
         await product.save({ validateBeforeSave: false });
         res.json({ msg: 'Product added' });
     } catch (err) {

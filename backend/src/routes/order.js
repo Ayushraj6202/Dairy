@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Place an order (user only)
 router.post('/place', verifyUser, async (req, res) => {
-  const { productId, quantity, phone } = req.body;
+  const { productId, quantity, phone,userName } = req.body;
 
   try {
     const product = await Product.findById(productId);
@@ -16,6 +16,7 @@ router.post('/place', verifyUser, async (req, res) => {
     const total = product.price * quantity;
 
     const order = new Order({
+      userName:userName,
       price:product.price,
       image:product.image,
       name:product.name,

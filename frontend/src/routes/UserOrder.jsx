@@ -62,7 +62,14 @@ export default function UserOrders() {
     return <LoadingComp/>
   }
   if (orders.length === 0) {
-    return <div>You have not ordered anything yet.</div>;
+    return (
+      <div className="flex justify-center mt-10 mb-20">
+        <div className="bg-green-300 border border-green-400 text-green-700 px-4 py-3 rounded relative shadow-lg w-3/4 sm:w-1/2 lg:w-1/3">
+          <strong className="font-bold">No Orders </strong>
+          <span className="block sm:inline">Order something to view here </span>
+        </div>
+      </div>
+    );
   }
 
   return (

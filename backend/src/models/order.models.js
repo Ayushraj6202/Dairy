@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const OrderSchema = new mongoose.Schema({
   price:{type:Number,required:true},
   name:{type:String,required:true},
+  userName:{type:String,required:true},
   // user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Reference to User model
   user: { type:String}, // Reference to User model
   productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }, // Reference to Product model

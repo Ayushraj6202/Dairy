@@ -83,48 +83,59 @@ export default function SellerOrders() {
   }
 
   if (orders.length === 0) {
-    return <div className="text-center text-gray-600 mt-10">No Customer has ordered yet.</div>;
+    return (
+      <div className="flex justify-center mt-10 mb-20">
+        <div className="bg-red-300 border border-green-400 text-green-700 px-4 py-3 rounded relative shadow-lg w-3/4 sm:w-1/2 lg:w-1/3">
+          <strong className="font-bold">No Orders </strong>
+          <span className="block sm:inline">No customer has ordered </span>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4 bg-blue-400">Customer Orders</h1>
+      <h1 className="text-2xl font-bold mb-4 bg-blue-400 p-2 text-white rounded-lg shadow-lg">Customer Orders</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orders.map((order) => (
-          <div key={order._id} className="bg-white rounded-lg shadow-md p-4 flex flex-col justify-between">
-            {/* {console.log(order)} */}
+          <div key={order._id} className="bg-white rounded-lg shadow-xl p-6 flex flex-col justify-between transform transition-transform hover:scale-105 hover:shadow-2xl">
             <img
               src={order.image || 'default-image.jpg'}
               alt={order.name}
-              className="w-full h-40 object-cover rounded-lg mb-4"
+              className="w-full h-40 object-cover rounded-lg mb-4 shadow-lg"
             />
             <div className="flex-grow">
-              <h2 className="text-xl font-semibold mb-2">{order.name}</h2>
-              <p className="text-gray-700">Quantity: {order.quantity}</p>
-              <p className="text-gray-700 font-semibold">Order Value: ₹{order.quantity * order.price}</p>
-              <p className="text-gray-700 font-semibold">Phone: {order.phone}</p>
-              <div className="text-gray-600">
+              <h2 className="text-2xl font-semibold mb-2 text-blue-600">{order.name}</h2>
+              <p className="text-gray-700 mb-1">
+                <span className="font-bold text-blue-500">Ordered By:</span> {order.userName}
+              </p>
+              <p className="text-gray-700 mb-1">
+                <span className="font-bold text-green-500">Quantity:</span> {order.quantity}
+              </p>
+              <p className="text-gray-700 font-semibold mb-1">
+                <span className="text-orange-500 font-bold">Order Value:</span> ₹{order.quantity * order.price}
+              </p>
+              <p className="text-gray-700 font-semibold mb-1">
+                <span className="text-purple-500 font-bold">Phone:</span> {order.phone}
+              </p>
+              <div className="text-gray-600 mb-2">
                 Ordered on {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
-              <div className={`text-sm font-semibold mt-2 px-2 py-1 rounded ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-300'}`}>
+              <div className={`text-sm font-semibold mt-2 px-2 py-1 rounded shadow-md ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-300'}`}>
                 {order.status}
               </div>
             </div>
             {role === 'seller' && (
-              <div className="mt-4 flex  justify-between">
-
-                
-
-                {/* {(new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24)  <100 ? ( */}
-                  <button
-                    onClick={() => handleSubmitCancel(order._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                  >
-                    Delete
-                  </button>
+              <div className="mt-4 flex justify-between">
+                <button
+                  onClick={() => handleSubmitCancel(order._id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded shadow-md hover:bg-red-600 transition"
+                >
+                  Delete
+                </button>
                 <button
                   onClick={() => handleUpdate(order._id)}
-                  className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                  className="bg-green-500 text-white px-3 py-1 rounded shadow-md hover:bg-green-600 transition"
                 >
                   Mark as Complete
                 </button>

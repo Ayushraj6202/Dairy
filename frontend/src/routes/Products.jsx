@@ -17,7 +17,7 @@ export default function Products() {
   const [done, setdone] = useState(false);
   const [namee, setnamee] = useState('');
   const [showForm, setShowForm] = useState(false);
-
+  const [userName, setuserName] = useState('');
   const formRef = useRef(null);
 
   useEffect(() => {
@@ -33,6 +33,10 @@ export default function Products() {
   }, [url]);
 
   const token = localStorage.getItem('x-auth-token');
+  useEffect(() => {
+
+  }, [token])
+  console.log(token);
 
   const handleDelete = async (id) => {
     try {
@@ -73,7 +77,8 @@ export default function Products() {
         body: JSON.stringify({
           productId: selectedProductId,
           quantity,
-          phone
+          phone,
+          userName
         })
       });
 
@@ -114,6 +119,17 @@ export default function Products() {
         <div ref={formRef} className="mt-4 p-4 bg-gray-100 rounded shadow-lg">
           <h3 className="text-lg font-bold mb-4">Place Order for {namee}</h3>
           <label className="block mb-2">
+            Your Name:
+            <input
+              type="text"
+              value={userName}
+              onChange={(e) => setuserName(e.target.value)}
+              className="block w-full border p-2 rounded"
+              placeholder="Enter your name"
+              required
+            />
+          </label>
+          <label className="block mb-2">
             Quantity:
             <input
               type="number"
@@ -150,7 +166,7 @@ export default function Products() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div key={product._id} className="bg-white rounded-lg shadow-lg p-4 flex flex-col justify-between h-full">
             <img
@@ -181,7 +197,128 @@ export default function Products() {
             </div>
           </div>
         ))}
+      </div> */}
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between h-full transition-all hover:shadow-2xl hover:scale-105 duration-300"
+          >
+            <img
+              src={product.image || 'default-image.jpg'}
+              alt={product.name}
+              className="w-full h-40 object-cover rounded-t-lg"
+            />
+            <div className="p-4 flex-grow text-center">
+              <h2 className="text-xl font-bold text-white mb-2 bg-blue-500 rounded-lg py-2">
+                {product.name}
+              </h2>
+              <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2">
+                Price: ₹{product.price}
+              </p>
+              <div className="flex flex-wrap justify-center gap-1">
+                <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2 px-1">
+                  Stock: {product.stockStatus}
+                </p>
+                <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2 px-1">
+                  Quantity: {product.quantity}
+                </p>
+
+              </div>
+              <p className="text-sm text-gray-500 mb-4">{product.description}</p>
+            </div>
+            <div className="mt-4 flex justify-center space-x-4 items-center">
+              {role === 'user' && (
+                <button
+                  className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
+                  onClick={() => handleBuyNow(product._id, product.name)}
+                >
+                  Buy Now
+                </button>
+              )}
+              {role === 'seller' && (
+                <button
+                  onClick={() => handleDelete(product._id)}
+                  className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div> */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between h-full transition-all hover:shadow-2xl hover:scale-105 duration-300"
+          >
+            {/* Product Image */}
+            <img
+              src={product.image || 'default-image.jpg'}
+              alt={product.name}
+              className="w-full h-40 object-cover rounded-t-lg"
+            />
+
+            {/* Product Details */}
+            <div className="p-4 flex-grow text-center">
+              {/* Product Name */}
+              <h2 className="text-xl font-bold text-white mb-2 bg-blue-500 rounded-lg py-2 shadow">
+                {product.name}
+              </h2>
+
+              {/* Price */}
+              <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2 shadow">
+                Price: ₹{product.price}
+              </p>
+
+              {/* Stock Status */}
+              <div className="flex flex-wrap justify-center gap-1">
+                <p
+                  className={`text-lg font-semibold text-white mb-2 py-2 px-4 rounded-lg shadow ${product.stockStatus === "available"
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                    }`}
+                >
+                  {product.stockStatus === "available" ? "Available   " : "Out of Stock"}
+                </p>
+
+                {/* Quantity */}
+                <p className="text-lg font-semibold text-white mb-2 bg-yellow-500 rounded-lg py-2 px-4 shadow">
+                  Quantity: {product.quantity}
+                </p>
+              </div>
+
+              {/* Description */}
+              <p className="text-sm text-gray-700 mb-4 italic">
+                {product.description}
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-4 flex justify-center space-x-4 items-center">
+              {role === "user" && (
+                <button
+                  className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
+                  onClick={() => handleBuyNow(product._id, product.name)}
+                >
+                  Buy Now
+                </button>
+              )}
+              {role === "seller" && (
+                <button
+                  onClick={() => handleDelete(product._id)}
+                  className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
+
     </div>
   );
 }

@@ -30,7 +30,7 @@ export default function AddProduct() {
     }
     try {
       const response = await fetch(url, {
-        method: 'POST', 
+        method: 'POST',
         headers: {
           // 'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -54,7 +54,7 @@ export default function AddProduct() {
     }
   };
 
-  if(loading){
+  if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid border-gray-300"></div>
@@ -116,12 +116,27 @@ export default function AddProduct() {
           </label>
           <input
             id="quantity"
-            type="number"
+            type="text"
             placeholder="Enter quantity of the product"
             {...register("quantity", { required: 'Quantity is required' })}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />
         </div>
+        <div>
+          <label htmlFor="stockStatus" className="block text-gray-700 font-semibold mb-1">
+            Stock Status
+          </label>
+          <select
+            id="stockStatus"
+            {...register("stockStatus", { required: 'Stock status is required' })}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
+          >
+            <option value="">Select stock status</option>
+            <option value="available">Available</option>
+            <option value="outOfStock">Out of Stock</option>
+          </select>
+        </div>
+
 
         <div>
           <label htmlFor="image" className="block text-gray-700 font-semibold mb-1">

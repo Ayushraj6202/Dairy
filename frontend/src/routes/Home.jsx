@@ -1,13 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SlideShow from "../images/SlideShow.jsx";
 
 export default function Home() {
+    const [visitorCount, setVisitorCount] = useState(0);
+    const url_basic = import.meta.env.VITE_URL_BASIC;
+
+    useEffect(() => {
+        const fetchVisitorCount = async () => {
+            try {
+                const response = await fetch(`${url_basic}/visitors/visitor-count`);
+                const data = await response.json();
+                setVisitorCount(data.count);
+            } catch (error) {
+                console.error('Error fetching visitor count:', error);
+            }
+        };
+
+        const incrementVisit = async () => {
+            try {
+                await fetch(`${url_basic}/visitors/increment-visit`, { method: 'POST' });
+                fetchVisitorCount();
+            } catch (error) {
+                console.error('Error incrementing visitor count:', error);
+            }
+        };
+
+        incrementVisit();
+    }, []);
+
     return (
         <div className="container mx-auto px-4">
             {/* Welcome Message */}
             <div className="text-center text-2xl md:text-3xl lg:text-4xl mt-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white p-4 rounded-lg shadow-md">
-            शिव आज भी गुरु है
+                शिव आज भी गुरु है
             </div>
 
             {/* Slideshow */}
@@ -30,6 +56,13 @@ export default function Home() {
             <div className="mt-6 text-sm md:text-base lg:text-lg text-center text-gray-700 my-1">
                 <p className="my-6 bg-green-500 text-white text-lg md:text-xl lg:text-2xl font-bold p-6 rounded-lg text-center shadow-lg border border-yellow-300">सभी उत्पाद स्वच्छता और गुणवत्ता के साथ तैयार किए गए हैं। हम आपके भरोसे का मान रखते हैं।</p>
                 <p className="text-base md:text-lg lg:text-xl bg-orange-300 p-4 rounded-lg text-center text-gray-800 shadow-sm">आपके आराम के लिए हमारी ऑनलाइन सेवा उपलब्ध है, और ऑर्डर किए गए उत्पाद आपके दरवाजे तक पहुंचाए जाएंगे।</p>
+            </div>
+
+            {/* Beautified Visitor Count */}
+            <div className="my-6 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-lg md:text-xl lg:text-2xl font-bold p-6 rounded-lg text-center shadow-lg border border-yellow-300">
+                {/* <p>हमारी साइट पर आपका स्वागत है!</p> */}
+                <p className="mt-2">अब तक की विज़िटर संख्या:</p>
+                <p className="text-4xl mt-4 animate-bounce">{visitorCount}</p>
             </div>
         </div>
     );

@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js';
 import productRoutes from './routes/product.js';
 import orderRoutes from './routes/order.js';
 import routeradd from './routes/Product.add.js';
+import Visitor from './routes/Visitor.routes.js'
 
 import cors from 'cors'
 import dotenv from 'dotenv';
@@ -42,5 +43,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
 app.use('/api/product', routeradd)
+app.use('/api/visitors',Visitor)
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

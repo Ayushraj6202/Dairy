@@ -6,6 +6,7 @@ import LoadingComp from "../images/Loading";
 
 export default function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  const role = useSelector((state)=>state.auth.role)
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false); // For mobile menu toggle
   const [loading, setLoading] = useState(false); // Loading state for logout
@@ -19,7 +20,7 @@ export default function Header() {
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
     { name: "Products", slug: "/products", active: authStatus },
-    { name: "Add Products", slug: "/add-products", active: authStatus },
+    { name: "Add Products", slug: "/add-products", active: (role=='seller') },
     { name: "Orders", slug: "/orders", active: authStatus },
   ];
 

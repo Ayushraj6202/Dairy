@@ -11,6 +11,8 @@ export default function Home() {
             try {
                 const response = await fetch(`${url_basic}/visitors/visitor-count`);
                 const data = await response.json();
+                // console.log(data,response);
+                
                 setVisitorCount(data.count);
             } catch (error) {
                 console.error('Error fetching visitor count:', error);
@@ -18,15 +20,25 @@ export default function Home() {
         };
 
         const incrementVisit = async () => {
-            try {
-                await fetch(`${url_basic}/visitors/increment-visit`, { method: 'POST' });
-                fetchVisitorCount();
-            } catch (error) {
-                console.error('Error incrementing visitor count:', error);
+            // Check if the visitor has already been counted in this session
+            const hasVisited = localStorage.getItem('hasVisited');
+            // console.log(hasVisited);
+            
+            if (!hasVisited) {
+                try {
+                    // Increment visit only if the visitor hasn't been counted
+                    await fetch(`${url_basic}/visitors/increment-visit`, { method: 'POST' });
+                    localStorage.setItem('hasVisited', 'true');  // Mark the visitor as counted
+                    fetchVisitorCount();  // Update the visitor count
+                } catch (error) {
+                    console.error('Error incrementing visitor count:', error);
+                }
+            }else{
+                fetchVisitorCount()
             }
         };
 
-        incrementVisit();
+        incrementVisit();  // Call the incrementVisit function on component mount
     }, []);
 
     return (
@@ -75,7 +87,6 @@ export default function Home() {
 
             {/* Beautified Visitor Count */}
             <div className="my-6 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-lg md:text-xl lg:text-2xl font-bold p-6 rounded-lg text-center shadow-lg border border-yellow-300">
-                {/* <p>हमारी साइट पर आपका स्वागत है!</p> */}
                 <p className="mt-2">अब तक की विज़िटर संख्या:</p>
                 <p className="text-4xl mt-4 animate-bounce">{visitorCount}</p>
             </div>

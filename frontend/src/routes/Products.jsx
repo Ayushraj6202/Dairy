@@ -36,7 +36,7 @@ export default function Products() {
   useEffect(() => {
 
   }, [token])
-  console.log(token);
+  // console.log(token);
 
   const handleDelete = async (id) => {
     try {

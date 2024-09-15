@@ -8,6 +8,7 @@ import productRoutes from './routes/product.js';
 import orderRoutes from './routes/order.js';
 import routeradd from './routes/Product.add.js';
 import Visitor from './routes/Visitor.routes.js'
+import authToken from './middleware/authToken.js';
 
 import cors from 'cors'
 import dotenv from 'dotenv';
@@ -45,5 +46,12 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/product', routeradd)
 app.use('/api/visitors',Visitor)
 
+app.post('/api/authToken',authToken,async (req,res)=>{
+    if (req.user) {
+        res.json({ user: req.user });
+    } else {
+        res.sendStatus(401); // Unauthorized if no user is found
+    }
+})
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

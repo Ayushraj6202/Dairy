@@ -33,7 +33,7 @@ router.post('/decrement-visit', async (req, res) => {
             { $inc: { count: -2 } }, // Increment the count by 1
             { new: true, upsert: true } // Upsert: Create if it doesn't exist
         );
-        console.log('Visitor count incremented:', visitor.count);
+        // console.log('Visitor count incremented:', visitor.count);
         res.status(200).json({ count: visitor.count });
     } catch (error) {
         console.error('Error incrementing visitor count:', error);

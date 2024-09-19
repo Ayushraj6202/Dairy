@@ -67,7 +67,7 @@ export default function Products() {
   };
 
   const handleSubmitOrder = async () => {
-    if(phone.length!==10)return;
+    if (phone.length !== 10) return;
     try {
       const response = await fetch(`${URL_BASIC}/orders/place`, {
         method: 'POST',
@@ -112,7 +112,16 @@ export default function Products() {
   if (loading) {
     return <LoadingComp />
   }
-
+  if (products.length === 0) {
+    return(
+    <div className="flex items-center justify-center h-[300px] bg-red-100">
+      <div className="bg-green-500 text-white p-8 rounded-lg shadow-lg text-center">
+        <h1 className="text-2xl font-bold mb-4">No Products</h1>
+        <p className="text-lg">Seller Don't have any Product to show</p>
+      </div>
+    </div>
+    )
+  }
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold text-center mb-8 bg-blue-400">All Products</h1>

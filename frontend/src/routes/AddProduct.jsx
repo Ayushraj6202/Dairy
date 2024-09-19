@@ -117,7 +117,7 @@ export default function AddProduct() {
           <input
             id="quantity"
             type="text"
-            placeholder="Enter quantity of the product"
+            placeholder="eg 100ml or 1 kg"
             {...register("quantity", { required: 'Quantity is required' })}
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-500"
           />

@@ -19,6 +19,9 @@ export default function Products() {
   const [showForm, setShowForm] = useState(false);
   const [userName, setuserName] = useState('');
   const formRef = useRef(null);
+  const phonePattern = /^[6789]\d{9}$/;
+  const isValidPhone = phonePattern.test(phone);
+  const [visibleDescription, setVisibleDescription] = useState({});
 
   useEffect(() => {
     axios.get(url)
@@ -33,11 +36,7 @@ export default function Products() {
   }, [url]);
 
   const token = localStorage.getItem('x-auth-token');
-  useEffect(() => {
-
-  }, [token])
-  // console.log(token);
-
+  useEffect(() => { }, [token]);
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`${URL_BASIC}/products/delete/${id}`, {
@@ -68,6 +67,7 @@ export default function Products() {
 
   const handleSubmitOrder = async () => {
     if (phone.length !== 10) return;
+    if (phone[0] < '6') return;
     try {
       const response = await fetch(`${URL_BASIC}/orders/place`, {
         method: 'POST',
@@ -110,18 +110,20 @@ export default function Products() {
   }
 
   if (loading) {
-    return <LoadingComp />
+    return <LoadingComp />;
   }
+
   if (products.length === 0) {
-    return(
-    <div className="flex items-center justify-center h-[300px] bg-red-100">
-      <div className="bg-green-500 text-white p-8 rounded-lg shadow-lg text-center">
-        <h1 className="text-2xl font-bold mb-4">No Products</h1>
-        <p className="text-lg">Seller Don't have any Product to show</p>
+    return (
+      <div className="flex items-center justify-center h-[300px] bg-red-100">
+        <div className="bg-green-500 text-white p-8 rounded-lg shadow-lg text-center">
+          <h1 className="text-2xl font-bold mb-4">No Products</h1>
+          <p className="text-lg">Seller Doesn't have any Product to show</p>
+        </div>
       </div>
-    </div>
-    )
+    );
   }
+
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold text-center mb-8 bg-blue-400">All Products</h1>
@@ -157,11 +159,11 @@ export default function Products() {
               placeholder="Enter 10-digit Phone Number"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className={`block w-full border p-2 rounded ${phone.length !== 10 && phone.length > 0 ? 'border-red-500' : 'border-gray-300'}`}
+              className={`block w-full border p-2 rounded ${!isValidPhone && phone.length > 0 ? 'border-red-500' : 'border-gray-300'}`}
               required
             />
-            {phone.length !== 10 && phone.length > 0 && (
-              <p className="text-red-500 text-sm mt-1">Phone number must be exactly 10 digits.</p>
+            {!isValidPhone && phone.length > 0 && (
+              <span className="text-red-500 text-sm mt-1 block">Phone number must be valid.</span>
             )}
           </label>
           <button
@@ -178,142 +180,87 @@ export default function Products() {
           </button>
         </div>
       )}
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <div
-            key={product._id}
-            className="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between h-full transition-all hover:shadow-2xl hover:scale-105 duration-300"
-          >
-            <img
-              src={product.image || 'default-image.jpg'}
-              alt={product.name}
-              className="w-full h-40 object-cover rounded-t-lg"
-            />
-            <div className="p-4 flex-grow text-center">
-              <h2 className="text-xl font-bold text-white mb-2 bg-blue-500 rounded-lg py-2">
-                {product.name}
-              </h2>
-              <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2">
-                Price: ₹{product.price}
-              </p>
-              <div className="flex flex-wrap justify-center gap-1">
-                <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2 px-1">
-                  Stock: {product.stockStatus}
-                </p>
-                <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2 px-1">
-                  Quantity: {product.quantity}
-                </p>
-
-              </div>
-              <p className="text-sm text-gray-500 mb-4">{product.description}</p>
-            </div>
-            <div className="mt-4 flex justify-center space-x-4 items-center">
-              {role === 'user' && (
-                <button
-                  className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
-                  onClick={() => handleBuyNow(product._id, product.name)}
-                >
-                  Buy Now
-                </button>
-              )}
-              {role === 'seller' && (
-                <button
-                  onClick={() => handleDelete(product._id)}
-                  className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
-                >
-                  Delete
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div> */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div
             key={product._id}
-            className="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between h-full transition-all hover:shadow-2xl hover:scale-105 duration-300"
+            className="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between transition-all hover:shadow-2xl hover:scale-105 duration-300"
+            style={{ height: '55vh' }} // 50% of screen height
           >
             {/* Product Image */}
             <img
               src={product.image || 'default-image.jpg'}
               alt={product.name}
-              className="w-full h-40 object-cover rounded-t-lg"
+              className="w-full h-32 object-cover rounded-t-lg mb-4"
             />
 
             {/* Product Details */}
-            <div className="p-4 flex-grow text-center">
+            <div className="p-2 flex-grow text-center space-y-2">
               {/* Product Name */}
-              <h2 className="text-xl font-bold text-white mb-2 bg-blue-500 rounded-lg py-2 shadow">
+              <h2 className="text-lg font-bold text-white bg-blue-500 rounded-lg py-1 shadow">
                 {product.name}
               </h2>
 
-              {/* Price */}
-              <p className="text-lg font-semibold text-white mb-2 bg-green-500 rounded-lg py-2 shadow">
-                Price: ₹{product.price}
-              </p>
+              {/* Price and Quantity in a row */}
+              <div className="flex justify-between items-center">
+                <p className="text-md font-semibold text-white bg-green-500 rounded-lg py-1 px-3 shadow">
+                  Price: ₹{product.price}
+                </p>
+                <p className="text-md font-semibold text-white bg-yellow-500 rounded-lg py-1 px-3 shadow">
+                  Qty: {product.quantity}
+                </p>
+              </div>
 
               {/* Stock Status */}
-              <div className="flex flex-wrap justify-center gap-1">
-                <p
-                  className={`text-lg font-semibold text-white mb-2 py-2 px-4 rounded-lg shadow ${product.stockStatus === "available"
-                    ? "bg-green-500"
-                    : "bg-red-500"
-                    }`}
-                >
-                  {product.stockStatus === "available" ? "Available   " : "Out of Stock"}
-                </p>
-
-                {/* Quantity */}
-                {/* <p className="text-lg font-semibold text-white mb-2 bg-yellow-500 rounded-lg py-2 px-4 shadow">
-                  Quantity: {product.quantity}
-                </p> */}
-              </div>
-              <div className="flex flex-wrap justify-center gap-1">
-                {/* <p
-                  className={`text-lg font-semibold text-white mb-2 py-2 px-4 rounded-lg shadow ${product.stockStatus === "available"
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                    }`}
-                >
-                  {product.stockStatus === "available" ? "Available   " : "Out of Stock"}
-                </p> */}
-
-                {/* Quantity */}
-                <p className="text-lg font-semibold text-white mb-2 bg-yellow-500 rounded-lg py-2 px-4 shadow">
-                  Quantity: {product.quantity}
-                </p>
-              </div>
-
-              {/* Description */}
-              <p className="text-sm text-gray-700 mb-4 italic">
-                {product.description}
+              <p
+                className={`text-md font-semibold text-white rounded-lg py-1 px-4 shadow ${product.stockStatus === "available"
+                  ? "bg-green-500"
+                  : "bg-red-500"
+                  }`}
+              >
+                {product.stockStatus === "available" ? "In Stock" : "Out of Stock"}
               </p>
+
+              {/* Action Buttons */}
+              <div className="mt-2 flex justify-center space-x-4 items-center">
+                {role === "user" && (
+                  <button
+                    className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
+                    onClick={() => handleBuyNow(product._id, product.name)}
+                  >
+                    Buy Now
+                  </button>
+                )}
+                {role === "seller" && (
+                  <button
+                    onClick={() => handleDelete(product._id)}
+                    className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+              {/* Description */}
+              <button
+                className="mt-2 text-blue-500 underline"
+                onClick={() => setVisibleDescription((prev) => ({
+                  ...prev,
+                  [product._id]: !prev[product._id]
+                }))}
+              >
+                {visibleDescription[product._id] ? 'Hide Description' : 'Show Description'}
+              </button>
+              {visibleDescription[product._id] && (
+                <p className="text-sm text-gray-700 italic mt-2">
+                  {product.description}
+                </p>
+              )}
             </div>
 
-            {/* Action Buttons */}
-            <div className="mt-4 flex justify-center space-x-4 items-center">
-              {role === "user" && (
-                <button
-                  className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
-                  onClick={() => handleBuyNow(product._id, product.name)}
-                >
-                  Buy Now
-                </button>
-              )}
-              {role === "seller" && (
-                <button
-                  onClick={() => handleDelete(product._id)}
-                  className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
-                >
-                  Delete
-                </button>
-              )}
-            </div>
+
           </div>
         ))}
       </div>
-
     </div>
   );
 }

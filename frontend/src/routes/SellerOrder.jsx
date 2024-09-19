@@ -12,7 +12,7 @@ export default function SellerOrders() {
   const token = localStorage.getItem('x-auth-token');
   const role = useSelector((state) => state.auth.role);
   // console.log(loading);
-  
+
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true); // Set loading to true before fetching data
@@ -78,8 +78,17 @@ export default function SellerOrders() {
     }
   };
 
+  const [showDetails, setShowDetails] = useState({}); // State to track toggle for each order
+
+  const toggleDetails = (orderId) => {
+    setShowDetails((prevState) => ({
+      ...prevState,
+      [orderId]: !prevState[orderId],
+    }));
+  };
+
   if (loading) {
-    return <LoadingComp/>
+    return <LoadingComp />
   }
 
   if (orders.length === 0) {
@@ -96,16 +105,20 @@ export default function SellerOrders() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4 bg-blue-400 p-2 text-white rounded-lg shadow-lg">Customer Orders</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {orders.map((order) => (
-          <div key={order._id} className="bg-white rounded-lg shadow-xl p-6 flex flex-col justify-between transform transition-transform hover:scale-105 hover:shadow-2xl">
+          <div
+            key={order._id}
+            className="bg-white rounded-lg shadow-xl p-4 flex flex-col justify-between transition-transform transform hover:scale-105 hover:shadow-2xl"
+            style={{ maxHeight: '75vh' }} // Fixed height for the card to fit 2 cards within 50% of screen height
+          >
             <img
               src={order.image || 'default-image.jpg'}
               alt={order.name}
-              className="w-full h-40 object-cover rounded-lg mb-4 shadow-lg"
+              className="w-full h-32 object-cover rounded-lg mb-4 shadow-lg" // Adjusted image height
             />
             <div className="flex-grow">
-              <h2 className="text-2xl font-semibold mb-2 text-blue-600">{order.name}</h2>
+              <h2 className="text-lg font-semibold mb-2 text-blue-600">{order.name}</h2>
               <p className="text-gray-700 mb-1">
                 <span className="font-bold text-blue-500">Ordered By:</span> {order.userName}
               </p>
@@ -113,18 +126,35 @@ export default function SellerOrders() {
                 <span className="font-bold text-green-500">Quantity:</span> {order.quantity}
               </p>
               <p className="text-gray-700 font-semibold mb-1">
-                <span className="text-orange-500 font-bold">Order Value:</span> ₹{order.quantity * order.price}
-              </p>
-              <p className="text-gray-700 font-semibold mb-1">
                 <span className="text-purple-500 font-bold">Phone:</span> {order.phone}
               </p>
-              <div className="text-gray-600 mb-2">
-                Ordered on {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </div>
+
+
+              {/* Toggle for more details */}
+              <button
+                className="text-blue-500 underline mb-2"
+                onClick={() => toggleDetails(order._id)}
+              >
+                {showDetails[order._id] ? 'Hide Details' : 'Show Details'}
+              </button>
+
+              {/* Additional details toggle */}
+              {showDetails[order._id] && (
+                <>
+                  <p className="text-gray-700 font-semibold mb-1">
+                    <span className="text-orange-500 font-bold">Order Value:</span> ₹{order.quantity * order.price}
+                  </p>
+                  <div className="text-gray-600 mb-2">
+                    Ordered on {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </div>
+                </>
+              )}
+
               <div className={`text-sm font-semibold mt-2 px-2 py-1 rounded shadow-md ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-300'}`}>
                 {order.status}
               </div>
             </div>
+
             {role === 'seller' && (
               <div className="mt-4 flex justify-between">
                 <button

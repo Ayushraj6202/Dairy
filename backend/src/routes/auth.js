@@ -58,13 +58,7 @@ router.post('/login', async (req, res) => {
       tokenObj['token'] = token;
       tokenObj['role'] = 'seller';
       return res
-        .cookie('token', token, {
-          // httpOnly: true,
-          secure: true,
-          // secure: process.env.NODE_ENV === 'production', 
-          // sameSite: 'Lax',
-          // maxAge: 15 * 24 * 60 * 60 * 1000,
-        })
+        .cookie('token', token)
         .json({ role: 'seller' });
       // return res.header('x-auth-token', token).json({ token, role: 'seller' });
     }
@@ -87,12 +81,7 @@ router.post('/login', async (req, res) => {
     // console.log("decoded ", decoded);
 
     // console.log("user after loging",token);
-    return res.cookie('token', token, {
-      // httpOnly: true, // Helps prevent XSS attacks
-      secure: true,
-      // sameSite: 'Lax', // Helps protect CSRF
-      // maxAge: 5 * 24 * 60 * 60 * 1000, // Token expires in 1 day
-    })
+    return res.cookie('token', token)
       .json({ role: 'user' });
 
   } catch (err) {

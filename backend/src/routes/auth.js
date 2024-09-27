@@ -38,7 +38,7 @@ router.post('/signup', async (req, res) => {
 });
 
 const options = {
-  httpOnly: false,
+  httpOnly: true,
   secure: true,
   // sameSite: 'None',
   // path:'/'

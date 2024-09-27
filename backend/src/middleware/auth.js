@@ -5,7 +5,7 @@ import User from '../models/user.models.js';
 // Middleware to verify seller
 export const verifySeller = (req, res, next) => {
   const token = req.cookies.token; // Get token from cookies
-  // console.log('verify seller ',token,req.cookies);
+  console.log('verify seller ',token);
   
   if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
   
@@ -25,7 +25,7 @@ export const verifySeller = (req, res, next) => {
 // Middleware to verify user
 export const verifyUser = async (req, res, next) => {
   const token = req.cookies.token; // Get token from cookies
-  // console.log("verufy user ",token);
+  console.log("verify user ",token);
   
   if (!token) return res.status(401).json({ msg: 'No token, authorization denied' });
 

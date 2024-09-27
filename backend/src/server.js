@@ -20,18 +20,18 @@ const app = express();
 // Connect to database
 connectDB();
 
-// const allowedOrigins = process.env.CORS_ORIGINS.split(',');
+const allowedOrigins = process.env.CORS_ORIGINS.split(',');
 
 app.use(cors({
-    // origin: function (origin, callback) {
-    //     if (!origin) return callback(null, true);
-    //     if (allowedOrigins.indexOf(origin) !== -1) {
-    //         callback(null, true);
-    //     } else {
-    //         callback(new Error('Not allowed by CORS'));
-    //     }
-    // },
-    origin:'https://khetalpura-dairy.netlify.app',
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    // origin:'https://khetalpura-dairy.netlify.app',
     credentials: true,
 }));
 app.use(cookieParser())

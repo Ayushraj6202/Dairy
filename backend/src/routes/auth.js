@@ -62,8 +62,8 @@ router.post('/login', async (req, res) => {
           httpOnly: true,
           secure: true,
           // secure: process.env.NODE_ENV === 'production', 
-          sameSite: 'Lax',
-          maxAge: 15 * 24 * 60 * 60 * 1000,
+          // sameSite: 'Lax',
+          // maxAge: 15 * 24 * 60 * 60 * 1000,
         })
         .json({ role: 'seller' });
       // return res.header('x-auth-token', token).json({ token, role: 'seller' });
@@ -90,8 +90,8 @@ router.post('/login', async (req, res) => {
     return res.cookie('token', token, {
       httpOnly: true, // Helps prevent XSS attacks
       secure: true,
-      sameSite: 'Lax', // Helps protect CSRF
-      maxAge: 5 * 24 * 60 * 60 * 1000, // Token expires in 1 day
+      // sameSite: 'Lax', // Helps protect CSRF
+      // maxAge: 5 * 24 * 60 * 60 * 1000, // Token expires in 1 day
     })
       .json({ role: 'user' });
 

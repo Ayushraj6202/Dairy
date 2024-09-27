@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
       tokenObj['role'] = 'seller';
       return res
         .cookie('token', token, {
-          httpOnly: false,
+          httpOnly: true,
           secure: true,
           // secure: process.env.NODE_ENV === 'production', 
           sameSite: 'Lax',
@@ -88,7 +88,7 @@ router.post('/login', async (req, res) => {
 
     // console.log("user after loging",token);
     return res.cookie('token', token, {
-      httpOnly: false, // Helps prevent XSS attacks
+      httpOnly: true, // Helps prevent XSS attacks
       secure: true,
       sameSite: 'Lax', // Helps protect CSRF
       maxAge: 5 * 24 * 60 * 60 * 1000, // Token expires in 1 day

@@ -3,24 +3,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { storelogout } from "../store/authslice";
 import LoadingComp from "../images/Loading";
+import Cookies from 'js-cookie';
 
 export default function Header() {
-  const authStatus = useSelector((state) => state.auth.status);
-  const role = useSelector((state)=>state.auth.role)
   const dispatch = useDispatch();
+  // const role = useSelector((state) => state.auth.role);
   const [menuOpen, setMenuOpen] = useState(false); // For mobile menu toggle
   const [loading, setLoading] = useState(false); // Loading state for logout
   const navigate = useNavigate();
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
 
-  useEffect(() => {}, [authStatus]);
-
+  // Check for token in cookies to determine login status
+  const token = Cookies.get('token');
+  const authStatus = Boolean(token); // Set authStatus based on the presence of token
+  const role = Cookies.get('role');
+  // console.log("token ", token,authStatus,role);
   const NavItems = [
     { name: "Home", slug: "/", active: true },
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
     { name: "Products", slug: "/products", active: authStatus },
-    { name: "Add Products", slug: "/add-products", active: (role=='seller') },
+    { name: "Add Products", slug: "/add-products", active: (role === 'seller') },
     { name: "Orders", slug: "/orders", active: authStatus },
   ];
 
@@ -31,25 +34,26 @@ export default function Header() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("x-auth-token")}`,
         },
+        credentials: "include", // Important: This allows cookies to be sent with the request
       });
-      localStorage.removeItem("x-auth-token");
       dispatch(storelogout());
       navigate("/");
     } catch (error) {
       console.error("Logout failed: ", error);
     } finally {
-      setLoading(false); // Reset loading state after logout process
+      setLoading(false); 
     }
   };
-  if(loading){
-    return <LoadingComp/>
+
+  if (loading) {
+    return <LoadingComp />;
   }
+
   return (
     <>
       <header className="shadow py-4 bg-gray-500">
-        <div className=" mx-auto px-4 flex items-center justify-between">
+        <div className="mx-auto px-4 flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center space-x-2">
             <Link to="/">

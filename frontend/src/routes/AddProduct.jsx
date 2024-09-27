@@ -10,12 +10,11 @@ export default function AddProduct() {
   const [loading, setloading] = useState(false);
   const [success, setSuccess] = useState('');
   const { register, handleSubmit, reset } = useForm();
-  const token = localStorage.getItem('x-auth-token');
-
+  
   const addProduct = async (data) => {
     setloading(true);
     const formData = new FormData();
-
+  
     // Append all form fields to FormData, including file
     for (const key in data) {
       if (key === 'image') {
@@ -28,16 +27,17 @@ export default function AddProduct() {
         formData.append(key, data[key]);
       }
     }
+  
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          // 'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
+          // 'Content-Type': 'multipart/form-data', // No need to set this, browser will set it correctly
         },
         body: formData,
+        credentials: 'include', // Important: This allows cookies to be sent with the request
       });
-
+  
       const result = await response.json();
       setloading(false);
       if (response.ok) {
@@ -53,7 +53,7 @@ export default function AddProduct() {
       setError('An error occurred while adding the product');
     }
   };
-
+  
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">

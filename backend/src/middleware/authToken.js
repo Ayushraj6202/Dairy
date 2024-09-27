@@ -1,6 +1,6 @@
 import jwt  from "jsonwebtoken";
 const authToken = (req, res, next) => {
-    const token = req.headers['x-auth-token'];
+    const token = req.cookies.token;
     if (!token) return res.sendStatus(401); // Unauthorized
 
     jwt.verify(token, 'secret', (err, user) => {

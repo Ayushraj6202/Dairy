@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useSelector,useDispatch } from "react-redux";
 import {storelogin} from '../store/authslice.js';
 import LoadingComp from "../images/Loading.jsx";
-
+import Cookies from 'js-cookie'
 
 
 export default function SignUp() {
@@ -20,64 +20,68 @@ export default function SignUp() {
 
 
     const login = async (data) => {        
-        
         setError('');
+        setloading(true); // Set loading state here
+    
         try {
             const response = await fetch(urllogin, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Include cookies in the request
                 body: JSON.stringify(data),
             });
             
             const result = await response.json();
-            const token = result.token;
-            localStorage.setItem('x-auth-token', token);
-            // console.log(response,result,token);
-            setloading(false)
+            setloading(false); // Set loading state back to false
+    
             if (response.ok) {
-                dispatch(storelogin( data ));
+                dispatch(storelogin(data)); // Dispatch the login action
                 setSuccess("User Logged In");
-                navigate('/products');
+                Cookies.set('role','user');
+                navigate('/products'); // Navigate to products page
             } else {
                 setError(result.msg || 'An error occurred while logging you in');
             }
         } catch (error) {
             setError(error.message);
-            setloading(false)
+            setloading(false); // Ensure loading state is reset on error
         }
     };
 
     const signup = async (data) => {
-        if(data["password"]!==data["conf-password"]){
-            setError('Both Password is different')
+        if (data["password"] !== data["conf-password"]) {
+            setError('Both Passwords are different');
             return;
         }
+    
         setloading(true);
         setError('');
         setSuccess('');
+    
         try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Include cookies in the request
                 body: JSON.stringify(data), // Send the form data as JSON
             });
-
+    
             const result = await response.json();
-
-            setloading(false);
+            setloading(false); // Set loading state back to false
+    
             if (response.ok) {
                 setSuccess("User registered successfully!");
-                await login ( data  )
-                // navigate('/login');
+                await login(data); // Log the user in after successful signup
             } else {
                 setError(result.msg || 'An error occurred');
             }
         } catch (error) {
-            console.log('Failed to sign up. Please try again later.');
+            setError('Failed to sign up. Please try again later.');
+            setloading(false); // Ensure loading state is reset on error
         }
     };
     if(loading){

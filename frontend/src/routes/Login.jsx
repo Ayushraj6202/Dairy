@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
 import { storelogin } from "../store/authslice";
 import LoadingComp from "../images/Loading";
+import Cookies from 'js-cookie';
 
 export default function Login() {
     const [error, setError] = useState('');
@@ -20,8 +21,6 @@ export default function Login() {
 
     const login = async (data) => {
         setloading(true);
-        // console.log("data ",data);
-        
         setError('');
         try {
             const response = await fetch(url, {
@@ -29,16 +28,21 @@ export default function Login() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', // Include cookies in the request
                 body: JSON.stringify(data),
             });
-            
+    
             const result = await response.json();
-            const token = result.token;
-            localStorage.setItem('x-auth-token', token);
-            // console.log(response,result,token);
-            setloading(false)
+            setloading(false);
+            // console.log("login",data);
+            
             if (response.ok) {
-                dispatch(storelogin( data ));
+                dispatch(storelogin(data));
+                if(data.email==='ammanrajkumar96082@gmail.com'){
+                    Cookies.set('role','seller')
+                }else{
+                    Cookies.set('role','user')
+                }
                 setSuccess("User Logged In");
                 navigate('/');
             } else {
@@ -46,7 +50,7 @@ export default function Login() {
             }
         } catch (error) {
             setError(error.message);
-            setloading(false)
+            setloading(false);
         }
     };
     if(loading){

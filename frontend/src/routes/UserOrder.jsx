@@ -8,8 +8,6 @@ export default function UserOrders() {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
-  const token = localStorage.getItem('x-auth-token');
-  
   useEffect(() => {
     const fetchUserOrders = async () => {
       setLoading(true);
@@ -18,8 +16,9 @@ export default function UserOrders() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            // 'Authorization': `Bearer ${token}`,
           },
+          credentials:'include'
         });
 
         const result = await response.json();
@@ -44,8 +43,8 @@ export default function UserOrders() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
+          // 'Authorization': `Bearer ${token}`,
+        },credentials:'include'
       });
 
       if (response.ok) {
@@ -78,37 +77,46 @@ export default function UserOrders() {
         Your Orders
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {orders.map((order) => (
-          <div key={order._id} className="bg-white rounded-xl shadow-md overflow-hidden transform transition hover:scale-105 duration-300">
-            <img
-              src={order.image || 'default-image.jpg'}
-              alt={order.name}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h2 className="text-2xl font-semibold text-gray-800">{order.name}</h2>
-              <p className="text-gray-700 mt-2">Quantity: {order.quantity}</p>
-              <p className="text-gray-700 font-semibold">
-                Order Value: ₹{order.quantity * order.price}
-              </p>
-              <div className="text-sm text-gray-600 mt-2">
-                Ordered on {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </div>
-              <div className={`text-white text-center px-3 py-1 mt-4 rounded-full ${order.status === 'pending' ? 'bg-red-200' : 'bg-green-500'}`}>
-                {order.status}
-              </div>
-              {order.status === 'pending' && (
-                <button
-                  className="mt-4 w-full bg-red-500 text-white py-2 rounded-full shadow hover:bg-red-600 transition"
-                  onClick={() => handleCancelOrder(order._id)}
-                >
-                  Cancel Order
-                </button>
-              )}
-            </div>
+  {orders.slice().reverse().map((order) => (
+    <div key={order._id} className="bg-white rounded-xl shadow-md overflow-hidden transform transition hover:scale-105 duration-300">
+      <img
+        src={order.image || 'default-image.jpg'}
+        alt={order.name}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h2 className="text-2xl font-semibold text-gray-800">{order.name}</h2>
+        <p className="text-gray-700 mt-2">
+          <span className="font-bold">Quantity:</span> {order.quantity}
+        </p>
+        <p className="text-gray-700 font-semibold mt-2">
+          <span className="font-bold">Order Value:</span> ₹{order.quantity * order.price}
+        </p>
+        <div className="text-sm text-gray-600 mt-2">
+          Ordered on {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </div>
+        
+        {/* Status Indicator */}
+        <div className={`text-center mt-4 px-3 py-1 rounded-full ${order.status === 'pending' ? 'bg-red-200' : 'bg-green-500'} text-white`}>
+          {order.status}
+        </div>
+
+        {order.status === 'pending' && (
+          <div className="flex justify-center mt-2">
+            <button
+              className="bg-red-500 text-white py-1 px-4 rounded-full shadow hover:bg-red-600 transition"
+              onClick={() => handleCancelOrder(order._id)}
+            >
+              Cancel Order
+            </button>
           </div>
-        ))}
+        )}
       </div>
+    </div>
+  ))}
+</div>
+
+
     </div>
   );
    

@@ -17,12 +17,12 @@ const sellerPassword = process.env.SELLER_PASSWORD;
 router.post('/signup', async (req, res) => {
   // console.log("signup");
   const { name, email, password } = req.body;
-  
+
   try {
     let user = await User.findOne({ email });
 
     if (user) return res.status(400).json({ msg: 'User already exists' });
-    
+
     user = new User({ name, email, password, role: 'user' }); // Ensure role is 'user'
     await user.save();
 
@@ -40,30 +40,39 @@ router.post('/signup', async (req, res) => {
 // Login user or seller
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log('loign user',sellerEmail,sellerPassword,email,password);
-  
+  // console.log('loign user', sellerEmail, sellerPassword, email, password);
+
   try {
     // Check if it's the seller
     if (email === sellerEmail) {
       // console.log('seller loging ');
-      
+
       const isMatch = password === sellerPassword; // In practice, hash and compare
       if (!isMatch) return res.status(400).json({ msg: 'Invalid seller credentials' });
 
-      const token = jwt.sign({ role: 'seller' }, 'secret', { expiresIn: '100h' });
-      
+      const token = jwt.sign({ role: 'seller' }, 'secret', { expiresIn: '200h' });
+
       // Set the token in the response header
       // console.log("seeting tokenn ",token);
-      
+
       tokenObj['token'] = token;
       tokenObj['role'] = 'seller';
-      return res.header('x-auth-token', token).json({ token, role: 'seller' });
+      return res
+        .cookie('token', token, {
+          httpOnly: false,
+          secure: true,
+          // secure: process.env.NODE_ENV === 'production', 
+          sameSite: 'Lax',
+          maxAge: 15 * 24 * 60 * 60 * 1000,
+        })
+        .json({ role: 'seller' });
+      // return res.header('x-auth-token', token).json({ token, role: 'seller' });
     }
 
     // Check if it's a regular user
     const user = await User.findOne({ email });
     // console.log("user ",user);
-    
+
     if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -73,27 +82,30 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(payload, 'secret', { expiresIn: '100h' }); // Generate the token
     user.accessToken = token;
     user.role = 'user';
-    user.save({validateBeforeSave:false});
+    user.save({ validateBeforeSave: false });
     // const decoded = jwt.verify(token, 'secret');
     // console.log("decoded ", decoded);
-    
-    // console.log("user after loging",user);
-    res.header('x-auth-token', token).json({ token, role: 'user' });
+
+    // console.log("user after loging",token);
+    return res.cookie('token', token, {
+      httpOnly: false, // Helps prevent XSS attacks
+      secure: true,
+      sameSite: 'Lax', // Helps protect CSRF
+      maxAge: 5 * 24 * 60 * 60 * 1000, // Token expires in 1 day
+    })
+      .json({ role: 'user' });
+
   } catch (err) {
     res.status(500).send('Server error');
   }
 });
 // Logout route
 router.post('/logout', (req, res) => {
-  const token = req.headers['authorization'];
-  // console.log("logging out user");
-  
-  if (!token) {
-      return res.status(403).send({ message: 'No token provided!' });
-  }
-  // console.log('logged out',token);
-  
+  // Clear the cookie by the name you used when setting it
+  res.clearCookie('token'); // Replace 'token' with your actual cookie name if different
+  res.clearCookie('role');
   return res.status(200).send({ message: 'Logged out successfully' });
 });
+
 export default router;
 export { tokenObj };

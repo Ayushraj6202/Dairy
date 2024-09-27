@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import { useSelector } from "react-redux";
 import LoadingComp from "../images/Loading.jsx";
-
+import Cookies from 'js-cookie'
 export default function Products() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
   const url = `${URL_BASIC}/products`;
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.auth.user);
-  const role = useSelector((state) => state.auth.role);
+  const role = Cookies.get('role')
 
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -39,17 +39,20 @@ export default function Products() {
       });
   }, [url]);
 
-  const token = localStorage.getItem('x-auth-token');
-  useEffect(() => { }, [token]);
+  // const token = localStorage.getItem('x-auth-token');
+  // useEffect(() => { }, [token]);
   const handleDelete = async (id, name) => {
     try {
       const response = await fetch(`${URL_BASIC}/products/delete/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // No need for Authorization header since token is in cookies
         },
+        credentials: 'include', // Include cookies in the request
       });
+      // console.log("delete product ",response);
+      
       if (response.ok) {
         setProducts(products.filter((product) => product._id !== id));
         setDeletedProductName(name);
@@ -78,27 +81,27 @@ export default function Products() {
     if (!userName.trim()) {
       setErrorname(true);
     } else {
-      setErrorname(false)
+      setErrorname(false);
     }
     if (phone.length !== 10 || !userName.trim()) return;
     if (phone[0] < '6') return;
-    setsubmit(true)
+    setsubmit(true);
     try {
       const response = await fetch(`${URL_BASIC}/orders/place`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // No need for Authorization header since token is in cookies
         },
+        credentials: 'include', // Include cookies in the request
         body: JSON.stringify({
           productId: selectedProductId,
           quantity,
           phone,
-          userName
-        })
+          userName,
+        }),
       });
-      // console.log(response);
-
+      
       if (response.ok) {
         setdone(true);
         setShowForm(false);

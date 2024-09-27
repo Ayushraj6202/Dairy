@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LoadingComp from "../images/Loading.jsx";
-
+import Cookies from 'js-cookie'
 export default function SellerOrders() {
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
   const url = `${URL_BASIC}/orders/all`;
@@ -9,8 +9,8 @@ export default function SellerOrders() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(true); // Added loading state
-  const token = localStorage.getItem('x-auth-token');
-  const role = useSelector((state) => state.auth.role);
+  // const token = localStorage.getItem('x-auth-token');
+  const role = Cookies.get('role')
   // console.log(loading);
 
   useEffect(() => {
@@ -21,16 +21,16 @@ export default function SellerOrders() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
           },
+          credentials: 'include' // Ensure cookies are sent
         });
+        
         const result = await response.json();
+        
         if (response.ok) {
-          setLoading(false);
-          setSuccess(result.msg);
-          setOrders(result);
+          setOrders(result); // Assuming result is an array of orders
+          setSuccess(result.msg); // If your API returns a message in the result
         } else {
-          setLoading(false);
           setError(result.msg || 'Failed to fetch orders');
         }
       } catch (error) {
@@ -39,9 +39,10 @@ export default function SellerOrders() {
         setLoading(false); // Set loading to false after fetching data
       }
     };
+    
     fetchOrders();
   }, []);
-
+  
   const handleUpdate = async (id) => {
     try {
       const url_update = `${URL_BASIC}/orders/complete/${id}`;
@@ -49,14 +50,15 @@ export default function SellerOrders() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
+        credentials: "include" // Ensure cookies are sent
       });
+      
       if (response.ok) {
         setOrders(orders.map(order => order._id === id ? { ...order, status: 'completed' } : order));
       }
     } catch (error) {
-      console.error('Error updating status');
+      console.error('Error updating status:', error);
     }
   };
 
@@ -67,14 +69,15 @@ export default function SellerOrders() {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
+        },
+        credentials: 'include' // Ensure cookies are sent
       });
+      
       if (response.ok) {
         setOrders(orders.filter(order => order._id !== id));
       }
     } catch (error) {
-      console.error('Error deleting order');
+      console.error('Error deleting order:', error);
     }
   };
 
@@ -106,7 +109,7 @@ export default function SellerOrders() {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4 bg-blue-400 p-2 text-white rounded-lg shadow-lg">Customer Orders</h1>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {orders.map((order) => (
+        {orders.slice().reverse().map((order) => (
           <div
             key={order._id}
             className="bg-white rounded-lg shadow-xl p-4 flex flex-col justify-between transition-transform transform hover:scale-105 hover:shadow-2xl"

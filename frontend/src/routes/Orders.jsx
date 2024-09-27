@@ -2,11 +2,11 @@ import React from "react";
 import UserOrders from "./UserOrder.jsx";
 import { useSelector } from "react-redux";
 import SellerOrders from "./SellerOrder.jsx";
-
+import Cookies from 'js-cookie'
 
 export default function Orders(){
     const user = useSelector((state) => state.auth.user);
-    const role = useSelector((state) => state.auth.role);
+    const role = Cookies.get('role');
     if(role==='user'){
         return (
             <>

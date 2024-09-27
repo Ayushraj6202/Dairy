@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from 'react-redux';
-
+import Cookies from 'js-cookie'
 // Styled component for Access Denied
 const AccessDeniedContainer = () => (
     <div className="flex items-center justify-center h-screen bg-red-100">
@@ -12,20 +12,15 @@ const AccessDeniedContainer = () => (
 );
 
 export default function AuthLayout({ children, userRole = false, sellerRole = false }) {
-    const user = useSelector(state => state.auth.user); // Access user from auth slice
 
-    useEffect(() => {
-        // Any side-effects or updates on user change can be handled here
-    }, [user]);
+    // useEffect(() => {
+    //     // Any side-effects or updates on user change can be handled here
+    // }, [user]);
 
     const sellerEmail = import.meta.env.VITE_SELLER_EMAIL;
-    const isLoggedIn = Object.keys(user).length > 0;
-    let role = 'user';
-
-    if (user.email === sellerEmail) {
-        role = 'seller';
-    }
-
+    const token = Cookies.get('token');
+    const isLoggedIn = Boolean(token);
+    const role = Cookies.get('role')
     if (isLoggedIn && userRole && sellerRole) {
         return <>{children}</>;
     }

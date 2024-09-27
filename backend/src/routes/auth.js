@@ -58,9 +58,11 @@ router.post('/login', async (req, res) => {
       tokenObj['token'] = token;
       tokenObj['role'] = 'seller';
       return res
-        .cookie('token', token)
+        .cookie('token', token,{
+          httpOnly:true,
+          secure:false
+        })
         .json({ role: 'seller' });
-      // return res.header('x-auth-token', token).json({ token, role: 'seller' });
     }
 
     // Check if it's a regular user
@@ -81,7 +83,10 @@ router.post('/login', async (req, res) => {
     // console.log("decoded ", decoded);
 
     // console.log("user after loging",token);
-    return res.cookie('token', token)
+    return res.cookie('token', token,{
+      httpOnly:true,
+      secure:false
+    })
       .json({ role: 'user' });
 
   } catch (err) {

@@ -17,7 +17,7 @@ export default function Header() {
   const token = Cookies.get('token');
   const authStatus = Boolean(token); // Set authStatus based on the presence of token
   const role = Cookies.get('role');
-  // console.log("token ", token,authStatus,role);
+  console.log("header token ", token,authStatus,role);
   const NavItems = [
     { name: "Home", slug: "/", active: true },
     { name: "Login", slug: "/login", active: !authStatus },
@@ -28,26 +28,22 @@ export default function Header() {
   ];
 
   const HandleLogout = async () => {
-    // setLoading(true);
-    Cookies.remove('token', { path: '/' });
-    Cookies.remove('role', { path: '/' });
-    // setLoading(false)
-    navigate('/')
-    // try {
-    //   await fetch(`${URL_BASIC}/auth/logout`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     credentials: "include", // Important: This allows cookies to be sent with the request
-    //   });
-    //   dispatch(storelogout());
-    //   navigate("/");
-    // } catch (error) {
-    //   console.error("Logout failed: ", error);
-    // } finally {
-    //   setLoading(false); 
-    // }
+    setLoading(true);
+    try {
+      await fetch(`${URL_BASIC}/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Important: This allows cookies to be sent with the request
+      });
+      dispatch(storelogout());
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed: ", error);
+    } finally {
+      setLoading(false); 
+    }
   };
 
   if (loading) {

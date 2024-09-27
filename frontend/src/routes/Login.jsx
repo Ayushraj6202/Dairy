@@ -34,16 +34,16 @@ export default function Login() {
     
             const result = await response.json();
             setloading(false);
-            console.log("login",result);
+            console.log("login ",result);
             
             if (response.ok) {
                 dispatch(storelogin(data));
-                if(data.email==='ammanrajkumar96082@gmail.com'){
-                    Cookies.set('role','seller')
-                }else{
-                    Cookies.set('role','user')
-                }
-                Cookies.set('token',result.token);
+                // if(data.email==='ammanrajkumar96082@gmail.com'){
+                //     Cookies.set('role','seller')
+                // }else{
+                //     Cookies.set('role','user')
+                // }
+                // Cookies.set('token',result.token);
                 setSuccess("User Logged In");
                 navigate('/');
             } else {

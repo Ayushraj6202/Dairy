@@ -39,8 +39,8 @@ export default function SignUp() {
             if (response.ok) {
                 dispatch(storelogin(data)); // Dispatch the login action
                 setSuccess("User Logged In");
-                Cookies.set('role','user');
-                Cookies.set('token',result.token)
+                // Cookies.set('role','user');
+                // Cookies.set('token',result.token)
                 navigate('/products'); // Navigate to products page
             } else {
                 setError(result.msg || 'An error occurred while logging you in');

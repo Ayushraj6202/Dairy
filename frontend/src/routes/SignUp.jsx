@@ -42,7 +42,7 @@ export default function SignUp() {
                 // Cookies.set('role','user');
                 // Cookies.set('token',result.token)
                 navigate('/'); // Navigate to products page
-                window.location.reload();
+                // window.location.reload();
             } else {
                 setError(result.msg || 'An error occurred while logging you in');
             }

@@ -46,7 +46,7 @@ export default function Login() {
                 // Cookies.set('token',result.token);
                 setSuccess("User Logged In");
                 navigate('/');
-                window.location.reload();
+                // window.location.reload();
             } else {
                 setError(result.msg || 'An error occurred while logging you in');
             }

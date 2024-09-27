@@ -41,6 +41,7 @@ const options = {
   httpOnly: true,
   secure: true,
   sameSite: 'None',
+  path:'/'
 }
 // Login user or seller
 router.post('/login', async (req, res) => {

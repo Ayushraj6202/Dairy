@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SlideShow from "../images/SlideShow.jsx";
+import { useSelector } from "react-redux";
 
 export default function Home() {
     const [visitorCount, setVisitorCount] = useState(0);
     const url_basic = import.meta.env.VITE_URL_BASIC;
-
     // Uncomment to enable visitor tracking
     // useEffect(() => {
     //     const fetchVisitorCount = async () => {
@@ -36,6 +36,9 @@ export default function Home() {
     //     incrementVisit();
     // }, []);
 
+    const role = useSelector((state)=>state.auth.role);
+    console.log("home ",role);
+    
     return (
         <div className="container mx-auto px-4 bg-gradient-to-br from-white to-gray-200 min-h-screen">
             {/* Welcome Message */}

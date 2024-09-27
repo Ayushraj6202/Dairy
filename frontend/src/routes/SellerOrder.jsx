@@ -10,7 +10,8 @@ export default function SellerOrders() {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(true); // Added loading state
   // const token = localStorage.getItem('x-auth-token');
-  const role = Cookies.get('role')
+  // const role = Cookies.get('role')
+  const role = useSelector((state)=>state.auth.role);
   // console.log(loading);
 
   useEffect(() => {

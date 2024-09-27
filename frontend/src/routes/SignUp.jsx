@@ -41,7 +41,8 @@ export default function SignUp() {
                 setSuccess("User Logged In");
                 // Cookies.set('role','user');
                 // Cookies.set('token',result.token)
-                navigate('/products'); // Navigate to products page
+                navigate('/'); // Navigate to products page
+                window.location.reload();
             } else {
                 setError(result.msg || 'An error occurred while logging you in');
             }

@@ -6,7 +6,8 @@ import Cookies from 'js-cookie'
 
 export default function Orders(){
     const user = useSelector((state) => state.auth.user);
-    const role = Cookies.get('role');
+    // const role = Cookies.get('role');
+    const role = useSelector((state)=>state.auth.role)
     if(role==='user'){
         return (
             <>

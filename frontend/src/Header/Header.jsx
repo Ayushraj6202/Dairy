@@ -13,11 +13,15 @@ export default function Header() {
   const navigate = useNavigate();
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
 
-  // Check for token in cookies to determine login status
-  const token = Cookies.get('token');
-  const authStatus = Boolean(token); // Set authStatus based on the presence of token
-  const role = Cookies.get('role');
-  console.log("header token ", token,authStatus,role);
+  // const token = Cookies.get('token');
+  // const role = Cookies.get('role');
+  
+  const role = useSelector((state)=>state.auth.role);
+  const authStatus = useSelector((state)=>state.auth.status);
+  useEffect(()=>{
+
+  },[authStatus,role])
+  console.log("header token ", authStatus,role);
   const NavItems = [
     { name: "Home", slug: "/", active: true },
     { name: "Login", slug: "/login", active: !authStatus },
@@ -27,24 +31,27 @@ export default function Header() {
     { name: "Orders", slug: "/orders", active: authStatus },
   ];
 
-  const HandleLogout = async () => {
-    setLoading(true);
-    try {
-      await fetch(`${URL_BASIC}/auth/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Important: This allows cookies to be sent with the request
-      });
-      dispatch(storelogout());
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed: ", error);
-    } finally {
-      setLoading(false); 
-    }
-  };
+ const HandleLogout = async () => {
+  setLoading(true);
+  try {
+    await fetch(`${URL_BASIC}/auth/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Important: This allows cookies to be sent with the request
+    });
+    dispatch(storelogout());
+    // Refresh the window
+    navigate('/')
+    window.location.reload();
+  } catch (error) {
+    console.error("Logout failed: ", error);
+  } finally {
+    setLoading(false); 
+  }
+};
+
 
   if (loading) {
     return <LoadingComp />;

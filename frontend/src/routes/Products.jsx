@@ -9,7 +9,8 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.auth.user);
-  const role = Cookies.get('role')
+  // const role = Cookies.get('role')
+  const role = useSelector((state)=>state.auth.role)
 
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -150,8 +151,8 @@ export default function Products() {
       <>
         <div className="flex justify-center mt-10 mb-20">
           <div className="bg-gradient-to-r from-red-400 to-red-600 border border-red-700 text-white px-6 py-4 rounded-lg relative shadow-xl w-3/4 sm:w-1/2 lg:w-1/3">
-            <strong className="font-bold text-yellow-200 text-shadow-md">Deleted!</strong>
-            <span className="block sm:inline text-shadow-sm"> {deletedProductName} was successfully deleted.</span>
+            <strong className="font-bold text-yellow-200 text-shadow-md">{deletedProductName} Deleted!</strong>
+            {/* <span className="block sm:inline text-shadow-sm">  was successfully deleted.</span> */}
           </div>
         </div>
       </>

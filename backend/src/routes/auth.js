@@ -39,8 +39,8 @@ router.post('/signup', async (req, res) => {
 
 const options = {
   httpOnly: true,
-  secure: true,
-  // sameSite: 'None',
+  secure: false,
+  sameSite: 'Lax',
   // path:'/'
 }
 // Login user or seller
@@ -64,12 +64,12 @@ router.post('/login', async (req, res) => {
       // return res.json({token:token})
       return res
         .cookie('token', token, options)
-        .cookie('role','seller',options)
+        .cookie('role', 'seller', options)
         .json({ role: 'seller' });
     }
 
     const user = await User.findOne({ email });
-    
+
     if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -99,6 +99,26 @@ router.post('/logout', (req, res) => {
   res.clearCookie('token', options); // Replace 'token' with your actual cookie name if different
   res.clearCookie('role', options);
   return res.status(200).send({ message: 'Logged out successfully' });
+});
+
+router.get('/check', (req, res) => {
+  const token = req.cookies.token;
+  const user = req.cookies.role // Access the token from cookies
+  console.log('at check',req.cookies);
+
+  if (!token) {
+    return res.status(403).json({ msg: 'Unauthorized' });
+  }
+
+  jwt.verify(token, 'secret', (err, decoded) => {
+    // console.log('check token ', token, decoded);
+
+    if (err) {
+      return res.status(403).json({ msg: 'Unauthorized' });
+    }
+    // Send back the role or any other information needed
+    res.json({ role: user }); // Assuming the role is stored in the token
+  });
 });
 
 export default router;

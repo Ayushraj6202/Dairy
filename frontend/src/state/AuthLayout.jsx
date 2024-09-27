@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
-import { useSelector } from 'react-redux';
-import Cookies from 'js-cookie'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { useSyncExternalStore } from "react";
+import {storelogin} from '../store/authslice.js'
 // Styled component for Access Denied
 const AccessDeniedContainer = () => (
     <div className="flex items-center justify-center h-screen bg-red-100">
@@ -11,16 +13,46 @@ const AccessDeniedContainer = () => (
     </div>
 );
 
-export default function AuthLayout({ children, userRole = false, sellerRole = false }) {
+export default function AuthLayout({ children,always=false, userRole = false, sellerRole = false }) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [role, setRole] = useState('user');
+    const dispatch = useDispatch();
+    const URL_BASIC = import.meta.env.VITE_URL_BASIC;
+   const url = `${URL_BASIC}/auth/check`;
+   console.log("role ",role," log ",isLoggedIn);
+   const rolee = (useSelector((state)=>state.auth.role));
+   const statuss = (useSelector((state)=>state.auth.status));
 
-    // useEffect(() => {
-    //     // Any side-effects or updates on user change can be handled here
-    // }, [user]);
+    // Function to check authentication status
+    const checkAuthStatus = async () => {
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            const result = await response.json();
+            if (response.ok) {
+                setIsLoggedIn(true);
+                setRole(result.role);
+                dispatch(storelogin(result)); // Store role in Redux
+            } else {
+                setIsLoggedIn(false);
+                setRole('');
+            }
+        } catch (error) {
+            setIsLoggedIn(false);
+            setRole('');
+        }
+    };
 
-    const sellerEmail = import.meta.env.VITE_SELLER_EMAIL;
-    const token = Cookies.get('token');
-    const isLoggedIn = Boolean(token);
-    const role = Cookies.get('role')
+    // Effect to sync state with Redux store and fetch auth status
+    useEffect(() => {
+        // Check if the login status is undefined or invalid and fetch if necessary
+            checkAuthStatus();
+    }, [dispatch]);
+    if(always){
+        return <>{children} </>
+    }
     if (isLoggedIn && userRole && sellerRole) {
         return <>{children}</>;
     }

@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   role: { type: String, enum: ['user', 'seller'], default: 'user' }, // Either user or seller
   accessToken:String,
   // refreshToken:String,
-});
+},{timestamps:true});
 UserSchema.pre("save", async function(next){
   if(this.isModified("password")){
     this.password = await bcrypt.hash(this.password,10);

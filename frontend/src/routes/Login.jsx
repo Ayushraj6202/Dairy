@@ -34,7 +34,7 @@ export default function Login() {
     
             const result = await response.json();
             setloading(false);
-            // console.log("login",data);
+            console.log("login",result);
             
             if (response.ok) {
                 dispatch(storelogin(data));
@@ -43,6 +43,7 @@ export default function Login() {
                 }else{
                     Cookies.set('role','user')
                 }
+                Cookies.set('token',result.token);
                 setSuccess("User Logged In");
                 navigate('/');
             } else {

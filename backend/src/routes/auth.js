@@ -41,7 +41,10 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   // console.log('loign user', sellerEmail, sellerPassword, email, password);
-
+  const options ={
+    httpOnly:true,
+    secure:false
+  }
   try {
     // Check if it's the seller
     if (email === sellerEmail) {
@@ -57,12 +60,10 @@ router.post('/login', async (req, res) => {
 
       tokenObj['token'] = token;
       tokenObj['role'] = 'seller';
-      return res
-        .cookie('token', token,{
-          httpOnly:true,
-          secure:false
-        })
-        .json({ role: 'seller' });
+      return res.json({token:token})
+      // return res
+      //   .cookie('token', token,options)
+      //   .json({ role: 'seller' });
     }
 
     // Check if it's a regular user
@@ -83,11 +84,9 @@ router.post('/login', async (req, res) => {
     // console.log("decoded ", decoded);
 
     // console.log("user after loging",token);
-    return res.cookie('token', token,{
-      httpOnly:true,
-      secure:false
-    })
-      .json({ role: 'user' });
+    return res.json({token:token})
+    // return res.cookie('token', token,options)
+    //   .json({ role: 'user' });
 
   } catch (err) {
     res.status(500).send('Server error');
@@ -96,8 +95,12 @@ router.post('/login', async (req, res) => {
 // Logout route
 router.post('/logout', (req, res) => {
   // Clear the cookie by the name you used when setting it
-  res.clearCookie('token'); // Replace 'token' with your actual cookie name if different
-  res.clearCookie('role');
+  const options = {
+    httpOnly: true,
+    secure: false,
+  }
+  res.clearCookie('token', options); // Replace 'token' with your actual cookie name if different
+  res.clearCookie('role', options);
   return res.status(200).send({ message: 'Logged out successfully' });
 });
 

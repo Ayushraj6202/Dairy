@@ -28,22 +28,26 @@ export default function Header() {
   ];
 
   const HandleLogout = async () => {
-    setLoading(true);
-    try {
-      await fetch(`${URL_BASIC}/auth/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Important: This allows cookies to be sent with the request
-      });
-      dispatch(storelogout());
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed: ", error);
-    } finally {
-      setLoading(false); 
-    }
+    // setLoading(true);
+    Cookies.remove('token', { path: '/' });
+    Cookies.remove('role', { path: '/' });
+    // setLoading(false)
+    navigate('/')
+    // try {
+    //   await fetch(`${URL_BASIC}/auth/logout`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     credentials: "include", // Important: This allows cookies to be sent with the request
+    //   });
+    //   dispatch(storelogout());
+    //   navigate("/");
+    // } catch (error) {
+    //   console.error("Logout failed: ", error);
+    // } finally {
+    //   setLoading(false); 
+    // }
   };
 
   if (loading) {

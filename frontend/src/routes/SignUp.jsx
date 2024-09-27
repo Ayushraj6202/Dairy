@@ -40,6 +40,7 @@ export default function SignUp() {
                 dispatch(storelogin(data)); // Dispatch the login action
                 setSuccess("User Logged In");
                 Cookies.set('role','user');
+                Cookies.set('token',result.token)
                 navigate('/products'); // Navigate to products page
             } else {
                 setError(result.msg || 'An error occurred while logging you in');

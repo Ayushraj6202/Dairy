@@ -147,10 +147,10 @@ export default function SignUp() {
                             type="password"
                             {...register("password", {
                                 required: 'Password is required',
-                                minLength: {
-                                    value: 6,
-                                    message: 'Password must be at least 6 characters',
-                                },
+                                // minLength: {
+                                //     value: 6,
+                                //     message: 'Password must be at least 6 characters',
+                                // },
                             })}
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                         />
@@ -163,10 +163,10 @@ export default function SignUp() {
                             type="password"
                             {...register("conf-password", {
                                 required: 'Password is required',
-                                minLength: {
-                                    value: 6,
-                                    message: 'Password must be at least 6 characters',
-                                },
+                                // minLength: {
+                                //     value: 6,
+                                //     message: 'Password must be at least 6 characters',
+                                // },
                             })}
                             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                         />

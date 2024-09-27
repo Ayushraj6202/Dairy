@@ -22,6 +22,10 @@ export default function Products() {
   const phonePattern = /^[6789]\d{9}$/;
   const isValidPhone = phonePattern.test(phone);
   const [visibleDescription, setVisibleDescription] = useState({});
+  const [isSubmitting, setsubmit] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [deletedProductName, setDeletedProductName] = useState('');
+  const [errorName, setErrorname] = useState(false);
 
   useEffect(() => {
     axios.get(url)
@@ -37,7 +41,7 @@ export default function Products() {
 
   const token = localStorage.getItem('x-auth-token');
   useEffect(() => { }, [token]);
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, name) => {
     try {
       const response = await fetch(`${URL_BASIC}/products/delete/${id}`, {
         method: 'DELETE',
@@ -48,6 +52,11 @@ export default function Products() {
       });
       if (response.ok) {
         setProducts(products.filter((product) => product._id !== id));
+        setDeletedProductName(name);
+        setShowDeletePopup(true);
+        setTimeout(() => {
+          setShowDeletePopup(false);
+        }, 3000);
       } else {
         console.error('Failed to delete product', response.status);
       }
@@ -66,8 +75,14 @@ export default function Products() {
   };
 
   const handleSubmitOrder = async () => {
-    if (phone.length !== 10) return;
+    if (!userName.trim()) {
+      setErrorname(true);
+    } else {
+      setErrorname(false)
+    }
+    if (phone.length !== 10 || !userName.trim()) return;
     if (phone[0] < '6') return;
+    setsubmit(true)
     try {
       const response = await fetch(`${URL_BASIC}/orders/place`, {
         method: 'POST',
@@ -82,6 +97,7 @@ export default function Products() {
           userName
         })
       });
+      // console.log(response);
 
       if (response.ok) {
         setdone(true);
@@ -93,7 +109,10 @@ export default function Products() {
       console.error('Error placing order', error);
     }
   };
-
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setuserName(value);
+  };
   if (done) {
     setTimeout(() => {
       setdone(false);
@@ -123,6 +142,18 @@ export default function Products() {
       </div>
     );
   }
+  if (showDeletePopup) {
+    return (
+      <>
+        <div className="flex justify-center mt-10 mb-20">
+          <div className="bg-gradient-to-r from-red-400 to-red-600 border border-red-700 text-white px-6 py-4 rounded-lg relative shadow-xl w-3/4 sm:w-1/2 lg:w-1/3">
+            <strong className="font-bold text-yellow-200 text-shadow-md">Deleted!</strong>
+            <span className="block sm:inline text-shadow-sm"> {deletedProductName} was successfully deleted.</span>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="p-4">
@@ -135,12 +166,15 @@ export default function Products() {
             <input
               type="text"
               value={userName}
-              onChange={(e) => setuserName(e.target.value)}
-              className="block w-full border p-2 rounded"
+              onChange={handleNameChange}
+              className={`block w-full border p-2 rounded ${errorName ? 'border-red-500' : ''}`}
               placeholder="Enter your name"
               required
             />
           </label>
+          {errorName && (
+            <p className="text-red-500 text-sm mt-1">Name is required.</p>
+          )}
           <label className="block mb-2">
             Quantity:
             <input
@@ -170,7 +204,7 @@ export default function Products() {
             className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
             onClick={handleSubmitOrder}
           >
-            Submit Order
+            {isSubmitting ? 'Wait...' : 'Submit Order'}
           </button>
           <button
             className="mt-4 ml-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
@@ -185,7 +219,7 @@ export default function Products() {
           <div
             key={product._id}
             className="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between transition-all hover:shadow-2xl hover:scale-105 duration-300"
-            style={{ height: '55vh' }} // 50% of screen height
+            style={{ minHeight: '40vh', maxHeight: 'auto' }} // Adjusts based on content
           >
             {/* Product Image */}
             <img
@@ -213,17 +247,17 @@ export default function Products() {
 
               {/* Stock Status */}
               <p
-                className={`text-md font-semibold text-white rounded-lg py-1 px-4 shadow ${product.stockStatus === "available"
-                  ? "bg-green-500"
-                  : "bg-red-500"
+                className={`text-md font-semibold text-white rounded-lg py-1 px-4 shadow ${product.stockStatus === 'available'
+                  ? 'bg-green-500'
+                  : 'bg-red-500'
                   }`}
               >
-                {product.stockStatus === "available" ? "In Stock" : "Out of Stock"}
+                {product.stockStatus === 'available' ? 'In Stock' : 'Out of Stock'}
               </p>
 
               {/* Action Buttons */}
               <div className="mt-2 flex justify-center space-x-4 items-center">
-                {role === "user" && (
+                {role === 'user' && (
                   <button
                     className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
                     onClick={() => handleBuyNow(product._id, product.name)}
@@ -231,36 +265,25 @@ export default function Products() {
                     Buy Now
                   </button>
                 )}
-                {role === "seller" && (
+                {role === 'seller' && (
                   <button
-                    onClick={() => handleDelete(product._id)}
+                    onClick={() => handleDelete(product._id, product.name)}
                     className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
                   >
                     Delete
                   </button>
                 )}
               </div>
+
               {/* Description */}
-              <button
-                className="mt-2 text-blue-500 underline"
-                onClick={() => setVisibleDescription((prev) => ({
-                  ...prev,
-                  [product._id]: !prev[product._id]
-                }))}
-              >
-                {visibleDescription[product._id] ? 'Hide Description' : 'Show Description'}
-              </button>
-              {visibleDescription[product._id] && (
-                <p className="text-sm text-gray-700 italic mt-2">
-                  {product.description}
-                </p>
-              )}
+              <p className="text-sm text-gray-700 italic mt-2">
+                {product.description}
+              </p>
             </div>
-
-
           </div>
         ))}
       </div>
+
     </div>
   );
 }

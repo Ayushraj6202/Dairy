@@ -39,9 +39,9 @@ router.post('/signup', async (req, res) => {
 
 const options = {
   httpOnly: true,
-  secure: true,
-  sameSite: 'None',
-  path:'/'
+  secure: false,
+  // sameSite: 'None',
+  // path:'/'
 }
 // Login user or seller
 router.post('/login', async (req, res) => {

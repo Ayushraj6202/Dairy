@@ -40,7 +40,7 @@ router.post('/signup', async (req, res) => {
 const options = {
   httpOnly: true,
   secure: false,
-  sameSite: 'Lax',
+  // sameSite: 'Lax',
   // path:'/'
 }
 // Login user or seller
@@ -104,7 +104,7 @@ router.post('/logout', (req, res) => {
 router.get('/check', (req, res) => {
   const token = req.cookies.token;
   const user = req.cookies.role // Access the token from cookies
-  console.log('at check',req.cookies);
+  console.log('at check',req.cookies,token,role);
 
   if (!token) {
     return res.status(403).json({ msg: 'Unauthorized' });

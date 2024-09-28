@@ -20,7 +20,7 @@ export default function Header() {
   const authStatus = useSelector((state)=>state.auth.status);
   useEffect(()=>{
 
-  },[authStatus,role])
+  },[authStatus,role,dispatch])
   console.log("header token ", authStatus,role);
   const NavItems = [
     { name: "Home", slug: "/", active: true },

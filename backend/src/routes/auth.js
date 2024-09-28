@@ -104,7 +104,7 @@ router.post('/logout', (req, res) => {
 router.get('/check', (req, res) => {
   const token = req.cookies.token;
   const user = req.cookies.role // Access the token from cookies
-  console.log('at check',req.cookies,token,role);
+  console.log('at check',req.cookies,token,user);
 
   if (!token) {
     return res.status(403).json({ msg: 'Unauthorized' });

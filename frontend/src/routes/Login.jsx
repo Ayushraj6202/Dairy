@@ -34,7 +34,7 @@ export default function Login() {
     
             const result = await response.json();
             setloading(false);
-            console.log("login ",result);
+            console.log("login ",result,data);
             
             if (response.ok) {
                 dispatch(storelogin(data));

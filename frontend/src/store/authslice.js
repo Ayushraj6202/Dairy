@@ -17,9 +17,17 @@ export const authSlice = createSlice({
             }else{
                 state.role='user'
             }
-            // console.log("store ",action.payload,state.role);
+            if(action.payload.role==='seller'){
+                state.role='seller'
+            }
+            else if(action.payload.role==='user'){
+                state.role ='user';
+            }
+
+            console.log("store ",action.payload,state.role);
             state.status = true;
             state.user = action.payload;
+            state.user['role']= state.role;
         },
         storelogout: (state) => {
             state.status = false;

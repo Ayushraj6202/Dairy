@@ -9,7 +9,7 @@ export default function Orders(){
     // const role = Cookies.get('role');
     const dispatch = useDispatch();
     // const role = useSelector((state)=>state.auth.role)
-    const [role,setrole] = useState('user');
+    const [role,setrole] = useState('');
     useEffect(()=>{
         if(user.role==='seller'){
             setrole('seller');

@@ -15,7 +15,7 @@ export const authSlice = createSlice({
             if(action.payload.email==="ammanrajkumar96082@gmail.com"){
                 state.role='seller'
             }else{
-                state.role=action.payload.role;
+                state.role='user'
             }
             // console.log("store ",action.payload,state.role);
             state.status = true;

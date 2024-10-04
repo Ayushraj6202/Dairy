@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useSelector,useDispatch } from "react-redux";
 import {storelogin} from '../store/authslice.js';
 import LoadingComp from "../images/Loading.jsx";
-import Cookies from 'js-cookie'
 
 
 export default function SignUp() {

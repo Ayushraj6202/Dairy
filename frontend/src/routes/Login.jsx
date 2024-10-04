@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
 import { storelogin } from "../store/authslice";
 import LoadingComp from "../images/Loading";
-import Cookies from 'js-cookie';
+import useScrollToTop from "../images/ScrollTop";
 
 export default function Login() {
+    useScrollToTop();
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setloading] = useState(false);

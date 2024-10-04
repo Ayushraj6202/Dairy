@@ -6,7 +6,7 @@ export default function SlideShow() {
   const images = [
     "https://trademaklogos.s3.ap-south-1.amazonaws.com/6095525.jpeg",
     // "https://userpic.codeforces.org/2702363/title/82fa57c672a581b4.jpg",
-    "https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/ij8rbsbbmskyh5dcuutb.jpg",
+    // "https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/ij8rbsbbmskyh5dcuutb.jpg",
     "https://res.cloudinary.com/dldfc2cgl/image/upload/v1725975110/wxlhlfcntmnojw4t0kss.jpg",
     "https://res.cloudinary.com/dldfc2cgl/image/upload/v1725975110/g7ax6wkbjkesr9q4hakw.jpg",
     "https://res.cloudinary.com/dldfc2cgl/image/upload/v1725975110/enekderbccbet4v6n9bm.jpg",

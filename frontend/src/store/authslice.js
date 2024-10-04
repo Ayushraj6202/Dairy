@@ -11,7 +11,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         storelogin: (state,action) => {
-            console.log("data de diya userdata me ",action.payload);
+            // console.log("data de diya userdata me ",action.payload);
             if(action.payload.email==="ammanrajkumar96082@gmail.com"){
                 state.role='seller'
             }else{
@@ -24,7 +24,7 @@ export const authSlice = createSlice({
                 state.role ='user';
             }
 
-            console.log("store ",action.payload,state.role);
+            // console.log("store ",action.payload,state.role);
             state.status = true;
             state.user = action.payload;
             state.user['role']= state.role;

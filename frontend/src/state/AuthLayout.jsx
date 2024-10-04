@@ -21,7 +21,7 @@ export default function AuthLayout({ children, always = false, userRole = false,
 
     const rolee = useSelector((state) => state.auth.role);
     const statuss = useSelector((state) => state.auth.status);
-    console.log("authlay ",rolee,statuss,role,isLoggedIn);
+    // console.log("authlay ",rolee,statuss,role,isLoggedIn);
     
     // Function to check authentication status from API
     const checkAuthStatus = async () => {

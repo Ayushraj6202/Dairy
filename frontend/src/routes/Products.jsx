@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import { useSelector } from "react-redux";
 import LoadingComp from "../images/Loading.jsx";
-import Cookies from 'js-cookie'
+import useScrollToTop from "../images/ScrollTop.jsx";
 export default function Products() {
+  useScrollToTop();
   const URL_BASIC = import.meta.env.VITE_URL_BASIC;
   const url = `${URL_BASIC}/products`;
   const [loading, setLoading] = useState(true);

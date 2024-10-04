@@ -25,7 +25,7 @@ function Footer() {
                     </div>
 
                     {/* Visit Us Section */}
-                    {/* <div className="w-full md:w-1/2 lg:w-2/12 mb-6 md:mb-0">
+                    <div className="w-full md:w-1/2 lg:w-2/12 mb-6 md:mb-0">
                         <div className="h-full">
                             <h3 className="tracking-px mb-4 text-xs font-semibold uppercase text-gray-500">
                                 Visit Us
@@ -42,7 +42,7 @@ function Footer() {
                                 />
                             </div>
                         </div>
-                    </div> */}
+                    </div>
 
                     {/* Logo and Copyright Section */}
                     <div className="w-full lg:w-5/12 mb-6 md:mb-0 flex flex-col items-center">

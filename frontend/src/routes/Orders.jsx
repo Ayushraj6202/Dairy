@@ -17,7 +17,7 @@ export default function Orders(){
             setrole('user');
         }
     },[dispatch])
-    console.log("orders ",role,user);
+    // console.log("orders ",role,user);
     
     if(role==='user'){
         return (

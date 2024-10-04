@@ -14,6 +14,7 @@ import AddProduct from './routes/AddProduct.jsx'
 import AuthLayout from './state/AuthLayout.jsx'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
+import Gallery from './routes/Gallery.jsx'
 
 
 
@@ -28,6 +29,14 @@ const router = createBrowserRouter(
           element: (
             <AuthLayout always={true}>
               <Home />
+            </AuthLayout>
+          )
+        },
+        {
+          path: "/gallery",
+          element: (
+            <AuthLayout always={true}>
+              <Gallery/>
             </AuthLayout>
           )
         },

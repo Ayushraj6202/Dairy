@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SlideShow from "../images/SlideShow.jsx";
 import { useSelector } from "react-redux";
+import useScrollToTop from "../images/ScrollTop.jsx";
 
 export default function Home() {
+    useScrollToTop();
     const [visitorCount, setVisitorCount] = useState(0);
     const url_basic = import.meta.env.VITE_URL_BASIC;
     const role = useSelector((state) => state.auth.role);
@@ -65,8 +67,8 @@ export default function Home() {
                 </div>
                 <div className="text-center mt-6">
                     {status ? (
-                        <Link to="/products" className="text-lg md:text-xl text-green-600 font-bold hover:underline">
-                            हमारे सभी उत्पादों को देखने के लिए यहां जाएं।
+                        <Link to="/products" className="text-lg md:text-xl  font-bold hover:underline rounded-lg bg-orange-500 p-2">
+                            हमारे सभी उत्पाद
                         </Link>
                     ) : (
                         <p className="text-lg md:text-xl text-gray-700 font-semibold">
@@ -75,7 +77,15 @@ export default function Home() {
                     )}
                 </div>
             </div>
-
+            {/* Contact Section */}
+            <div className="my-8 bg-green-100  p-6 rounded-lg text-center transform transition duration-500 hover:scale-105">
+                <h2 className="text-2xl mb-4">हमसे संपर्क करें</h2>
+                <p>आपकी संतुष्टि हमारी प्राथमिकता है। किसी भी पूछताछ या सुझाव के लिए, कृपया हमें कॉल करें या ईमेल भेजें।</p>
+                <div className="mt-4">
+                    <p>Phone: <strong>+91 95466 41100</strong></p>
+                    <p>Email: <strong>ammanrajkumar96082@gmail.com</strong></p>
+                </div>
+            </div>
             {/* Owner Section */}
             <div className="my-10 bg-gray-100 p-8 rounded-lg shadow-lg border-2 border-blue-200">
                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-700">मालिक से मिलें</h2>

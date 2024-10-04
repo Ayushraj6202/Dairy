@@ -24,6 +24,7 @@ export default function Header() {
   console.log("header token ", authStatus,role);
   const NavItems = [
     { name: "Home", slug: "/", active: true },
+    { name: "Gallery", slug: "/gallery", active: true },
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
     { name: "Products", slug: "/products", active: authStatus },

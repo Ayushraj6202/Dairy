@@ -33,7 +33,7 @@ const router = createBrowserRouter(
           )
         },
         {
-          path: "/gallery",
+          path: "gallery",
           element: (
             <AuthLayout always={true}>
               <Gallery/>

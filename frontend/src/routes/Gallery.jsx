@@ -3,7 +3,7 @@ import React from "react";
 // Sample gallery items with descriptions
 const galleryItems = [
     {
-        image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/cow_milk.jpg",
+        image:'https://images.unsplash.com/photo-1672506633558-005a5b2fc3aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww',
         description: "गाय का दूध",
     },
     {
@@ -19,7 +19,7 @@ const galleryItems = [
         description: "कंपनी की मशीनरी",
     },
     {
-        image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/buffalo_milk.jpg",
+        image:"https://images.unsplash.com/photo-1728360107161-f1004abda274?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww",
         description: "भैंस का दूध",
     },
     {
@@ -27,11 +27,11 @@ const galleryItems = [
         description: "दही",
     },
     {
-        image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/paneer.jpg",
+        image: "https://media.istockphoto.com/id/482306874/photo/closeup-of-paneer-cut.webp?a=1&b=1&s=612x612&w=0&k=20&c=whlxcBKnH4bKAplAwXLUvtFzwWnZzvXV94fLVGzMU5A=",
         description: "पनीर",
     },
     {
-        image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/location.jpg",
+        image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1729699181/yf6xzc7edkdwwtukago7.png",
         description: "हमारा स्थान",
     },
 ];

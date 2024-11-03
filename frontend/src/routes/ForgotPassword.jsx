@@ -8,7 +8,7 @@ const ForgotPassword = () => {
     const [success, setSuccess] = useState('');
     const [step, setStep] = useState(1); // 1 for email, 2 for OTP
     const [loading, setLoading] = useState(false); // Loading state
-    const [isPasswordReset, setIsPasswordReset] = useState(1); // New state variable
+    const [isPasswordReset, setIsPasswordReset] = useState(0); // New state variable
     const URL_BASIC = import.meta.env.VITE_URL_BASIC;
 
     const handleEmailSubmit = async (e) => {

@@ -41,21 +41,21 @@ router.get('/', async (req, res) => {
 
 // Edit a product (seller only)
 
-router.put('/edit/:id', async (req, res) => {
-  const { name, description, price, quantity } = req.body;
-  try {
-    let product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ msg: 'Product not found' });
+// router.put('/edit/:id', async (req, res) => {
+//   const { name, description, price, quantity } = req.body;
+//   try {
+//     let product = await Product.findById(req.params.id);
+//     if (!product) return res.status(404).json({ msg: 'Product not found' });
 
-    product = await Product.findByIdAndUpdate(req.params.id, {
-      name, description, price, quantity
-    }, { new: true });
+//     product = await Product.findByIdAndUpdate(req.params.id, {
+//       name, description, price, quantity
+//     }, { new: true });
 
-    res.json(product);
-  } catch (err) {
-    res.status(500).send('Server error');
-  }
-});
+//     res.json(product);
+//   } catch (err) {
+//     res.status(500).send('Server error');
+//   }
+// });
 
 // Delete a product (seller only)
 router.delete('/delete/:id', verifySeller, async (req, res) => {

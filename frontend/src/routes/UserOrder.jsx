@@ -10,6 +10,7 @@ export default function UserOrders() {
 	const [error, setError] = useState('');
 	const [cancleOrderId, setOrderId] = useState(null);
 	const [confirmcancel, setconfirmCancel] = useState(false);
+	const [loadCancel, setloadcancel] = useState(false);
 	useEffect(() => {
 		const fetchUserOrders = async () => {
 			setLoading(true);
@@ -38,26 +39,31 @@ export default function UserOrders() {
 		fetchUserOrders();
 	}, []);
 
+	const handleDeleteClick = async () => {
+		setloadcancel(true);
+		await handleCancelOrder();
+		setloadcancel(false);
+	};
 	const handleCancelOrder = async () => {
 		const id = cancleOrderId;
 		const urlDelete = `${URL_BASIC}/orders/delete/${id}`;
 		try {
-			// const emailResponse = await fetch(`${URL_BASIC}/sendEmail/cancel`, {
-			//   method: 'POST',
-			//   headers: {
-			//     'Content-Type': 'application/json',
-			//   },
-			//   body: JSON.stringify({
-			//     orderId:id 
-			//   }),
-			// });
-			// console.log("emailResponse cancel",emailResponse);
+			const emailResponse = await fetch(`${URL_BASIC}/sendEmail/cancel`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					orderId: id
+				}),
+			});
+			console.log("emailResponse cancel", emailResponse);
 
-			// if (emailResponse.ok) {
-			//   console.log('Email sent to the seller successfully');
-			// } else {
-			//   console.error('Failed to send email to seller', emailResponse.status);
-			// }
+			if (emailResponse.ok) {
+				console.log('Email sent to the seller successfully');
+			} else {
+				console.error('Failed to send email to seller', emailResponse.status);
+			}
 
 			const response = await fetch(urlDelete, {
 				method: 'DELETE',
@@ -103,22 +109,26 @@ export default function UserOrders() {
 			{confirmcancel && (
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4">
 					<div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-md">
-						<h2 className="text-lg font-bold mb-4 text-center">Confirm Update</h2>
-						<p className="text-center mb-4">Are you sure you want to Mark Completed?</p>
-						<div className="flex justify-around mt-4">
-							<button
-								onClick={handleCancelOrder}
-								className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full max-w-[120px] mr-2"
-							>
-								Yes, Delete
-							</button>
-							<button
-								onClick={handleDonotCacnel}
-								className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 w-full max-w-[120px]"
-							>
-								Cancel
-							</button>
-						</div>
+						<h2 className="text-lg font-bold mb-4 text-center">Confirm Cancel</h2>
+						<p className="text-center mb-4">Are you sure you want to Cancel Order?</p>
+						{loadCancel ? (
+							<p className="text-center text-gray-500">Processing...</p>
+						) : (
+							<div className="flex justify-around mt-4">
+								<button
+									onClick={handleDeleteClick}
+									className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full max-w-[120px] mr-2"
+								>
+									Yes, Cancel
+								</button>
+								<button
+									onClick={handleDonotCacnel}
+									className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 w-full max-w-[120px]"
+								>
+									No
+								</button>
+							</div>
+						)}
 					</div>
 				</div>
 			)}
@@ -143,23 +153,33 @@ export default function UserOrders() {
 							</div>
 
 							{/* Status Indicator */}
-							<div className={`text-center mt-4 px-3 py-1 rounded-full ${order.status === 'pending' ? 'bg-red-200' : 'bg-green-500'} text-white`}>
+							<div className={`text-center mt-4 px-3 py-1 rounded-full ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-500'} text-white`}>
 								{order.status}
 							</div>
 
 							{order.status === 'pending' && (
 								<div className="flex justify-center mt-2">
 									<button
-										className="bg-red-500 text-white py-1 px-4 rounded-full shadow hover:bg-red-600 transition"
+										className="bg-red-500 text-white py-2 px-6 rounded-full shadow-lg hover:bg-red-600 transition transform hover:scale-105 flex items-center"
 										onClick={() => {
 											setOrderId(order._id);
 											setconfirmCancel(true);
 										}}
 									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											className="h-5 w-5 mr-2"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+										</svg>
 										Cancel Order
 									</button>
 								</div>
 							)}
+
 						</div>
 					</div>
 				))}

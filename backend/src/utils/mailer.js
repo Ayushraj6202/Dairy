@@ -1,16 +1,18 @@
 import nodemailer from 'nodemailer'
-const senderEmail = process.env.SENDER_EMAIL;
+const senderEmail = "ayushrajavinashkhetalpura@gmail.com";
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com', //'smtp.gmail.com' for Gmail
-    port: 587, // Usually port 587 for TLS
-    secure: false, // Set to true for port 465 if using SSL
+    host: 'smtp.gmail.com', 
+    port: 587,
+    secure: false,
     auth: {
-        user: senderEmail, // Your email address
-        pass: process.env.SENDER_PASSWORD, // Your email password or app-specific password
+        user: process.env.SENDER_EMAIL, 
+        pass: process.env.SENDER_PASSWORD,
     },
 });
 
 const sendEmail = async (to, subject, text, html) => {
+    console.log(to,subject);
+    
     try {
         const mailOptions = {
             from: `"Khetalpura Dairy" <${senderEmail}>`,

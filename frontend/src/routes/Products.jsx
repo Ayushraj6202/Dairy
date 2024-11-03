@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useSelector } from "react-redux";
 import LoadingComp from "../images/Loading.jsx";
 import useScrollToTop from "../images/ScrollTop.jsx";
+import {Link} from 'react-router-dom'
+
 export default function Products() {
 	useScrollToTop();
 	const URL_BASIC = import.meta.env.VITE_URL_BASIC;
@@ -114,25 +116,25 @@ export default function Products() {
 				setdone(true);
 				setShowForm(false);
 				setsubmit(false);
-				// const emailResponse = await fetch(`${URL_BASIC}/sendEmail`, {
-				//   method: 'POST',
-				//   headers: {
-				//     'Content-Type': 'application/json',
-				//   },
-				//   body: JSON.stringify({
-				//     productId: selectedProductId,
-				//     quantity,
-				//     phone,
-				//     userName,
-				//   }),
-				// });
-				// console.log("emailResponse order", emailResponse);
+				const emailResponse = await fetch(`${URL_BASIC}/sendEmail`, {
+				  method: 'POST',
+				  headers: {
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({
+				    productId: selectedProductId,
+				    quantity,
+				    phone,
+				    userName,
+				  }),
+				});
+				console.log("emailResponse order", emailResponse);
 
-				// if (emailResponse.ok) {
-				//   console.log('Email sent to the seller successfully');
-				// } else {
-				//   console.error('Failed to send email to seller', emailResponse.status);
-				// }
+				if (emailResponse.ok) {
+				  console.log('Email sent to the seller successfully');
+				} else {
+				  console.error('Failed to send email to seller', emailResponse.status);
+				}
 
 			} else {
 				console.error('Failed to order product', response.status);
@@ -258,10 +260,10 @@ export default function Products() {
 						<p>Are you sure you want to delete the product: <strong>{deletedProductName}</strong>?</p>
 						<div className="flex justify-between mt-6">
 							<button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onClick={confirmDeleteProduct}>
-								Delete
+								Yes
 							</button>
 							<button className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400" onClick={() => setConfirmDelete(false)}>
-								Cancel
+								No
 							</button>
 						</div>
 					</div>
@@ -319,12 +321,22 @@ export default function Products() {
 									</button>
 								)}
 								{role === 'seller' && (
+									<div className="flex flex-wrap justify-center gap-3">
+									{/* {console.log(product)} */}
+									<Link
+									to={`/edit/${product._id}`}
+									state={{ProductData:product}}
+									className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
+									>
+										Edit
+									</Link>
 									<button
 										onClick={() => handleDelete(product._id, product.name)}
 										className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
 									>
 										Delete
 									</button>
+									</div>
 								)}
 							</div>
 

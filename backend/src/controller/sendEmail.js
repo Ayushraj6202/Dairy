@@ -2,7 +2,8 @@ import { Router } from 'express';
 import Product from "../models/product.models.js";
 import sendEmail from "../utils/mailer.js"; 
 import Order from '../models/order.models.js';
-const to = process.env.SENDER_EMAIL;
+const to = process.env.RECEIVER_EMAIL;
+
 const router = Router();
 
 router.post('/', async (req, res) => {
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
         `;
         console.log(text,html);
         
-        // await sendEmail(to, subject, text, html);
+        await sendEmail(to, subject, text, html);
         return res.status(200).send('Order placed and email sent to seller.');
     } catch (error) {
         console.error('Error processing order or sending email:', error);
@@ -76,7 +77,7 @@ router.post('/cancel', async (req, res) => {
         `;
         
         console.log(text, html);
-        // await sendEmail(to, subject, text, html);
+        await sendEmail(to, subject, text, html);
         
         return res.status(200).json({ message: 'Order canceled and email sent to seller.' });
     } catch (error) {

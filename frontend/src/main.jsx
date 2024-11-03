@@ -15,6 +15,8 @@ import AuthLayout from './state/AuthLayout.jsx'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
 import Gallery from './routes/Gallery.jsx'
+import EditProduct from './routes/EditProduct.jsx'
+import ForgotPassword from './routes/ForgotPassword.jsx'
 
 
 
@@ -51,6 +53,15 @@ const router = createBrowserRouter(
             )
         },
         {
+          path: 'forgot-password',
+          element:
+            (
+              <AuthLayout  >
+               <ForgotPassword/>
+              </AuthLayout>
+            )
+        },
+        {
           path: 'signup',
           element: (
             <AuthLayout >
@@ -79,6 +90,15 @@ const router = createBrowserRouter(
             (
               <AuthLayout sellerRole={true}>
                 <AddProduct />
+              </AuthLayout>
+            )
+        },
+        {
+          path: 'edit/:id',
+          element:
+            (
+              <AuthLayout sellerRole={true}>
+                <EditProduct />
               </AuthLayout>
             )
         },

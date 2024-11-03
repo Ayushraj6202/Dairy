@@ -43,13 +43,47 @@ export default function Home() {
             </div>
 
             {/* Slideshow */}
-            <div className="my-8 shadow-lg border-4 border-orange-400 rounded-lg overflow-hidden">
+            <div className="my-8 p-4 flower-garland-border">
                 <SlideShow />
             </div>
 
+            <style>
+                {`
+        .flower-garland-border {
+            padding: 10px;
+            border: 6px solid;
+            border-image: linear-gradient(45deg, #FFA500, #FF6347, #FFD700, #FF69B4) 1;
+            border-radius: 20px;
+            animation: garlandWave 7s ease-in-out infinite;
+        }
+        @keyframes garlandWave {
+            0%, 100% { border-image-source: linear-gradient(45deg, #FFA500, #FF6347, #FFD700, #FF69B4); }
+            50% { border-image-source: linear-gradient(45deg, #FF69B4, #FFD700, #FFA500, #FF6347); }
+        }
+          `}
+            </style>
             {/* Products List Section */}
             <div className="my-10 bg-gray-100 p-8 rounded-lg shadow-lg border-2 border-green-200">
-                <h2 className="text-3xl font-bold text-center mb-6 text-gray-700">हमारे उत्पाद</h2>
+                {/* <h2 className="text-3xl font-bold text-center mb-6 text-gray-700">हमारे उत्पाद</h2> */}
+                <div className="text-center mb-6 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 p-4 rounded-lg shadow-lg">
+                    {status ? (
+                        <Link
+                            to="/products"
+                            className="text-lg md:text-xl font-bold text-white hover:underline rounded-lg bg-orange-500 px-4 py-2 transition duration-300 transform hover:scale-105 shadow-md"
+                        >
+                            हमारे सभी उत्पाद
+                        </Link>
+                    ) : (
+                        <p className="text-lg md:text-xl text-white font-semibold">
+                            हमारे सभी उत्पादों को देखने और ऑर्डर करने के लिए{' '}
+                            <Link to="/login" className="text-blue-200 hover:underline font-bold transition duration-300">
+                                लॉगिन
+                            </Link>{' '}
+                            करें।
+                        </p>
+                    )}
+                </div>
+
                 <div className="flex flex-wrap justify-center gap-8">
                     {products.map((product, index) => (
                         <div
@@ -65,25 +99,24 @@ export default function Home() {
                         </div>
                     ))}
                 </div>
-                <div className="text-center mt-6">
-                    {status ? (
-                        <Link to="/products" className="text-lg md:text-xl  font-bold hover:underline rounded-lg bg-orange-500 p-2">
-                            हमारे सभी उत्पाद
-                        </Link>
-                    ) : (
-                        <p className="text-lg md:text-xl text-gray-700 font-semibold">
-                            हमारे सभी उत्पादों को देखने और ऑर्डर करने के लिए <Link to="/login" className="text-blue-600 hover:underline font-bold">लॉगिन</Link> करें।
-                        </p>
-                    )}
+                <div className="text-center mt-6 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 p-4 rounded-lg shadow-lg">
+                    <Link
+                        to="/gallery"
+                        className="text-lg md:text-xl font-bold text-white hover:underline rounded-lg bg-orange-500 px-4 py-2 transition duration-300 transform hover:scale-105 shadow-md"
+                    >
+                        और तस्वीरें देखें
+                    </Link>
                 </div>
+
+
             </div>
             {/* Contact Section */}
             <div className="my-8 bg-green-100  p-6 rounded-lg text-center transform transition duration-500 hover:scale-105">
                 <h2 className="text-2xl mb-4">हमसे संपर्क करें</h2>
                 <p>आपकी संतुष्टि हमारी प्राथमिकता है। किसी भी पूछताछ या सुझाव के लिए, कृपया हमें कॉल करें या ईमेल भेजें।</p>
                 <div className="mt-4">
-                    <p>Phone: <strong>+91 95466 41100</strong></p>
-                    <p>Email: <strong>ammanrajkumar96082@gmail.com</strong></p>
+                    <p>Phone: <strong>95466 41100</strong></p>
+                    <p>Email: <strong>ammanraj@gmail.com</strong></p>
                 </div>
             </div>
             {/* Owner Section */}

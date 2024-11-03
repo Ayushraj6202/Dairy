@@ -6,7 +6,7 @@ function Footer() {
         <section className="relative overflow-hidden py-10 bg-gray-400 border-t-2 border-black">
             <div className="relative z-10 mx-auto max-w-7xl px-4">
                 <div className="flex flex-wrap justify-between">
-                    
+
                     {/* Contact Section */}
                     <div className="w-full md:w-1/2 lg:w-2/12 mb-6 md:mb-0">
                         <div className="h-full">
@@ -18,7 +18,7 @@ function Footer() {
                                     9546641100
                                 </li>
                                 <li className="mb-2 text-gray-700 font-bold">
-                                    ammanrajkumar96082@gmail.com
+                                    ammanraj@gmail.com
                                 </li>
                             </ul>
                         </div>

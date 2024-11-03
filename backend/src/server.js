@@ -10,7 +10,7 @@ import routeradd from './routes/Product.add.js';
 import Visitor from './routes/Visitor.routes.js'
 import authToken from './middleware/authToken.js';
 import sendEmail from './controller/sendEmail.js'
-
+import ForgotPassward from './utils/Password.js'
 import cors from 'cors'
 import dotenv from 'dotenv';
 
@@ -44,9 +44,10 @@ app.use(express.static("public"));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
-// app.use('/api/sendEmail',sendEmail)
+app.use('/api/sendEmail',sendEmail)
 app.use('/api/product', routeradd)
 app.use('/api/visitors',Visitor)
+app.use('/api/password',ForgotPassward)
 
 app.post('/api/authToken',authToken,async (req,res)=>{
     if (req.user) {

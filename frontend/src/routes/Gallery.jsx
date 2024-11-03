@@ -1,9 +1,10 @@
 import React from "react";
+import useScrollToTop from "../images/ScrollTop";
 
 // Sample gallery items with descriptions
 const galleryItems = [
     {
-        image:'https://images.unsplash.com/photo-1672506633558-005a5b2fc3aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww',
+        image: 'https://images.unsplash.com/photo-1672506633558-005a5b2fc3aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww',
         description: "गाय का दूध",
     },
     {
@@ -19,7 +20,7 @@ const galleryItems = [
         description: "कंपनी की मशीनरी",
     },
     {
-        image:"https://images.unsplash.com/photo-1728360107161-f1004abda274?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww",
+        image: "https://images.unsplash.com/photo-1728360107161-f1004abda274?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww",
         description: "भैंस का दूध",
     },
     {
@@ -37,14 +38,17 @@ const galleryItems = [
 ];
 
 export default function Gallery() {
+    useScrollToTop();
     return (
         <div className="container mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold text-center mb-6 text-gray-800 bg-blue-500 py-1 text-white">गैलरी</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <h2 className="text-3xl font-bold text-center mb-6 text-white bg-blue-600 py-2 rounded-md shadow-lg">
+                गैलरी
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {galleryItems.map((item, index) => (
                     <div
                         key={index}
-                        className="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-500 hover:scale-105"
+                        className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-500 hover:scale-105 hover:shadow-xl border-2 border-orange-300"
                     >
                         <img
                             src={item.image}

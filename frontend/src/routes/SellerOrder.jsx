@@ -152,9 +152,9 @@ export default function SellerOrders() {
             <div className="flex justify-around mt-4">
               <button
                 onClick={handleUpdate}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full max-w-[120px] mr-2"
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full max-w-[120px] mr-2"
               >
-                Yes, Delete
+                Yes, Complete
               </button>
               <button
                 onClick={handleCancelUpdate}

@@ -124,6 +124,14 @@ export default function Login() {
                         Sign in
                     </button>
                 </form>
+                <div className="flex justify-end mt-2">
+                    <Link
+                     to="/forgot-password"
+                     className="text-blue-400 px-2 py-1 rounded-lg"
+                    >
+                        Forgot Password ?
+                    </Link>
+                </div>
             </div>
         </div>
     );

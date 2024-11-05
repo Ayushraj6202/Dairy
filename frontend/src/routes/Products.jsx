@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useSelector } from "react-redux";
 import LoadingComp from "../images/Loading.jsx";
 import useScrollToTop from "../images/ScrollTop.jsx";
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function Products() {
 	useScrollToTop();
@@ -117,23 +117,23 @@ export default function Products() {
 				setShowForm(false);
 				setsubmit(false);
 				const emailResponse = await fetch(`${URL_BASIC}/sendEmail`, {
-				  method: 'POST',
-				  headers: {
-				    'Content-Type': 'application/json',
-				  },
-				  body: JSON.stringify({
-				    productId: selectedProductId,
-				    quantity,
-				    phone,
-				    userName,
-				  }),
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						productId: selectedProductId,
+						quantity,
+						phone,
+						userName,
+					}),
 				});
 				console.log("emailResponse order", emailResponse);
 
 				if (emailResponse.ok) {
-				  console.log('Email sent to the seller successfully');
+					console.log('Email sent to the seller successfully');
 				} else {
-				  console.error('Failed to send email to seller', emailResponse.status);
+					console.error('Failed to send email to seller', emailResponse.status);
 				}
 
 			} else {
@@ -274,13 +274,13 @@ export default function Products() {
 					<div
 						key={product._id}
 						className="bg-gradient-to-br from-white to-gray-100 rounded-lg shadow-lg p-4 flex flex-col justify-between transition-all hover:shadow-2xl hover:scale-105 duration-300"
-						style={{ minHeight: '40vh', maxHeight: 'auto' }} // Adjusts based on content
+						style={{ minHeight: '70vh' }} // Adjusted for larger image
 					>
 						{/* Product Image */}
 						<img
 							src={product.image || 'default-image.jpg'}
 							alt={product.name}
-							className="w-full h-32 object-cover rounded-t-lg mb-4"
+							className="w-full h-80 object-cover rounded-t-lg mb-2" // Height increased to h-80
 						/>
 
 						{/* Product Details */}
@@ -322,20 +322,19 @@ export default function Products() {
 								)}
 								{role === 'seller' && (
 									<div className="flex flex-wrap justify-center gap-3">
-									{/* {console.log(product)} */}
-									<Link
-									to={`/edit/${product._id}`}
-									state={{ProductData:product}}
-									className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
-									>
-										Edit
-									</Link>
-									<button
-										onClick={() => handleDelete(product._id, product.name)}
-										className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
-									>
-										Delete
-									</button>
+										<Link
+											to={`/edit/${product._id}`}
+											state={{ ProductData: product }}
+											className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
+										>
+											Edit
+										</Link>
+										<button
+											onClick={() => handleDelete(product._id, product.name)}
+											className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
+										>
+											Delete
+										</button>
 									</div>
 								)}
 							</div>
@@ -348,6 +347,7 @@ export default function Products() {
 					</div>
 				))}
 			</div>
+
 
 		</div>
 	);

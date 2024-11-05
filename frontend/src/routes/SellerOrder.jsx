@@ -178,7 +178,7 @@ export default function SellerOrders() {
             <img
               src={order.image || 'default-image.jpg'}
               alt={order.name}
-              className="w-full h-32 object-cover rounded-lg mb-4 shadow-lg"
+              className="w-full h-40 object-cover rounded-lg mb-4 shadow-lg"
             />
             <div className="flex-grow">
               <h2 className="text-lg font-semibold mb-2 text-blue-600">{order.name}</h2>

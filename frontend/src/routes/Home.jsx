@@ -115,24 +115,25 @@ export default function Home() {
                 <h2 className="text-2xl mb-4">हमसे संपर्क करें</h2>
                 <p>आपकी संतुष्टि हमारी प्राथमिकता है। किसी भी पूछताछ या सुझाव के लिए, कृपया हमें कॉल करें या ईमेल भेजें।</p>
                 <div className="mt-4">
-                    <p>Phone: <strong>95466 41100</strong></p>
-                    <p>Email: <strong>ammanraj@gmail.com</strong></p>
+                    <p>Phone: <strong>9546641100, 6203859070</strong></p>
+                    <p>Email: <strong>khetalpuradiary@gmail.com</strong></p>
                 </div>
             </div>
             {/* Owner Section */}
-            <div className="my-10 bg-gray-100 p-8 rounded-lg shadow-lg border-2 border-blue-200">
+            {/* <div className="my-10 bg-gray-100 p-8 rounded-lg shadow-lg border-2 border-blue-200">
                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-700">मालिक से मिलें</h2>
                 <div className="flex flex-wrap justify-center gap-6 mb-6">
                     <img
-                        src="https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/ij8rbsbbmskyh5dcuutb.jpg"
+                        // src="https://res.cloudinary.com/dldfc2cgl/image/upload/v1726750630/ij8rbsbbmskyh5dcuutb.jpg"
+                        
                         alt="अमन कुमार"
                         className="w-48 h-72 object-cover rounded-lg border-4 border-blue-400 shadow-lg transform transition duration-500 hover:scale-105"
                     />
                 </div>
                 <p className="text-center text-lg md:text-xl text-gray-600 leading-relaxed">
-                    हमारे समर्पित मालिक, <strong>अमन कुमार</strong>, सुनिश्चित करते हैं कि प्रत्येक उत्पाद उच्चतम गुणवत्ता मानकों को पूरा करता है। किसी भी पूछताछ या फीडबैक के लिए संपर्क करने के लिए स्वतंत्र महसूस करें।
+                    हमारे समर्पित मालिक, <strong>अनंत कुमार जी</strong>, सुनिश्चित करते हैं कि प्रत्येक उत्पाद उच्चतम गुणवत्ता मानकों को पूरा करता है। किसी भी पूछताछ या फीडबैक के लिए संपर्क करने के लिए स्वतंत्र महसूस करें।
                 </p>
-            </div>
+            </div> */}
 
         </div>
     );

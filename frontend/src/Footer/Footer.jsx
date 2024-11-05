@@ -15,10 +15,10 @@ function Footer() {
                             </h3>
                             <ul>
                                 <li className="mb-2 text-gray-700 font-bold">
-                                    9546641100
+                                    9546641100, 6203859070
                                 </li>
                                 <li className="mb-2 text-gray-700 font-bold">
-                                    ammanraj@gmail.com
+                                    khetalpuradiary@gmail.com
                                 </li>
                             </ul>
                         </div>

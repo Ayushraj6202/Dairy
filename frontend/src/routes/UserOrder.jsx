@@ -134,11 +134,14 @@ export default function UserOrders() {
 			)}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 				{orders.slice().reverse().map((order) => (
-					<div key={order._id} className="bg-white rounded-xl shadow-md overflow-hidden transform transition hover:scale-105 duration-300">
+					<div
+						key={order._id}
+						className="bg-white rounded-xl shadow-md overflow-hidden transform transition hover:scale-105 duration-300"
+					>
 						<img
 							src={order.image || 'default-image.jpg'}
 							alt={order.name}
-							className="w-full h-48 object-cover"
+							className="w-full h-80 object-cover" // Height changed to h-80 for larger display
 						/>
 						<div className="p-4">
 							<h2 className="text-2xl font-semibold text-gray-800">{order.name}</h2>
@@ -149,11 +152,15 @@ export default function UserOrders() {
 								<span className="font-bold">Order Value:</span> ₹{order.quantity * order.price}
 							</p>
 							<div className="text-sm text-gray-600 mt-2">
-								Ordered on {new Date(order.createdAt).toLocaleDateString()} at {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+								Ordered on {new Date(order.createdAt).toLocaleDateString()} at{' '}
+								{new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
 							</div>
 
 							{/* Status Indicator */}
-							<div className={`text-center mt-4 px-3 py-1 rounded-full ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-500'} text-white`}>
+							<div
+								className={`text-center mt-4 px-3 py-1 rounded-full ${order.status === 'pending' ? 'bg-red-300' : 'bg-green-500'
+									} text-white`}
+							>
 								{order.status}
 							</div>
 
@@ -173,15 +180,20 @@ export default function UserOrders() {
 											viewBox="0 0 24 24"
 											stroke="currentColor"
 										>
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth={2}
+												d="M6 18L18 6M6 6l12 12"
+											/>
 										</svg>
 										Cancel Order
 									</button>
 								</div>
 							)}
-
 						</div>
 					</div>
+
 				))}
 			</div>
 

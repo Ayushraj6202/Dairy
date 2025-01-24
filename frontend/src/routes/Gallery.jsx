@@ -4,7 +4,7 @@ import useScrollToTop from "../images/ScrollTop";
 // Sample gallery items with descriptions
 const galleryItems = [
     {
-        image: 'https://images.unsplash.com/photo-1672506633558-005a5b2fc3aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww',
+        image: 'https://res.cloudinary.com/dldfc2cgl/image/upload/v1730793466/ypyg7delgtayjxn8yzj6.jpg',
         description: "गाय का दूध",
     },
     {
@@ -19,16 +19,16 @@ const galleryItems = [
         image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1725975110/refh9jhwxejb49goptpv.jpg",
         description: "कंपनी की मशीनरी",
     },
-    {
-        image: "https://images.unsplash.com/photo-1728360107161-f1004abda274?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww",
-        description: "भैंस का दूध",
-    },
+    // {
+    //     image: "https://images.unsplash.com/photo-1728360107161-f1004abda274?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGFpcnklMjBmYXJtfGVufDB8fDB8fHww",
+    //     description: "भैंस का दूध",
+    // },
     {
         image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1725975110/g7ax6wkbjkesr9q4hakw.jpg",
         description: "दही",
     },
     {
-        image: "https://media.istockphoto.com/id/482306874/photo/closeup-of-paneer-cut.webp?a=1&b=1&s=612x612&w=0&k=20&c=whlxcBKnH4bKAplAwXLUvtFzwWnZzvXV94fLVGzMU5A=",
+        image: "https://res.cloudinary.com/dldfc2cgl/image/upload/v1730562307/dfaiolv5lpis9z0djs1w.jpg",
         description: "पनीर",
     },
     {

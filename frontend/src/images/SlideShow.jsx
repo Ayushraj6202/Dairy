@@ -18,7 +18,7 @@ export default function SlideShow() {
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
       // setLoading(true); // Set loading state on slide change
-    }, 1500);
+    }, 2000);
 
     return () => clearInterval(intervalId);
   }, [images.length]);
@@ -28,8 +28,8 @@ export default function SlideShow() {
   };
 
   return (
-    <div className="max-w-full h-full w-full py-4 px-4 flex flex-col items-center justify-center">
-      <div className="relative w-64 h-64 border-4 border-gray-300 rounded-lg shadow-lg overflow-hidden">
+    <div className="max-w-full h-full w-full py-1 px-1 flex flex-col items-center justify-center">
+      <div className="relative w-70 h-64 border-4 border-gray-300 rounded-lg shadow-lg overflow-hidden">
         {loading && (
           <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
             <span>Loading...</span>
@@ -39,7 +39,7 @@ export default function SlideShow() {
           src={images[currentIndex]}
           alt="slideshow"
           className="w-full h-full object-cover"
-          onLoad={handleImageLoad} // Call handleImageLoad when the image loads
+          onLoad={handleImageLoad}
         />
       </div>
     </div>

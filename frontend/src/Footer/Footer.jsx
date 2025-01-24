@@ -57,7 +57,7 @@ function Footer() {
                         </div>
                         <div>
                             <p className="text-sm text-gray-600 text-center">
-                                &copy; Copyright 2024. All Rights Reserved by KHETALPURA DAIRY
+                                &copy; Copyright 2025. All Rights Reserved by KHETALPURA DAIRY
                             </p>
                         </div>
                     </div>

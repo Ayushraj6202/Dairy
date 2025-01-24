@@ -24,10 +24,10 @@ export default function Header() {
   console.log("header token ", authStatus,role);
   const NavItems = [
     { name: "Home", slug: "/", active: true },
+    { name: "Products", slug: "/products", active: 1 },
     { name: "Gallery", slug: "/gallery", active: true },
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
-    { name: "Products", slug: "/products", active: authStatus },
     { name: "Add Products", slug: "/add-products", active: (role === 'seller') },
     { name: "Orders", slug: "/orders", active: authStatus },
   ];

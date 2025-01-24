@@ -71,9 +71,12 @@ const router = createBrowserRouter(
         {
           path: 'products',
           element: (
-            <AuthLayout userRole={true} sellerRole={true}>
+            <AuthLayout always={true}>
               <Products />
             </AuthLayout>
+            // <AuthLayout userRole={true} sellerRole={true}>
+            //   <Products />
+            // </AuthLayout>
           )
         },
         {

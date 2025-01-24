@@ -12,7 +12,10 @@ export default function Products() {
 	const [loading, setLoading] = useState(true);
 	const [products, setProducts] = useState([]);
 	const user = useSelector((state) => state.auth.user);
+	const islogged = useSelector((state) => state.auth.status);
 	// const role = Cookies.get('role')
+	// console.log(islogged);
+
 	const role = useSelector((state) => state.auth.role)
 
 	const [selectedProductId, setSelectedProductId] = useState(null);
@@ -137,9 +140,11 @@ export default function Products() {
 				}
 
 			} else {
+				setsubmit(false);
 				console.error('Failed to order product', response.status);
 			}
 		} catch (error) {
+			setsubmit(false);
 			console.error('Error placing order', error);
 		}
 	};
@@ -312,31 +317,43 @@ export default function Products() {
 
 							{/* Action Buttons */}
 							<div className="mt-2 flex justify-center space-x-4 items-center">
-								{role === 'user' && (
-									<button
-										className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
-										onClick={() => handleBuyNow(product._id, product.name)}
+								{!islogged ? (
+									<Link
+										to="/login"
+										className="bg-red-500 py-2 px-4 w-full shadow-md rounded-lg text-white text-center font-medium hover:bg-red-600 hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
 									>
-										Buy Now
-									</button>
+										Login to buy
+									</Link>
+								) : (
+									<>
+										{role === 'user' && (
+											<button
+												className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
+												onClick={() => handleBuyNow(product._id, product.name)}
+											>
+												Buy Now
+											</button>
+										)}
+										{role === 'seller' && (
+											<div className="flex flex-wrap justify-center gap-3">
+												<Link
+													to={`/edit/${product._id}`}
+													state={{ ProductData: product }}
+													className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
+												>
+													Edit
+												</Link>
+												<button
+													onClick={() => handleDelete(product._id, product.name)}
+													className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
+												>
+													Delete
+												</button>
+											</div>
+										)}
+									</>
 								)}
-								{role === 'seller' && (
-									<div className="flex flex-wrap justify-center gap-3">
-										<Link
-											to={`/edit/${product._id}`}
-											state={{ ProductData: product }}
-											className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-2 rounded-lg shadow hover:from-blue-500 hover:to-blue-700 hover:shadow-md transition"
-										>
-											Edit
-										</Link>
-										<button
-											onClick={() => handleDelete(product._id, product.name)}
-											className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-2 rounded-lg shadow hover:from-red-500 hover:to-red-700 hover:shadow-md transition"
-										>
-											Delete
-										</button>
-									</div>
-								)}
+
 							</div>
 
 							{/* Description */}

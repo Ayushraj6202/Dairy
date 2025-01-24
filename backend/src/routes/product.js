@@ -68,6 +68,4 @@ router.delete('/delete/:id', verifySeller, async (req, res) => {
     return res.status(500).send('Server error');
   }
 });
-
-
 export default router;

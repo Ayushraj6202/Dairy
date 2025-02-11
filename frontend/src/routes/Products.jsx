@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import { useSelector } from "react-redux";
-import LoadingComp from "../images/Loading.jsx";
+import LoadingComp from "../images/ProdLoad.jsx";
 import useScrollToTop from "../images/ScrollTop.jsx";
 import { Link } from 'react-router-dom'
 
